@@ -1,579 +1,907 @@
-import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Code2, BookOpen, Activity, GitMerge, Layers, Zap, Copy, Check, Trophy, MessageSquare, Target, AlertCircle, Clock, Save, HardDrive, AlertTriangle, Cpu, AlignLeft, MousePointer2, ArrowRight, FileText } from 'lucide-react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { 
+  Activity, Code2, Check, Copy, Trophy,
+  FileText, ChevronLeft, ChevronRight, RotateCcw, 
+  ZoomIn, ZoomOut, Maximize2, Minimize,
+  ShieldAlert, Lightbulb, MonitorPlay, PartyPopper, 
+  AlignLeft, ArrowRightLeft, SearchCode, Maximize, Target, Focus, Type, CheckCircle2, XCircle, ArrowDown, ArrowUp, Layout, TrendingUp, Clock, Layers
+} from 'lucide-react';
 
-const APPROACHES = {
-  brute: {
-    id: 'brute',
-    title: '1. Brute Force',
-    subtitle: 'Naive Concatenation',
-    icon: <AlertTriangle size={16} />,
-    complexity: 'Time: O(N²)',
-    code: `class Solution {
-    public String mergeAlternately(String word1, String word2) {
-        String result = ""; 
-        int n1 = word1.length(), n2 = word2.length();
-        int max = Math.max(n1, n2);
-        
-        for (int k = 0; k < max; k++) {
-            if (k < n1) result += word1.charAt(k); 
-            if (k < n2) result += word2.charAt(k); 
-        }
-        return result;
-    }
-}`,
-    explanation: "Standard naive approach. It hiddenly suffers from O(N²) time complexity in languages with immutable strings because of repeated memory reallocation and copying during concatenation.",
-    lag: "LAG ALERT: O(N²) Performance Trap due to String Immutability."
-  },
-  sequential: {
-    id: 'sequential',
-    title: '2. Sequential',
-    subtitle: 'Block Logic',
-    icon: <Layers size={16} />,
-    complexity: 'Time: O(N+M)',
-    code: `class Solution {
-    public String mergeAlternately(String word1, String word2) {
-        StringBuilder sb = new StringBuilder();
-        int min = Math.min(word1.length(), word2.length());
-        
-        for (int i = 0; i < min; i++) {
-            sb.append(word1.charAt(i));
-            sb.append(word2.charAt(i));
-        }
-        
-        if (word1.length() > min) {
-            sb.append(word1.substring(min));
-        } else {
-            sb.append(word2.substring(min));
-        }
-        return sb.toString();
-    }
-}`,
-    explanation: "Uses StringBuilder for O(N) efficiency. It splits the logic: first merging the overlapping indices, then appending the remaining 'tail' of the longer string.",
-    lag: "MODULAR: Clean but slightly more verbose logic blocks."
-  },
-  optimal: {
-    id: 'optimal',
-    title: '3. Optimal',
-    subtitle: 'Single-Pass Pointers',
-    icon: <Zap size={16} />,
-    complexity: 'Time: O(N+M)',
-    code: `class Solution {
-    public String mergeAlternately(String word1, String word2) {
-        StringBuilder res = new StringBuilder();
-        int i = 0, j = 0;
-        int n1 = word1.length(), n2 = word2.length();
+// --- Algorithm Configuration ---
 
-        while (i < n1 || j < n2) {
-            if (i < n1) res.append(word1.charAt(i++));
-            if (j < n2) res.append(word2.charAt(j++));
+const OPERATIONS = {
+  twoPointers: {
+    id: 'twoPointers',
+    title: '1. Two Pointers (Optimal)',
+    icon: <ArrowRightLeft size={16} />,
+    complexity: 'Time: O(N + M) | Space: O(N + M)',
+    code: `public String mergeAlternately(String word1, String word2) {
+    StringBuilder result = new StringBuilder();
+    int i = 0, j = 0;
+    
+    while (i < word1.length() || j < word2.length()) {
+        if (i < word1.length()) {
+            result.append(word1.charAt(i));
+            i++;
         }
-        return res.toString();
+        if (j < word2.length()) {
+            result.append(word2.charAt(j));
+            j++;
+        }
     }
+    
+    return result.toString();
 }`,
-    explanation: "The Gold Standard. A single loop with two pointers. Each condition is independent, allowing the loop to elegantly handle strings of different lengths.",
-    lag: "ELEGANT: Peak performance with minimal, readable code."
+    desc: "The Optimal Two Pointers approach. We use a StringBuilder to efficiently build the new string. We use two pointers, 'i' and 'j', to track our positions in 'word1' and 'word2'. We loop as long as AT LEAST ONE string still has characters remaining, appending alternately."
+  },
+  stringConcat: {
+    id: 'stringConcat',
+    title: '2. String Concat (Naive)',
+    icon: <SearchCode size={16} />,
+    complexity: 'Time: O((N+M)²) | Space: O(N+M)',
+    code: `public String mergeAlternately(String word1, String word2) {
+    String result = "";
+    int i = 0;
+    
+    while (i < word1.length() && i < word2.length()) {
+        result += word1.charAt(i);
+        result += word2.charAt(i);
+        i++;
+    }
+    
+    while (i < word1.length()) {
+        result += word1.charAt(i);
+        i++;
+    }
+    
+    while (i < word2.length()) {
+        result += word2.charAt(i);
+        i++;
+    }
+    
+    return result;
+}`,
+    desc: "The Naive String Concatenation method. While logically correct, using '+=' with standard Strings in Java creates a brand new String object in memory every single iteration. This leads to an O((N+M)²) time complexity due to constant reallocation and copying."
   }
 };
 
-const ProblemStatement = () => (
-  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
-    <div className="max-w-3xl">
-      <h2 className="text-2xl font-black text-slate-900 mb-6">1768. Merge Strings Alternately</h2>
-      
-      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
-        <p className="text-lg leading-relaxed">
-          You are given two strings <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">word1</code> and <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">word2</code>. Merge the strings by adding letters in alternating order, starting with <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">word1</code>. If a string is longer than the other, append the additional letters onto the end of the merged string.
-        </p>
-        
-        <p className="text-lg font-bold text-slate-800">Return the merged string.</p>
+// --- Helper UI Components ---
 
-        <div className="space-y-8 mt-10">
-          {/* Example 1 */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
-              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "abc", word2 = "pqr"</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> "apbqcr"</p>
-              <div className="pt-4 mt-4 border-t border-slate-200/60">
-                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: The merged string will be merged as so:</p>
-                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
-                  word1:  a   b   c{'\n'}
-                  word2:    p   q   r{'\n'}
-                  merged: a p b q c r
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Example 2 */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
-              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "ab", word2 = "pqrs"</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> "apbqrs"</p>
-              <div className="pt-4 mt-4 border-t border-slate-200/60">
-                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: Notice that as word2 is longer, "rs" is appended to the end.</p>
-                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
-                  word1:  a   b{'\n'}
-                  word2:    p   q   r   s{'\n'}
-                  merged: a p b q   r   s
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Example 3 */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 3:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
-              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "abcd", word2 = "pq"</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> "apbqcd"</p>
-              <div className="pt-4 mt-4 border-t border-slate-200/60">
-                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: Notice that as word1 is longer, "cd" is appended to the end.</p>
-                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
-                  word1:  a   b   c   d{'\n'}
-                  word2:    p   q{'\n'}
-                  merged: a p b q c   d
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-10 border-t border-slate-100 mt-10">
-          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-            <AlertCircle size={14} /> Constraints:
-          </h3>
-          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
-            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} word1.length, word2.length {'<='} 100</code></li>
-            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">word1</code> and <code className="bg-slate-100 px-1.5 rounded text-slate-800">word2</code> consist of lowercase English letters.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const MergeStringsVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
-
-  return (
-    <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
-      <div className="max-w-7xl w-full space-y-6">
-        
-        {/* Main Header */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-4">
-            <div className="bg-blue-600 p-3 rounded-xl shadow-lg shadow-blue-200">
-                <GitMerge className="text-white" size={24} />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">Merge Strings Alternately</h1>
-              <div className="flex items-center gap-2 text-slate-500 text-xs mt-0.5">
-                <span className="font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">1768</span>
-                <span>LeetCode 75 • Easy</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
-            <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
-            <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
-            <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
-          </div>
-        </div>
-
-        {activeTab === 'problem' && <ProblemStatement />}
-        {activeTab === 'visualizer' && <VisualizerMode />}
-        {activeTab === 'learn' && <LearnMode />}
-        {activeTab === 'interview' && <InterviewHelper />}
-        
-      </div>
-    </div>
-  );
-};
-
-const VisualizerMode = () => {
-  const [selectedApproach, setSelectedApproach] = useState<keyof typeof APPROACHES>('optimal');
-  const [word1, setWord1] = useState("abc");
-  const [word2, setWord2] = useState("pqr");
-  const [currentStep, setCurrentStep] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  const trace = useMemo(() => {
-    const steps: any[] = [];
-    const w1 = word1 || "";
-    const w2 = word2 || "";
-    let i = 0, j = 0, k = 0;
-    let res = "";
-
-    const addStep = (phase: string, desc: string, line: number, extra: any = {}) => {
-      steps.push({ phase, description: desc, line, state: { i, j, k, result: res }, ...extra });
-    };
-
-    if (selectedApproach === 'brute') {
-      addStep("Init", "Initialize result string.", 3);
-      const max = Math.max(w1.length, w2.length);
-      for (k = 0; k < max; k++) {
-        addStep("Loop", `Iteration k=${k}.`, 7);
-        if (k < w1.length) {
-          res += w1[k];
-          addStep("Append W1", `Appending '${w1[k]}'.`, 8, { lag: true, activeWord: 1, activeIdx: k });
-        }
-        if (k < w2.length) {
-          res += w2[k];
-          addStep("Append W2", `Appending '${w2[k]}'.`, 9, { lag: true, activeWord: 2, activeIdx: k });
-        }
-      }
-      addStep("Done", "Return result.", 11);
-    } else if (selectedApproach === 'sequential') {
-      addStep("Init", "Start overlap merge.", 3);
-      const min = Math.min(w1.length, w2.length);
-      for (i = 0; i < min; i++) {
-        addStep("Merge", `Merging index ${i}.`, 7);
-        res += w1[i];
-        addStep("Append W1", `Append '${w1[i]}'.`, 8, { activeWord: 1, activeIdx: i });
-        res += w2[i];
-        addStep("Append W2", `Append '${w2[i]}'.`, 9, { activeWord: 2, activeIdx: i });
-      }
-      addStep("Over", "Overlap done. Checking tail.", 12);
-      if (w1.length > min) {
-        res += w1.substring(min);
-        addStep("Tail", "Append Word 1 tail.", 14, { isTail: true, tailWord: 1 });
-      } else {
-        res += w2.substring(min);
-        addStep("Tail", "Append Word 2 tail.", 16, { isTail: true, tailWord: 2 });
-      }
-      addStep("Done", "Final result ready.", 19);
-    } else {
-      addStep("Init", "Pointers i=0, j=0.", 3);
-      while (i < w1.length || j < w2.length) {
-        addStep("Loop", `Condition: i<${w1.length} || j<${w2.length}`, 7);
-        if (i < w1.length) {
-          res += w1[i];
-          addStep("W1", `Appending word1[${i}]: '${w1[i]}'`, 8, { activeWord: 1, activeIdx: i });
-          i++;
-        }
-        if (j < w2.length) {
-          res += w2[j];
-          addStep("W2", `Appending word2[${j}]: '${w2[j]}'`, 11, { activeWord: 2, activeIdx: j });
-          j++;
-        }
-      }
-      addStep("Done", "Merged complete.", 15);
-    }
-    return steps;
-  }, [word1, word2, selectedApproach]);
-
-  const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, trace.length - 1));
-  const handlePrev = () => setCurrentStep(prev => Math.max(0, prev - 1));
-  const handleCopy = () => { navigator.clipboard.writeText(APPROACHES[selectedApproach].code); setCopied(true); setTimeout(() => setCopied(false), 2000); };
-
-  const currentState = trace[currentStep] || trace[0];
-  const { result: resStr } = currentState.state;
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in duration-500">
-      <div className="flex flex-col gap-6">
-          <div className="bg-white border border-slate-200 rounded-2xl p-2 flex flex-col sm:flex-row gap-2 shadow-sm overflow-hidden">
-             {(Object.keys(APPROACHES) as Array<keyof typeof APPROACHES>).map((key) => (
-                <button key={key} onClick={() => { setSelectedApproach(key); setCurrentStep(0); }} className={`flex-1 flex flex-col items-center justify-center py-4 px-3 rounded-xl transition-all duration-300 ${selectedApproach === key ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'bg-transparent text-slate-500 hover:bg-slate-50'}`}>
-                  <div className={`mb-1 ${selectedApproach === key ? 'scale-110' : ''}`}>{APPROACHES[key].icon}</div>
-                  <span className="text-xs font-black uppercase tracking-tight">{APPROACHES[key].title}</span>
-                  <span className={`text-[10px] opacity-70 ${selectedApproach === key ? 'text-white' : 'text-slate-400'}`}>{APPROACHES[key].complexity}</span>
-                </button>
-             ))}
-          </div>
-
-          <div className="bg-[#0f172a] rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col h-[500px]">
-            <div className="bg-[#1e293b] px-4 py-3 text-xs font-mono text-slate-400 flex justify-between items-center border-b border-slate-800/50">
-              <div className="flex items-center gap-2">
-                <Code2 size={14} className="text-blue-400"/>
-                <span className="font-bold text-slate-300">Solution.java</span>
-              </div>
-              <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors group">
-                {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
-                <span className={copied ? "text-green-400" : "text-slate-300"}>{copied ? 'Copied' : 'Copy'}</span>
-              </button>
-            </div>
-            <div className="p-6 font-mono text-[13px] leading-relaxed overflow-auto relative scrollbar-thin scrollbar-thumb-slate-700">
-                <div className="absolute left-0 right-0 bg-blue-500/15 border-l-4 border-blue-500 transition-all duration-300 pointer-events-none z-0" style={{ top: `${(currentState.line * 20.8) + 24 - 20.8}px`, height: '20.8px' }} />
-                {APPROACHES[selectedApproach].code.split('\n').map((line, idx) => (
-                    <CodeLineRenderer key={idx} num={idx + 1} code={line} active={currentState.line === idx + 1} />
-                ))}
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-              <div className="flex items-center gap-2 text-blue-600">
-                 <Cpu size={18} />
-                 <h4 className="text-sm font-black uppercase tracking-widest">Architectural Summary</h4>
-              </div>
-              <p className="text-sm text-slate-600 leading-relaxed">{APPROACHES[selectedApproach].explanation}</p>
-              <div className={`p-4 rounded-xl border flex gap-3 items-start transition-all duration-300 ${selectedApproach === 'optimal' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-amber-50 border-amber-200 text-amber-800'}`}>
-                {selectedApproach === 'optimal' ? <Zap className="shrink-0 mt-0.5" size={16}/> : <AlertTriangle className="shrink-0 mt-0.5" size={16}/>}
-                <div className="text-xs font-bold leading-relaxed">{APPROACHES[selectedApproach].lag}</div>
-              </div>
-          </div>
-      </div>
-
-      <div className="space-y-6">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
-          <div className="grid grid-cols-2 gap-6">
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-blue-600 uppercase tracking-widest block pl-1">Input word1</label>
-              <input value={word1} onChange={(e) => { setWord1(e.target.value.toLowerCase()); setCurrentStep(0); }} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-inner" maxLength={20} />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-black text-purple-600 uppercase tracking-widest block pl-1">Input word2</label>
-              <input value={word2} onChange={(e) => { setWord2(e.target.value.toLowerCase()); setCurrentStep(0); }} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm focus:ring-2 focus:ring-purple-500 outline-none transition-all shadow-inner" maxLength={20} />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-5 pt-6 border-t border-slate-100">
-            <div className="w-full px-2">
-                <div className="flex justify-between text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
-                    <span>Setup</span>
-                    <span className="text-blue-500">Step {currentStep + 1}</span>
-                    <span>Result</span>
-                </div>
-                <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
-                    <div className="h-full bg-blue-500 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: `${(currentStep / (Math.max(1, trace.length - 1))) * 100}%` }} />
-                </div>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-                <button onClick={() => setCurrentStep(0)} className="p-3 text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-xl transition-all" title="Reset Simulation"><RotateCcw size={20}/></button>
-                <div className="flex gap-3 flex-1">
-                    <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                        <ChevronLeft size={18} /> Prev
-                    </button>
-                    <button onClick={handleNext} disabled={currentStep === trace.length - 1} className="flex-[2] px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold transition-all disabled:opacity-30 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
-                        Next Action <ChevronRight size={18} />
-                    </button>
-                </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-800 text-white rounded-2xl p-6 shadow-xl border border-slate-700 transition-all duration-300">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="bg-blue-500/20 p-1.5 rounded-lg">
-                <Target size={14} className="text-blue-400"/>
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Step Detail</span>
-            </div>
-            <div className="text-lg font-black tracking-tight mb-2 flex items-center gap-3">
-                {currentState.phase}
-            </div>
-            <p className="text-sm text-slate-300 leading-relaxed pt-2 border-t border-slate-700/50">{currentState.description}</p>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 min-h-[350px] flex flex-col justify-center gap-8">
-            <div className="relative pl-14">
-              <span className="absolute left-0 top-3 text-[10px] font-black text-blue-500 uppercase w-10 text-right">word1</span>
-              <div className="flex gap-1 flex-wrap">
-                {word1.split('').map((char, idx) => {
-                  const isActive = currentState.activeWord === 1 && currentState.activeIdx === idx;
-                  const isTail = currentState.isTail && currentState.tailWord === 1 && idx >= Math.min(word1.length, word2.length);
-                  return (
-                    <div key={idx} className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center font-mono font-black text-xs transition-all duration-300 
-                      ${isActive ? 'bg-blue-500 border-blue-600 text-white scale-110 shadow-lg' : isTail ? 'bg-blue-50 border-blue-300 text-blue-700' : 'bg-white border-slate-100 text-slate-300'}`}>
-                      {char}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="relative pl-14">
-              <span className="absolute left-0 top-3 text-[10px] font-black text-purple-500 uppercase w-10 text-right">word2</span>
-              <div className="flex gap-1 flex-wrap">
-                {word2.split('').map((char, idx) => {
-                  const isActive = currentState.activeWord === 2 && currentState.activeIdx === idx;
-                  const isTail = currentState.isTail && currentState.tailWord === 2 && idx >= Math.min(word1.length, word2.length);
-                  return (
-                    <div key={idx} className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center font-mono font-black text-xs transition-all duration-300 
-                      ${isActive ? 'bg-purple-500 border-purple-600 text-white scale-110 shadow-lg' : isTail ? 'bg-purple-50 border-purple-300 text-purple-700' : 'bg-white border-slate-100 text-slate-300'}`}>
-                      {char}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            
-            {resStr && (
-              <div className="pt-8 border-t border-slate-100 flex flex-col items-center">
-                <span className="text-[10px] font-black text-green-600 uppercase tracking-widest mb-3">Merged Result</span>
-                <div className="px-6 py-3 bg-green-600 text-white rounded-2xl font-black text-xl shadow-xl shadow-green-100 animate-in zoom-in duration-500">
-                  "{resStr}"
-                </div>
-              </div>
-            )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Define TabButton component
-const TabButton = ({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string }) => (
-  <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-black transition-all duration-300 ${active ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+const TabButton = ({ active, onClick, icon, label }) => (
+  <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-xl text-sm font-black transition-all duration-300 whitespace-nowrap ${active ? 'bg-[#1e293b] text-white shadow-md scale-105 border border-white/10' : 'text-slate-400 hover:text-slate-800 hover:bg-slate-100'}`}>
     {icon} {label}
   </button>
 );
 
-// Define CodeLineRenderer component
-const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
-  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|StringBuilder|Math)\b|\b\d+\b|\b(?:substring|equals|length|min|max|append|toString|charAt)\b)/g).filter(Boolean);
+const CodeLineRenderer = ({ num, code, active, theme = 'emerald' }) => {
+  const parts = code.split(/(\/\/.*|#.*|".*?"|'.'|\b(?:public|private|boolean|int|char|return|if|else|for|while|continue|break|new|length|String|StringBuilder|charAt|append|toString|mergeAlternately|word1|word2|result|i|j)\b|\b\d+\b|[\+\-\*\/\%\=\<\>!\|&])/g).filter(Boolean);
+  
+  const activeStyles = theme === 'emerald' 
+    ? { bg: `bg-emerald-500/20`, border: `border-emerald-400`, text: `text-emerald-300` }
+    : { bg: `bg-sky-500/20`, border: `border-sky-400`, text: `text-sky-300` };
+
+  const leadingSpaces = code.match(/^\s*/)?.[0]?.length || 0;
+
   return (
-    <div className={`flex relative z-10 group min-h-[20.8px] ${active ? 'font-bold' : ''}`}>
-      <span className="w-8 select-none text-right pr-4 text-slate-700 border-r border-slate-800/50 mr-4 shrink-0 font-mono text-xs">{num}</span>
-      <pre className={`font-mono whitespace-pre text-slate-300 transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-70 group-hover:opacity-100'}`}>
-        {parts.map((part, i) => {
-          if (part.startsWith('//')) return <span key={i} className="text-slate-500 italic">{part}</span>;
-          if (part.startsWith('"')) return <span key={i} className="text-orange-300">{part}</span>;
-          if (/^\d+$/.test(part)) return <span key={i} className="text-cyan-300">{part}</span>;
-          if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
-          if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
-          if (['String', 'StringBuilder', 'Math'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['substring', 'equals', 'length', 'min', 'max', 'append', 'toString', 'charAt'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
-          return part;
+    <div className={`flex relative z-10 min-h-[18px] transition-colors duration-200 ${active ? activeStyles.bg : ''}`}>
+      {active && <div className={`absolute left-0 top-0 bottom-0 w-1 ${activeStyles.border}`} />}
+      <span className={`w-8 select-none text-right pr-4 border-r border-slate-700/50 mr-4 shrink-0 font-mono text-[10px] pt-[2px] ${active ? activeStyles.text + ' font-bold' : 'text-slate-600'}`}>
+        {num}
+      </span>
+      <pre 
+        className={`font-mono text-slate-300 transition-opacity duration-300 flex-1 pt-[2px] whitespace-pre-wrap break-words ${active ? 'opacity-100' : 'opacity-60'}`}
+        style={{ paddingLeft: `${leadingSpaces}ch`, textIndent: `-${leadingSpaces}ch` }}
+      >
+        {parts.map((part, idx) => {
+            const isKeyword = ['public', 'private', 'boolean', 'int', 'char', 'return', 'if', 'else', 'for', 'while', 'continue', 'break', 'new'].includes(part);
+            const isObject = ['String', 'StringBuilder', 'Math', 'Integer'].includes(part);
+            const isVar = ['word1', 'word2', 'result', 'i', 'j'].includes(part);
+            const isMapCall = ['length', 'charAt', 'append', 'toString', 'mergeAlternately'].includes(part);
+            const isOperator = ['+', '-', '*', '/', '%', '=', '<', '>', '!', '|', '&'].includes(part.trim());
+
+            let className = '';
+            if (part.startsWith('//')) className = 'text-slate-500 italic';
+            else if (isKeyword) className = 'text-pink-400 font-bold';
+            else if (isObject) className = 'text-amber-400 font-bold';
+            else if (isVar) className = 'text-sky-200';
+            else if (isMapCall) className = 'text-emerald-300';
+            else if (isOperator) className = 'text-slate-400 font-bold';
+            else if (part === 'true' || part === 'false') className = 'text-orange-400 font-bold';
+            else if (part.startsWith("'") || part.startsWith('"') || (!isNaN(parseInt(part.trim())) && part.trim() !== '')) className = 'text-emerald-400';
+
+            return <span key={idx} className={className}>{part}</span>;
         })}
       </pre>
     </div>
   );
 };
 
-// Define LearnMode component
-const LearnMode = () => {
-  const [selectedTopic, setSelectedTopic] = useState('problem');
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500">
-      <div className="lg:col-span-3 space-y-2">
-         <TopicButton active={selectedTopic === 'problem'} onClick={() => setSelectedTopic('problem')} title="1. Merging Logic" desc="The Alternating Pattern" />
-         <TopicButton active={selectedTopic === 'builder'} onClick={() => setSelectedTopic('builder')} title="2. StringBuilder" desc="Memory Efficiency" />
-         <TopicButton active={selectedTopic === 'optimal'} onClick={() => setSelectedTopic('optimal')} title="3. Optimal Pointers" desc="One-Pass Solution" />
-      </div>
-      <div className="lg:col-span-9 bg-white rounded-2xl border border-slate-200 shadow-sm p-8 min-h-[600px]">
-         {selectedTopic === 'problem' && (
-           <div className="space-y-6 animate-in slide-in-from-right-4">
-             <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-black mb-1">
-                 <AlignLeft size={16}/> Problem Analysis
-             </div>
-             <h2 className="text-3xl font-black text-slate-900 tracking-tight">How Merging Works</h2>
-             <p className="text-slate-600 leading-relaxed text-lg">
-                The core idea is to take characters from each string one by one. If one string is longer than the other, you simply append the remaining characters at the end.
-             </p>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
-                   <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2"><Check className="text-green-500" size={18}/> Alternating</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Index 0 from s1, then index 0 from s2, then index 1 from s1, etc.</p>
-                </div>
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
-                   <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2"><Layers className="text-blue-500" size={18}/> Handling the Tail</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">If s1 has 5 chars and s2 has 3, characters 4 and 5 of s1 are just appended at the very end.</p>
-                </div>
-             </div>
-           </div>
-         )}
-         {selectedTopic === 'builder' && (
-           <div className="space-y-6 animate-in slide-in-from-right-4">
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">The StringBuilder Advantage</h2>
-              <p className="text-slate-600 text-lg leading-relaxed">
-                In many languages, strings are <b>immutable</b>. Every time you do <code>str = str + "a"</code>, a brand new string object is created in memory.
-              </p>
-              <div className="bg-slate-900 p-8 rounded-3xl text-center font-mono text-2xl text-blue-300 shadow-2xl border-4 border-slate-800">
-                 StringBuilder is Mutable
-              </div>
-              <div className="space-y-4 pt-4">
-                <p className="text-sm text-slate-600 leading-relaxed">Using a <code>StringBuilder</code> allows us to append characters to the <i>same</i> memory buffer, avoiding the O(N²) cost of repeatedly copying the result string.</p>
-              </div>
-           </div>
-         )}
-         {selectedTopic === 'optimal' && (
-           <div className="space-y-6 animate-in slide-in-from-right-4">
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">Single-Pass Pointers</h2>
-              <p className="text-slate-600 leading-relaxed text-lg">
-                The most elegant solution uses a single <code>while</code> loop that continues as long as <i>at least one</i> string still has characters.
-              </p>
-              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4 shadow-inner">
-                 <p className="text-sm text-slate-500 font-bold uppercase tracking-widest text-center mb-2">The Loop Pipeline</p>
-                 <div className="flex items-center gap-4">
-                    <div className="bg-white p-4 rounded-xl shadow-md border border-slate-100 flex-1 text-center">
-                       <span className="text-[10px] font-black uppercase text-slate-400 block mb-1">Check i</span>
-                       <span className="text-xs font-bold text-blue-600">Append word1[i]</span>
-                    </div>
-                    <ArrowRight className="text-slate-300" />
-                    <div className="bg-white p-4 rounded-xl shadow-md border border-slate-100 flex-1 text-center">
-                       <span className="text-[10px] font-black uppercase text-slate-400 block mb-1">Check j</span>
-                       <span className="text-xs font-bold text-purple-600">Append word2[j]</span>
-                    </div>
-                 </div>
-              </div>
-           </div>
-         )}
-      </div>
-    </div>
-  );
+const PointerLabel = ({ label, color, position }) => {
+    const colorClasses = {
+        emerald: 'bg-emerald-100 text-emerald-700 border-emerald-300',
+        sky: 'bg-sky-100 text-sky-700 border-sky-300',
+        fuchsia: 'bg-fuchsia-100 text-fuchsia-700 border-fuchsia-300',
+        amber: 'bg-amber-100 text-amber-700 border-amber-300',
+        rose: 'bg-rose-100 text-rose-700 border-rose-300',
+        slate: 'bg-slate-100 text-slate-600 border-slate-300',
+        indigo: 'bg-indigo-100 text-indigo-700 border-indigo-300'
+    };
+    const activeColorClass = colorClasses[color] || colorClasses['slate'];
+    const alignClass = position === 'top' ? 'flex-col-reverse -top-10' : 'flex-col -bottom-10';
+
+    return (
+        <div className={`absolute ${alignClass} flex items-center justify-center animate-in zoom-in duration-300 z-30 pointer-events-none`}>
+            <span className={`text-[10px] font-black font-mono px-2 py-0.5 rounded border shadow-sm ${activeColorClass} whitespace-nowrap`}>
+                {String(label)}
+            </span>
+            {position === 'top' ? <ArrowDown size={14} className={`text-${color}-500`} strokeWidth={3}/> : <ArrowUp size={14} className={`text-${color}-500`} strokeWidth={3}/>}
+        </div>
+    );
 };
 
-// Define InterviewHelper component
-const InterviewHelper = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in duration-500">
-        <div className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2 mb-4">
-                    <MessageSquare className="text-blue-500" size={20} />
-                    Common Interview Prep
-                </h3>
-                <div className="space-y-4 text-sm text-slate-600">
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <p className="font-black text-slate-800 mb-1">"Why is string concatenation inside a loop bad?"</p>
-                        <p className="leading-relaxed text-xs italic">"Because strings are immutable. Each concatenation creates a new string and copies all previous characters, turning an O(N) task into O(N²)."</p>
-                    </div>
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <p className="font-black text-slate-800 mb-1">"How do you handle inputs of significantly different lengths?"</p>
-                        <p className="leading-relaxed text-xs italic">"Using a single while loop with independent boundary checks for each pointer is the most robust way. It naturally handles the 'tail' of the longer string without extra conditional blocks."</p>
-                    </div>
+const NodeBlock = ({ val, idx, themeColor = 'slate', isTarget, isDimmed, subtext }) => {
+    const themes = {
+        emerald: { bg: 'bg-emerald-50', border: 'border-emerald-400', text: 'text-emerald-800', index: 'bg-emerald-100 text-emerald-600' },
+        sky: { bg: 'bg-sky-50', border: 'border-sky-400', text: 'text-sky-800', index: 'bg-sky-100 text-sky-600' },
+        fuchsia: { bg: 'bg-fuchsia-50', border: 'border-fuchsia-400', text: 'text-fuchsia-800', index: 'bg-fuchsia-100 text-fuchsia-600' },
+        amber: { bg: 'bg-amber-50', border: 'border-amber-400', text: 'text-amber-800', index: 'bg-amber-100 text-amber-600' },
+        rose: { bg: 'bg-rose-50', border: 'border-rose-400', text: 'text-rose-800', index: 'bg-rose-100 text-rose-600' },
+        slate: { bg: 'bg-white', border: 'border-slate-300', text: 'text-slate-700', index: 'bg-slate-100 text-slate-400' },
+        disabled: { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-300', index: 'bg-slate-50 text-slate-300' }
+    };
+    
+    let activeTheme = isDimmed ? themes['disabled'] : (themes[themeColor] || themes['slate']);
+    const targetClasses = isTarget ? `ring-4 ring-[${activeTheme.border.replace('border-','').replace('-400','-300')}] shadow-xl z-20 scale-110` : `shadow-sm z-10`;
+    
+    const displayVal = val === null || val === "" ? '\u00A0' : String(val);
+
+    return (
+        <div className={`relative flex flex-col items-center group transition-all duration-500`}>
+            <div className={`flex flex-col items-center min-w-[36px] md:min-w-[42px] min-h-[48px] md:min-h-[56px] border-2 transition-all duration-300 ${activeTheme.bg} ${activeTheme.border} ${targetClasses} rounded-xl relative shadow-sm overflow-hidden`}>
+                <div className={`flex-1 flex justify-center items-center w-full font-mono font-black text-xl py-1 bg-white/60 ${activeTheme.text} ${isDimmed ? 'opacity-50' : 'opacity-100'} whitespace-nowrap tracking-tighter`}>
+                    {displayVal}
                 </div>
+                {(idx !== undefined || subtext !== undefined) && (
+                    <div className={`flex w-full h-4 md:h-5 border-t border-black/10 ${activeTheme.index}`}>
+                        <div className="flex-1 flex items-center justify-center">
+                             <span className="text-[8px] md:text-[9px] font-black tracking-widest uppercase">{subtext !== undefined ? subtext : `${idx}`}</span>
+                        </div>
+                    </div>
+                )}
             </div>
-            <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
-                <h3 className="text-lg font-black flex items-center gap-2 mb-4 relative z-10">
-                    <Target className="text-amber-400" size={20} />
-                    The Senior Engineer Pitch
-                </h3>
-                <p className="text-sm text-slate-300 leading-relaxed italic relative z-10">
-                    "My implementation uses a single-pass two-pointer strategy combined with a StringBuilder. By decoupling the iteration from the individual string lengths, the logic remains clean and performs in guaranteed linear O(N+M) time. I specifically chose StringBuilder to ensure constant-time appends, optimizing memory throughput and avoiding redundant object allocations."
+        </div>
+    );
+};
+
+// --- Main Application ---
+
+export default function MergeStringsVisualizer() {
+  const [activeTab, setActiveTab] = useState('visualizer');
+  const [selectedOpId, setSelectedOpId] = useState('twoPointers');
+  
+  const [word1Input, setWord1Input] = useState('abc');
+  const [word2Input, setWord2Input] = useState('pqrst');
+  
+  const [baseWord1, setBaseWord1] = useState('abc');
+  const [baseWord2, setBaseWord2] = useState('pqrst');
+  
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [copied, setCopied] = useState(false);
+
+  const canvasContainerRef = useRef(null);
+  const selectedOp = OPERATIONS[selectedOpId];
+
+  const handleReset = () => { setCurrentStep(0); setPan({ x: 0, y: 0 }); setZoom(1); };
+  const handleNext = () => { if (currentStep < trace.length - 1) setCurrentStep(prev => prev + 1); };
+  const handlePrev = () => { if (currentStep > 0) setCurrentStep(prev => prev - 1); };
+
+  const toggleFullscreen = () => setIsFullscreen(prev => !prev);
+  const zoomIn = () => setZoom(z => Math.min(z + 0.2, 3));
+  const zoomOut = () => setZoom(z => Math.max(z - 0.2, 0.4));
+
+  const handlePointerDown = (e) => {
+    if (e.target.closest('button') || e.target.closest('textarea') || e.target.closest('input')) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+  };
+
+  const handlePointerMove = (e) => { 
+    if (isDragging) setPan({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+  };
+
+  const handlePointerUp = () => setIsDragging(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(selectedOp.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Debounce input parsing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      let clean1 = word1Input.trim().replace(/[^a-zA-Z0-9]/g, '');
+      let clean2 = word2Input.trim().replace(/[^a-zA-Z0-9]/g, '');
+      
+      setBaseWord1(clean1.slice(0, 15)); // Limit for visualizer size
+      setBaseWord2(clean2.slice(0, 15));
+      setCurrentStep(0);
+      setPan({ x: 0, y: 0 });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [word1Input, word2Input, selectedOpId]);
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+        if (!canvasContainerRef.current?.contains(e.target)) return;
+        e.preventDefault();
+        setZoom(prev => Math.min(Math.max(prev - e.deltaY * 0.005, 0.3), 3));
+    };
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, []);
+
+  const trace = useMemo(() => {
+    const steps = [];
+    if (!baseWord1 && !baseWord2) return [{ phase: 'Init', description: 'Enter valid strings.', line: 1, state: {} }];
+
+    const len1 = baseWord1.length;
+    const len2 = baseWord2.length;
+    const w1Arr = baseWord1.split('');
+    const w2Arr = baseWord2.split('');
+
+    const add = (ph, ds, ln, st) => steps.push({ 
+        phase: ph, description: ds, line: ln, 
+        state: { w1Arr, w2Arr, len1, len2, ...st } 
+    });
+
+    if (selectedOpId === 'twoPointers') {
+        let result = [];
+        let i = 0, j = 0;
+        
+        add("Method Call", `public String mergeAlternately(String word1, String word2)`, 1, { result: [...result], i, j });
+        
+        add("Init StringBuilder", `StringBuilder result = new StringBuilder();\nAllocates an efficient mutable sequence of characters.`, 2, { result: [...result], i, j });
+        add("Init Pointers", `int i = 0, j = 0;\nPointer 'i' for word1, pointer 'j' for word2.`, 3, { result: [...result], i, j });
+
+        while (true) {
+            let evalCond = (i < len1 || j < len2);
+            add("While Condition", `while (i < word1.length() || j < word2.length())\nIs ${i} < ${len1} OR ${j} < ${len2}? (${evalCond ? 'Yes' : 'No'})`, 5, { result: [...result], i, j, isEvaluating: true });
+            
+            if (!evalCond) break;
+
+            // Check word1
+            let checkW1 = (i < len1);
+            add("Check word1 Length", `if (i < word1.length())\nIs ${i} < ${len1}? (${checkW1 ? 'Yes' : 'No'})`, 6, { result: [...result], i, j, checkW1: true });
+            
+            if (checkW1) {
+                let char1 = w1Arr[i];
+                result.push({char: char1, source: 'w1'});
+                add("Append from word1", `result.append(word1.charAt(${i})); // '${char1}'\nAppended '${char1}' to the result builder.`, 7, { result: [...result], i, j, hlW1: i });
+                
+                i++;
+                add("Increment i", `i++;\nPointer 'i' advances to ${i}.`, 8, { result: [...result], i, j });
+            }
+            
+            // Check word2
+            let checkW2 = (j < len2);
+            add("Check word2 Length", `if (j < word2.length())\nIs ${j} < ${len2}? (${checkW2 ? 'Yes' : 'No'})`, 10, { result: [...result], i, j, checkW2: true });
+            
+            if (checkW2) {
+                let char2 = w2Arr[j];
+                result.push({char: char2, source: 'w2'});
+                add("Append from word2", `result.append(word2.charAt(${j})); // '${char2}'\nAppended '${char2}' to the result builder.`, 11, { result: [...result], i, j, hlW2: j });
+                
+                j++;
+                add("Increment j", `j++;\nPointer 'j' advances to ${j}.`, 12, { result: [...result], i, j });
+            }
+        }
+        
+        let finalStr = result.map(x => x.char).join('');
+        add("Return String", `return result.toString();\nConvert the StringBuilder to an immutable String and return it.`, 16, { result: [...result], i, j, isSuccess: true, finalAns: finalStr });
+
+    } else if (selectedOpId === 'stringConcat') {
+        let result = [];
+        let i = 0;
+        
+        add("Method Call", `public String mergeAlternately(String word1, String word2)`, 1, { result: [...result], i });
+        add("Init String", `String result = "";\nInitialize an immutable string object.`, 2, { result: [...result], i });
+        add("Init Pointer", `int i = 0;\nWe only need one pointer 'i' since we iterate both simultaneously.`, 3, { result: [...result], i });
+
+        // First While Loop
+        while (true) {
+            let evalCond = (i < len1 && i < len2);
+            add("Loop 1 Condition", `while (i < word1.length() && i < word2.length())\nIs ${i} < ${len1} AND ${i} < ${len2}? (${evalCond ? 'Yes' : 'No'})`, 5, { result: [...result], i, isEvaluating1: true });
+            
+            if (!evalCond) break;
+            
+            let char1 = w1Arr[i];
+            result.push({char: char1, source: 'w1'});
+            add("Concat word1", `result += word1.charAt(${i}); // '${char1}'\nCreates a NEW string in memory to append '${char1}'.`, 6, { result: [...result], i, hlW1: i });
+            
+            let char2 = w2Arr[i];
+            result.push({char: char2, source: 'w2'});
+            add("Concat word2", `result += word2.charAt(${i}); // '${char2}'\nCreates a NEW string in memory to append '${char2}'.`, 7, { result: [...result], i, hlW2: i });
+            
+            i++;
+            add("Increment i", `i++;\nPointer 'i' advances to ${i}.`, 8, { result: [...result], i });
+        }
+
+        // Second While Loop (Remainder of word1)
+        while (true) {
+            let evalCond = (i < len1);
+            add("Loop 2 Condition", `while (i < word1.length())\nDoes word1 have remaining characters? Is ${i} < ${len1}? (${evalCond ? 'Yes' : 'No'})`, 11, { result: [...result], i, isEvaluating2: true });
+            
+            if (!evalCond) break;
+            
+            let char1 = w1Arr[i];
+            result.push({char: char1, source: 'w1'});
+            add("Concat Remainder word1", `result += word1.charAt(${i}); // '${char1}'`, 12, { result: [...result], i, hlW1: i });
+            
+            i++;
+            add("Increment i", `i++;`, 13, { result: [...result], i });
+        }
+
+        // Third While Loop (Remainder of word2)
+        while (true) {
+            let evalCond = (i < len2); // Note: visually we'll just track i vs len2
+            add("Loop 3 Condition", `while (i < word2.length())\nDoes word2 have remaining characters? Is ${i} < ${len2}? (${evalCond ? 'Yes' : 'No'})`, 16, { result: [...result], i, isEvaluating3: true });
+            
+            if (!evalCond) break;
+            
+            let char2 = w2Arr[i];
+            result.push({char: char2, source: 'w2'});
+            add("Concat Remainder word2", `result += word2.charAt(${i}); // '${char2}'`, 17, { result: [...result], i, hlW2: i });
+            
+            i++;
+            add("Increment i", `i++;`, 18, { result: [...result], i });
+        }
+
+        let finalStr = result.map(x => x.char).join('');
+        add("Return String", `return result;\nReturn the final concatenated string.`, 21, { result: [...result], i, isSuccess: true, finalAns: finalStr });
+    }
+
+    return steps;
+  }, [baseWord1, baseWord2, selectedOpId]);
+
+  // Handle Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight') {
+        setCurrentStep(prev => (prev < trace.length - 1 ? prev + 1 : prev));
+      } else if (e.key === 'ArrowLeft') {
+        setCurrentStep(prev => (prev > 0 ? prev - 1 : prev));
+      } else if (e.key === 'Escape') {
+        setIsFullscreen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [trace.length]);
+
+  const curStepData = trace[currentStep] || trace[0] || { phase: '', description: '', line: 0, state: {} };
+  const st = curStepData.state || {};
+  const isLastStep = currentStep === trace.length - 1;
+
+  const themeColor = selectedOpId === 'twoPointers' ? 'emerald' : 'sky';
+
+  // --- Rendering Helpers ---
+
+  const renderVisuals = () => {
+      if (st.w1Arr === undefined) return <span className="text-slate-400 italic">empty</span>;
+
+      return (
+          <div className="flex flex-col items-center w-full mt-4 gap-8">
+              
+              {/* Word 1 Array */}
+              <div className="flex flex-col items-start w-full max-w-4xl">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-sky-600 mb-2 bg-sky-50 px-3 py-1 rounded-lg border border-sky-200 shadow-sm flex items-center gap-2"><Type size={12}/> Word 1</span>
+                  <div className="flex gap-2 p-4 border-[3px] border-slate-200 bg-white/90 rounded-[2rem] shadow-xl backdrop-blur-sm flex-wrap justify-start items-center w-full min-h-[90px]">
+                      {st.w1Arr.length > 0 ? st.w1Arr.map((val, idx) => {
+                          let isHl = false;
+                          let isDimmed = false;
+                          let labels = [];
+                          let color = 'sky';
+
+                          if (selectedOpId === 'twoPointers') {
+                              if (idx === st.i) {
+                                  labels.push({ text: 'i', color: 'sky', pos: 'bottom' });
+                                  isHl = true;
+                              }
+                              if (st.hlW1 === idx) {
+                                  labels.push({ text: 'Append', color: 'emerald', pos: 'top' });
+                                  color = 'emerald';
+                                  isHl = true;
+                              }
+                              if (idx < (st.i || 0)) isDimmed = true;
+                          } else {
+                              // Naive
+                              if (idx === st.i) {
+                                  labels.push({ text: 'i', color: 'sky', pos: 'bottom' });
+                                  isHl = true;
+                              }
+                              if (st.hlW1 === idx) {
+                                  labels.push({ text: 'Concat', color: 'emerald', pos: 'top' });
+                                  color = 'emerald';
+                                  isHl = true;
+                              }
+                              if (idx < (st.i || 0)) isDimmed = true;
+                          }
+
+                          return (
+                              <div key={`w1-${idx}`} className={`relative transition-all duration-300 ${isHl ? 'scale-110 z-20 mx-2' : 'scale-100 z-10 m-0.5'}`}>
+                                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col-reverse gap-1 items-center">
+                                    {labels.filter(l => l.pos === 'top').map((l, j) => (
+                                        <React.Fragment key={j}><PointerLabel label={l.text} color={l.color} position="top" /></React.Fragment>
+                                    ))}
+                                  </div>
+                                  <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex flex-col gap-1 items-center">
+                                    {labels.filter(l => l.pos === 'bottom').map((l, j) => (
+                                        <React.Fragment key={j}><PointerLabel label={l.text} color={l.color} position="bottom" /></React.Fragment>
+                                    ))}
+                                  </div>
+                                  <NodeBlock val={val} idx={idx} themeColor={color} isTarget={isHl} isDimmed={isDimmed} subtext={undefined} />
+                              </div>
+                          )
+                      }) : <span className="text-slate-400 italic text-sm font-mono px-4">empty string</span>}
+                  </div>
+              </div>
+
+              {/* Word 2 Array */}
+              <div className="flex flex-col items-start w-full max-w-4xl">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-fuchsia-600 mb-2 bg-fuchsia-50 px-3 py-1 rounded-lg border border-fuchsia-200 shadow-sm flex items-center gap-2"><Type size={12}/> Word 2</span>
+                  <div className="flex gap-2 p-4 border-[3px] border-slate-200 bg-white/90 rounded-[2rem] shadow-xl backdrop-blur-sm flex-wrap justify-start items-center w-full min-h-[90px]">
+                      {st.w2Arr.length > 0 ? st.w2Arr.map((val, idx) => {
+                          let isHl = false;
+                          let isDimmed = false;
+                          let labels = [];
+                          let color = 'fuchsia';
+
+                          if (selectedOpId === 'twoPointers') {
+                              if (idx === st.j) {
+                                  labels.push({ text: 'j', color: 'fuchsia', pos: 'bottom' });
+                                  isHl = true;
+                              }
+                              if (st.hlW2 === idx) {
+                                  labels.push({ text: 'Append', color: 'emerald', pos: 'top' });
+                                  color = 'emerald';
+                                  isHl = true;
+                              }
+                              if (idx < (st.j || 0)) isDimmed = true;
+                          } else {
+                              // Naive
+                              if (idx === st.i) {
+                                  labels.push({ text: 'i', color: 'fuchsia', pos: 'bottom' });
+                                  isHl = true;
+                              }
+                              if (st.hlW2 === idx) {
+                                  labels.push({ text: 'Concat', color: 'emerald', pos: 'top' });
+                                  color = 'emerald';
+                                  isHl = true;
+                              }
+                              // We only dim if i has safely passed it in naive context
+                              // but naive has 3 loops. Safest is just dim if idx < i
+                              if (idx < (st.i || 0)) isDimmed = true;
+                          }
+
+                          return (
+                              <div key={`w2-${idx}`} className={`relative transition-all duration-300 ${isHl ? 'scale-110 z-20 mx-2' : 'scale-100 z-10 m-0.5'}`}>
+                                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col-reverse gap-1 items-center">
+                                    {labels.filter(l => l.pos === 'top').map((l, j) => (
+                                        <React.Fragment key={j}><PointerLabel label={l.text} color={l.color} position="top" /></React.Fragment>
+                                    ))}
+                                  </div>
+                                  <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex flex-col gap-1 items-center">
+                                    {labels.filter(l => l.pos === 'bottom').map((l, j) => (
+                                        <React.Fragment key={j}><PointerLabel label={l.text} color={l.color} position="bottom" /></React.Fragment>
+                                    ))}
+                                  </div>
+                                  <NodeBlock val={val} idx={idx} themeColor={color} isTarget={isHl} isDimmed={isDimmed} subtext={undefined}/>
+                              </div>
+                          )
+                      }) : <span className="text-slate-400 italic text-sm font-mono px-4">empty string</span>}
+                  </div>
+              </div>
+
+              {/* Result Array / StringBuilder */}
+              <div className="flex flex-col items-start w-full max-w-4xl">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-2 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200 shadow-sm flex items-center gap-2"><Target size={12}/> Result {selectedOpId === 'twoPointers' ? 'StringBuilder' : 'String'}</span>
+                  <div className="flex gap-2 p-4 border-[3px] border-emerald-200 bg-white/90 rounded-[2rem] shadow-xl backdrop-blur-sm flex-wrap justify-start items-center w-full min-h-[90px]">
+                      {st.result && st.result.length > 0 ? st.result.map((item, idx) => {
+                          let color = item.source === 'w1' ? 'sky' : 'fuchsia';
+                          let isNew = idx === st.result.length - 1 && !st.isEvaluating && !st.isEvaluating1 && !st.isEvaluating2 && !st.isEvaluating3 && !st.checkW1 && !st.checkW2;
+                          
+                          return (
+                              <div key={`res-${idx}`} className={`relative transition-all duration-500 ${isNew ? 'scale-110 z-20 animate-in zoom-in slide-in-from-top-4' : 'scale-100 z-10 m-0.5'}`}>
+                                  <NodeBlock val={item.char} idx={idx} themeColor={color} isTarget={isNew} isDimmed={undefined} subtext={undefined} />
+                              </div>
+                          )
+                      }) : <span className="text-slate-400 italic text-sm font-mono px-4">Result is empty</span>}
+                  </div>
+              </div>
+
+          </div>
+      );
+  };
+
+  return (
+    <div className={`bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-screen ${isFullscreen ? 'overflow-hidden' : ''}`}>
+      <div className={`max-w-7xl w-full space-y-6 ${isFullscreen ? 'hidden' : ''}`}>
+        
+        {/* Header */}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row justify-between items-center gap-4 relative overflow-hidden">
+          <div className="flex items-center gap-5 z-10">
+            <div className={`p-4 rounded-2xl shadow-lg flex items-center justify-center ${themeColor === 'emerald' ? 'bg-emerald-600' : 'bg-sky-600'}`}>
+                <Focus className="text-white" size={28} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">Merge Strings Alternately</h1>
+              <div className="flex items-center gap-2 text-slate-400 text-[10px] mt-2 font-mono uppercase tracking-widest">
+                  <span className={`font-bold px-2 py-0.5 rounded ${themeColor === 'emerald' ? 'text-emerald-600 bg-emerald-50' : 'text-sky-600 bg-sky-50'}`}>
+                      LC 1768 • Two Pointers
+                  </span>
+                  <span>•</span>
+                  <span>O(N+M) Time Constraint</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner z-10 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon={<FileText size={16}/>} label="Problem" />
+            <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<MonitorPlay size={16}/>} label="Visualizer" />
+            <TabButton active={activeTab === 'theory'} onClick={() => setActiveTab('theory')} icon={<Lightbulb size={16}/>} label="Theory" />
+            <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
+          </div>
+        </div>
+
+        {activeTab === 'overview' && (
+            <div className="bg-white rounded-2xl p-10 border border-slate-200 shadow-sm animate-in fade-in duration-500 min-h-[600px] text-slate-700 space-y-8 flex flex-col">
+                <div className={`flex items-center gap-3 font-black text-2xl uppercase tracking-tighter ${themeColor === 'emerald' ? 'text-emerald-600' : 'text-sky-600'}`}><AlignLeft size={28}/> Problem Statement</div>
+                
+                <p className="text-base leading-relaxed">
+                  You are given two strings <code>word1</code> and <code>word2</code>. Merge the strings by adding letters in alternating order, starting with <code>word1</code>.<br/><br/>
+                  If a string is longer than the other, append the additional letters onto the end of the merged string.<br/><br/>
+                  Return the merged string.
                 </p>
-            </div>
-        </div>
-        <div className="space-y-6 text-slate-800">
-            <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-xl shadow-blue-100 flex flex-col justify-center">
-                <h3 className="text-lg font-black flex items-center gap-2 mb-4">
-                    <Check size={20} />
-                    Complexity Overview
-                </h3>
-                <div className="grid grid-cols-2 gap-4 text-[10px] font-mono">
-                    <div className="bg-blue-700/50 p-4 rounded-xl border border-blue-400/30">
-                        <div className="font-black opacity-60 uppercase mb-1">Time</div>
-                        O(N + M)
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-slate-900 border-l-4 border-emerald-500 p-5 rounded-r-xl font-mono text-xs shadow-md text-slate-300 space-y-2 flex flex-col">
+                        <span className="text-emerald-400 font-black uppercase tracking-widest text-[10px]">Example 1</span>
+                        <div><span className="text-white font-bold">Input:</span> word1 = "abc", word2 = "pqr"</div>
+                        <div><span className="text-emerald-400 font-bold">Output:</span> "apbqcr"</div>
+                        <div className="text-slate-500 mt-2 flex-1 whitespace-pre-wrap">
+Explanation: The merged string will be merged as so:
+word1:  a   b   c
+word2:    p   q   r
+merged: a p b q c r
+                        </div>
                     </div>
-                    <div className="bg-blue-700/50 p-4 rounded-xl border border-blue-400/30">
-                        <div className="font-black opacity-60 uppercase mb-1">Space</div>
-                        O(N + M)
+                    <div className="bg-slate-900 border-l-4 border-amber-500 p-5 rounded-r-xl font-mono text-xs shadow-md text-slate-300 space-y-2 flex flex-col">
+                        <span className="text-amber-400 font-black uppercase tracking-widest text-[10px]">Example 2</span>
+                        <div><span className="text-white font-bold">Input:</span> word1 = "ab", word2 = "pqrs"</div>
+                        <div><span className="text-emerald-400 font-bold">Output:</span> "apbqrs"</div>
+                        <div className="text-slate-500 mt-2 flex-1 whitespace-pre-wrap">
+Explanation: Notice that as word2 is longer, "rs" is appended to the end.
+word1:  a   b 
+word2:    p   q   r   s
+merged: a p b q   r   s
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-inner">
+                    <h4 className="font-black uppercase text-xs tracking-widest text-slate-500 mb-3">Constraints & Traps</h4>
+                    <ul className="list-disc list-inside text-xs font-mono text-slate-600 space-y-2">
+                        <li>1 &lt;= word1.length, word2.length &lt;= 100</li>
+                        <li><code>word1</code> and <code>word2</code> consist of lowercase English letters.</li>
+                        <li className={`font-bold mt-2 ${themeColor === 'emerald' ? 'text-emerald-600' : 'text-sky-600'}`}>
+                            Trap: In Java, standard String concatenation (`+=`) creates a brand new String object every time in memory. Since we are doing this in a loop, it results in O((N+M)²) time complexity! Using a `StringBuilder` ensures O(N+M) optimal time.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        )}
+
+        {activeTab === 'visualizer' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500">
+            <div className="lg:col-span-5 flex flex-col gap-4">
+                <div className="grid grid-cols-1 gap-3">
+                    {Object.values(OPERATIONS).map((op) => (
+                        <button key={op.id} onClick={() => { setSelectedOpId(op.id); setCurrentStep(0); }} className={`px-4 py-3 rounded-2xl border text-left flex flex-col gap-1 transition-all shadow-sm ${selectedOpId === op.id ? (themeColor === 'emerald' ? 'bg-emerald-600 text-white border-emerald-600 scale-[1.02]' : 'bg-sky-600 text-white border-sky-600 scale-[1.02]') : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
+                            <div className="flex items-center gap-2">{op.icon}<span className="text-[10px] font-black uppercase tracking-tight truncate">{op.title}</span></div>
+                            <div className={`text-[9px] font-mono ${selectedOpId === op.id ? (themeColor === 'emerald' ? 'text-emerald-200' : 'text-sky-200') : 'text-slate-400'}`}>{op.complexity}</div>
+                        </button>
+                    ))}
+                </div>
+                <div className="bg-[#0f172a] rounded-3xl overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
+                  <div className="bg-[#1e293b] px-5 py-3 border-b border-slate-700 text-xs text-slate-400 font-mono flex justify-between items-center">
+                    <span className="font-bold uppercase text-[10px] text-white flex items-center gap-2"><Code2 size={12}/> Solution.java</span>
+                    <button onClick={handleCopy} className="hover:text-white transition-colors">{copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}</button>
+                  </div>
+                  <div className="p-4 font-mono text-[11px] leading-relaxed overflow-hidden relative">
+                    {selectedOp.code.split('\n').map((line, idx) => (
+                      <React.Fragment key={idx}>
+                          <CodeLineRenderer num={idx + 1} code={line} active={curStepData.line === idx + 1} theme={themeColor} />
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+            </div>
+
+            <div className="lg:col-span-7 flex flex-col gap-4">
+                <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-4">
+                    <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-end">
+                        <div className="flex-1 w-full space-y-1.5 group">
+                            <label className={`text-[10px] font-black uppercase tracking-widest font-mono pl-1 flex justify-between ${themeColor === 'emerald' ? 'text-emerald-600' : 'text-sky-600'}`}>
+                                <span>'word1'</span>
+                            </label>
+                            <input 
+                                type="text"
+                                value={word1Input} 
+                                onChange={(e) => setWord1Input(e.target.value)} 
+                                className={`w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm focus:ring-2 outline-none transition-all shadow-inner ${themeColor === 'emerald' ? 'focus:ring-emerald-500' : 'focus:ring-sky-500'}`} 
+                                spellCheck={false}
+                                placeholder="abc"
+                            />
+                        </div>
+                        <div className="flex-1 w-full space-y-1.5 group">
+                            <label className={`text-[10px] font-black uppercase tracking-widest font-mono pl-1 flex justify-between ${themeColor === 'emerald' ? 'text-emerald-600' : 'text-sky-600'}`}>
+                                <span>'word2'</span>
+                            </label>
+                            <input 
+                                type="text"
+                                value={word2Input} 
+                                onChange={(e) => setWord2Input(e.target.value)} 
+                                className={`w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm focus:ring-2 outline-none transition-all shadow-inner ${themeColor === 'emerald' ? 'focus:ring-emerald-500' : 'focus:ring-sky-500'}`} 
+                                spellCheck={false}
+                                placeholder="pqrst"
+                            />
+                        </div>
+                        <div className="flex gap-2 shrink-0 justify-end items-center mt-2 xl:mt-0">
+                            <button onClick={handleReset} className="p-3 bg-slate-100 rounded-xl text-slate-500 hover:bg-slate-200 shadow-sm transition-colors"><RotateCcw size={18}/></button>
+                            <button onClick={handlePrev} disabled={currentStep === 0} className="p-3 bg-slate-100 rounded-xl text-slate-700 disabled:opacity-30 shadow-sm transition-colors"><ChevronLeft size={18}/></button>
+                            <button onClick={handleNext} disabled={isLastStep || st.isSuccess} className={`px-6 py-3 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 group disabled:opacity-30 ${themeColor === 'emerald' ? 'bg-emerald-600 shadow-emerald-200 hover:bg-emerald-700' : 'bg-sky-600 shadow-sky-200 hover:bg-sky-700'}`}>STEP <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform"/></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`rounded-3xl p-6 shadow-xl border transition-all duration-300 min-h-[130px] relative overflow-hidden flex-1 ${st.isSuccess ? 'bg-emerald-900 border-emerald-800' : 'bg-slate-900 border-slate-800'}`}>
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none transition-transform group-hover:scale-110 duration-500"><Activity size={80} className="text-white"/></div>
+                    <div className="flex items-center justify-between mb-2 relative z-10 text-white opacity-40 uppercase font-black text-[10px] font-mono tracking-widest">
+                        <div className="flex items-center gap-2"><Activity size={14}/> <span>Execution Trace</span></div>
+                        <div className="flex items-center gap-2">
+                           <span className="bg-slate-700/50 text-slate-300 px-2 py-0.5 rounded text-[8px] font-black uppercase font-mono tracking-widest">Line {String(curStepData.line || 0)}</span>
+                        </div>
+                    </div>
+                    {st.isSuccess ? (
+                         <div className="animate-in zoom-in slide-in-from-left-4 duration-500">
+                            <div className={`text-xl font-black tracking-tight uppercase font-mono flex items-center gap-3 text-emerald-400`}>
+                                <PartyPopper size={20}/> Evaluation Complete
+                            </div>
+                            <p className="text-sm leading-relaxed text-white mt-1 font-mono font-bold tracking-tight">{String(curStepData.description)}</p>
+                         </div>
+                    ) : (
+                        <>
+                            <div className="text-lg font-black tracking-tight mb-1 uppercase font-mono text-white leading-none truncate">{String(curStepData.phase || "")}</div>
+                            <p className="text-sm leading-relaxed text-slate-300 border-t border-slate-800/50 pt-2 italic font-mono relative z-10 whitespace-pre-wrap">{String(curStepData.description || "")}</p>
+                        </>
+                    )}
+                </div>
+
+                <div className="bg-white rounded-[2rem] border border-slate-200 p-6 min-h-[440px] relative flex flex-col shadow-inner overflow-hidden">
+                   <div className="absolute top-4 left-4 z-30 pointer-events-none"><span className={`text-[10px] font-black uppercase tracking-widest font-mono flex items-center gap-2 bg-white/90 px-3 py-2 rounded-lg shadow-sm border border-slate-200 backdrop-blur ${themeColor === 'emerald' ? 'text-emerald-500' : 'text-sky-500'}`}><Layout size={14}/> State Tracker</span></div>
+                   <div className="absolute top-4 right-4 z-30 flex flex-col gap-2 pointer-events-auto">
+                        <div className="flex flex-col bg-white/90 p-1.5 rounded-xl shadow-lg border border-slate-200 backdrop-blur gap-1">
+                            <button onClick={zoomIn} className={`p-1.5 text-slate-600 rounded-lg transition-colors ${themeColor === 'emerald' ? 'hover:text-emerald-600' : 'hover:text-sky-600'}`}><ZoomIn size={16}/></button>
+                            <button onClick={zoomOut} className={`p-1.5 text-slate-600 rounded-lg transition-colors ${themeColor === 'emerald' ? 'hover:text-emerald-600' : 'hover:text-sky-600'}`}><ZoomOut size={16}/></button>
+                            <button onClick={toggleFullscreen} className={`p-1.5 text-slate-600 rounded-lg transition-colors ${themeColor === 'emerald' ? 'hover:text-emerald-600' : 'hover:text-sky-600'}`}><Maximize2 size={16}/></button>
+                        </div>
+                   </div>
+
+                   <div ref={canvasContainerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing z-10 bg-[linear-gradient(to_right,#cbd5e115_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e115_1px,transparent_1px)] bg-[size:25px_25px]" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp}>
+                       <div className="absolute top-0 left-0 w-full h-full origin-top-left transition-transform duration-300 flex flex-col p-8 pt-20 pb-16 gap-4 items-center overflow-x-auto overflow-y-hidden scrollbar-none" style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})` }}>
+                           {renderVisuals()}
+                       </div>
+                   </div>
+                </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'theory' && (
+            <div className="bg-white rounded-2xl p-10 border border-slate-200 shadow-sm animate-in fade-in duration-500 min-h-[600px] text-slate-700 space-y-10">
+                <div className="grid md:grid-cols-2 gap-8">
+                    <div className="p-8 rounded-3xl bg-[#0f172a] text-white border border-slate-800 relative overflow-hidden shadow-xl">
+                        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none"><Target size={120}/></div>
+                        <h3 className="font-black text-emerald-400 text-lg uppercase tracking-widest mb-6">The Single While Loop Elegance</h3>
+                        <div className="space-y-4 text-sm text-slate-300 leading-relaxed font-medium z-10 relative">
+                            <p>A beginner's approach is often to loop until the SHORTEST string runs out, and then write two separate `while` loops to append the remainders of `word1` or `word2`.</p>
+                            <p>While logically correct, it clutters the code.</p>
+                            <p>By using a single `while (i &lt; len1 || j &lt; len2)` loop, and nesting `if (i &lt; len1)` and `if (j &lt; len2)` inside, we elegantly handle the alternating logic AND the remainder-appending logic in one clean block of code.</p>
+                        </div>
+                    </div>
+                    
+                    <div className="p-8 rounded-3xl bg-sky-50 border border-sky-100 relative overflow-hidden shadow-inner">
+                        <h3 className="font-black text-sky-700 text-lg uppercase tracking-widest mb-6">String Immutability in Java</h3>
+                        <div className="space-y-4 text-sm text-sky-900/80 leading-relaxed font-medium">
+                            <p>In languages like Java and Python, <code>String</code> objects are immutable. This means they cannot be changed once created.</p>
+                            <p>If you write <code>result += "a"</code>, the computer must allocate a brand new block of memory, copy the old string over, and add "a".</p>
+                            <p>If you do this in a loop <code>N</code> times, the 1st step copies 1 char, the 2nd copies 2, the 100th copies 100... resulting in <code>1 + 2 + ... + N = O(N&sup2;)</code> time complexity!</p>
+                            <p>Using a <code>StringBuilder</code> bypasses this by allocating an internal, mutable char array that resizes efficiently, dropping the complexity down to O(N).</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        )}
+
+        {activeTab === 'interview' && (
+            <div className="bg-white rounded-3xl p-12 border border-slate-200 shadow-sm animate-in fade-in duration-500 min-h-[600px] text-slate-700 space-y-12">
+                 <div className="bg-emerald-600 text-white rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden group border border-emerald-700">
+                    <div className="absolute top-0 right-0 p-10 opacity-20 group-hover:scale-110 transition-transform duration-700 pointer-events-none"><Trophy size={160} /></div>
+                    <h3 className="text-2xl font-black mb-4 uppercase tracking-widest text-white tracking-tight leading-tight">Mastering String Traps</h3>
+                    <p className="text-sm text-emerald-50 leading-relaxed italic max-w-2xl font-mono">"This is considered an 'Easy' LeetCode question, but it's a common trap designed to catch junior developers who don't understand how memory allocation works in their language. If you use standard String concatenation (+), you will fail the performance aspect of the interview."</p>
+                </div>
+                
+                <div className="space-y-6">
+                    <h5 className="font-black uppercase tracking-widest text-[11px] text-slate-400 border-b border-slate-200 pb-3 flex items-center gap-2">
+                        <Activity size={14} className="text-emerald-500"/> The Perfect Interview Script
+                    </h5>
+                    <div className="grid md:grid-cols-2 gap-6">
+                        
+                        <div className="bg-emerald-50/50 border border-emerald-200 rounded-2xl p-6 shadow-sm flex flex-col gap-3">
+                            <div className="flex items-center gap-3 font-bold text-emerald-800 text-sm uppercase tracking-widest">
+                               <div className="bg-emerald-200 p-2 rounded-lg text-emerald-700"><SearchCode size={16}/></div>
+                               1. Acknowledge The Naive Loop
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed font-mono italic bg-white p-4 rounded-xl border border-emerald-100 shadow-inner flex-1">
+                                "The naive logic is to use a `while` loop that runs until one string is exhausted, appending a character from both strings in each iteration, and then following it up with two more `while` loops to append whichever string has remaining characters."
+                            </p>
+                        </div>
+
+                        <div className="bg-emerald-50/50 border border-emerald-200 rounded-2xl p-6 shadow-sm flex flex-col gap-3">
+                            <div className="flex items-center gap-3 font-bold text-emerald-800 text-sm uppercase tracking-widest">
+                               <div className="bg-emerald-200 p-2 rounded-lg text-emerald-700"><ArrowRightLeft size={16}/></div>
+                               2. Point Out the Memory Trap
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed font-mono italic bg-white p-4 rounded-xl border border-emerald-100 shadow-inner flex-1">
+                                "However, if I just use a standard `String` and the `+=` operator to build the answer, I will incur an O((N+M)²) time complexity because Strings are immutable in Java. Every append creates a brand new copy of the string in memory."
+                            </p>
+                        </div>
+
+                        <div className="bg-emerald-50/50 border border-emerald-200 rounded-2xl p-6 shadow-sm flex flex-col gap-3 md:col-span-2">
+                            <div className="flex items-center gap-3 font-bold text-emerald-800 text-sm uppercase tracking-widest">
+                               <div className="bg-emerald-200 p-2 rounded-lg text-emerald-700"><Layout size={16}/></div>
+                               3. Propose the Optimal Clean Approach
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed font-mono italic bg-white p-4 rounded-xl border border-emerald-100 shadow-inner flex-1">
+                                "To fix the memory issue, I will use a `StringBuilder` which has an internal mutable array, granting an O(1) append time and keeping the total time complexity at an optimal O(N+M). To clean up the code logic, instead of 3 while loops, I will use a single loop with condition `i &lt; len1 || j &lt; len2`. Inside, independent `if` statements will check if `i` and `j` are still valid bounds, appending safely. This is much cleaner and highly efficient."
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        )}
+      </div>
+
+      {/* --- Theater Mode Portal --- */}
+      {isFullscreen && (
+          <div className="fixed inset-0 z-[100] bg-[#020617] flex flex-row overflow-hidden animate-in fade-in zoom-in duration-300">
+              <div className="w-[650px] 2xl:w-[800px] bg-[#0f172a] border-r border-slate-800 flex flex-col shadow-2xl relative z-[110] shrink-0">
+                  <div className="bg-[#1e293b] p-6 flex justify-between items-center border-b border-slate-800 shadow-md">
+                      <div className="flex items-center gap-4">
+                          <div className={`p-2 rounded-lg text-white shadow-lg ${themeColor === 'emerald' ? 'bg-emerald-500 shadow-emerald-900/50' : 'bg-sky-500 shadow-sky-900/50'}`}><Code2 size={20}/></div>
+                          <span className="text-white font-black text-sm uppercase tracking-[0.2em]">Logic Analysis</span>
+                      </div>
+                      <button onClick={toggleFullscreen} className="p-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all shadow-md"><Minimize size={20}/></button>
+                  </div>
+                  <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-4 whitespace-pre-wrap flex flex-col">
+                    <div className="bg-black/20 rounded-2xl border border-white/5 p-4 mb-4 overflow-hidden shrink-0">
+                        <div className="w-full">
+                            {selectedOp.code.split('\n').map((line, idx) => (
+                                <React.Fragment key={idx}>
+                                    <CodeLineRenderer num={idx + 1} code={line} active={curStepData.line === idx + 1} theme={themeColor} />
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={`p-6 rounded-3xl border transition-all duration-300 min-h-[140px] relative overflow-hidden flex-1 ${st.isSuccess ? 'bg-emerald-900/40 border-emerald-800' : 'bg-slate-800/40 border-slate-700'}`}>
+                        <div className="flex items-center justify-between mb-4 relative z-10 text-white opacity-40 uppercase font-black text-[10px] font-mono tracking-widest">
+                            <div className="flex items-center gap-2"><Activity size={14}/> <span>Trace Operations</span></div>
+                            <div className="flex gap-2 items-center">
+                                <span className="bg-slate-700/50 text-slate-300 px-2 py-0.5 rounded text-[8px] font-black uppercase font-mono tracking-widest">Line {String(curStepData.line || 0)}</span>
+                            </div>
+                        </div>
+                        <div className="text-xl font-black tracking-tight mb-2 uppercase font-mono text-white leading-tight">{String(curStepData.phase || "")}</div>
+                        <p className="text-sm leading-relaxed text-slate-300 border-t border-slate-700/50 pt-3 italic font-mono relative z-10 whitespace-pre-wrap">{String(curStepData.description || "")}</p>
+                    </div>
+                  </div>
+              </div>
+              <div className="flex-1 relative bg-white overflow-hidden bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:50px_50px]">
+                  
+                  {/* Floating Controls for Fullscreen */}
+                  <div className="absolute top-8 left-8 z-50 flex flex-col xl:flex-row gap-4 pointer-events-auto">
+                      <div className="flex bg-white/90 p-1.5 rounded-2xl shadow-2xl border border-slate-200 backdrop-blur-md">
+                          {Object.values(OPERATIONS).map((op) => (
+                              <button key={op.id} onClick={() => { setSelectedOpId(op.id); setCurrentStep(0); }} className={`px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition-all ${selectedOpId === op.id ? (themeColor === 'emerald' ? 'bg-emerald-600 text-white shadow-md' : 'bg-sky-600 text-white shadow-md') : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'}`}>
+                                  {op.icon} <span>{op.title}</span>
+                              </button>
+                          ))}
+                      </div>
+
+                      <div className="flex gap-4 items-end bg-white/90 p-2.5 rounded-2xl shadow-2xl border border-slate-200 backdrop-blur-md">
+                          <div className="w-40 space-y-1">
+                              <label className={`text-[9px] font-black uppercase tracking-widest font-mono pl-1 ${themeColor === 'emerald' ? 'text-emerald-600' : 'text-sky-600'}`}>'word1'</label>
+                              <input type="text" value={word1Input} onChange={(e) => setWord1Input(e.target.value)} className={`w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 font-mono text-xs focus:ring-2 outline-none transition-all shadow-inner ${themeColor === 'emerald' ? 'focus:ring-emerald-500' : 'focus:ring-sky-500'}`} />
+                          </div>
+                          <div className="w-40 space-y-1">
+                              <label className={`text-[9px] font-black uppercase tracking-widest font-mono pl-1 ${themeColor === 'emerald' ? 'text-emerald-600' : 'text-sky-600'}`}>'word2'</label>
+                              <input type="text" value={word2Input} onChange={(e) => setWord2Input(e.target.value)} className={`w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 font-mono text-xs focus:ring-2 outline-none transition-all shadow-inner ${themeColor === 'emerald' ? 'focus:ring-emerald-500' : 'focus:ring-sky-500'}`} />
+                          </div>
+                      </div>
+                  </div>
+
+                  <div className="absolute top-8 right-8 z-50 flex flex-col gap-3 pointer-events-auto">
+                        <div className="flex flex-col bg-white/90 p-2 rounded-2xl shadow-2xl border border-slate-200 backdrop-blur-md gap-2">
+                            <button onClick={zoomIn} title="Zoom In" className={`p-3 text-slate-600 rounded-xl transition-all ${themeColor === 'emerald' ? 'hover:bg-emerald-50 hover:text-emerald-600' : 'hover:bg-sky-50 hover:text-sky-600'}`}><ZoomIn size={24}/></button>
+                            <button onClick={zoomOut} title="Zoom Out" className={`p-3 text-slate-600 rounded-xl transition-all ${themeColor === 'emerald' ? 'hover:bg-emerald-50 hover:text-emerald-600' : 'hover:bg-sky-50 hover:text-sky-600'}`}><ZoomOut size={24}/></button>
+                            <button onClick={handleReset} title="Reset View" className={`p-3 text-slate-600 rounded-xl transition-all ${themeColor === 'emerald' ? 'hover:bg-emerald-50 hover:text-emerald-600' : 'hover:bg-sky-50 hover:text-sky-600'}`}><RotateCcw size={24}/></button>
+                        </div>
+                  </div>
+                  
+                  {!st.isSuccess && (
+                      <div className="absolute bottom-10 right-10 z-[110] flex flex-col items-end gap-3 animate-in slide-in-from-bottom-10">
+                          <div className="flex items-center gap-2 text-slate-400 bg-slate-900/60 px-4 py-2 rounded-full backdrop-blur-md border border-slate-700/50 shadow-lg mr-2">
+                              <span className="text-[10px] font-mono uppercase tracking-widest font-bold">Shortcuts: &larr; Prev | &rarr; Next | ESC Close</span>
+                          </div>
+                          <div className="flex gap-6">
+                              <button onClick={handlePrev} disabled={currentStep === 0} className="px-10 py-6 bg-slate-800 text-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:bg-slate-700 disabled:opacity-30 active:scale-95 transition-all font-black text-xl uppercase tracking-widest flex items-center gap-4 border border-slate-700"><ChevronLeft size={32}/> PREV</button>
+                              <button onClick={handleNext} disabled={isLastStep || st.isSuccess} className={`px-12 py-6 text-white rounded-[2rem] hover:scale-105 active:scale-95 transition-all font-black text-xl uppercase tracking-widest flex items-center gap-4 border shadow-2xl ${themeColor === 'emerald' ? 'bg-emerald-600 hover:bg-emerald-700 border-emerald-400 shadow-emerald-900/30' : 'bg-sky-600 hover:bg-sky-700 border-sky-400 shadow-sky-900/30'}`}>NEXT <ChevronRight size={32}/></button>
+                          </div>
+                      </div>
+                  )}
+
+                  {/* Drag Canvas */}
+                  <div ref={canvasContainerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp}>
+                      <div className="absolute top-0 left-0 min-w-full w-max min-h-full origin-top-left transition-transform duration-500 flex flex-col p-16 md:p-32 pt-40 gap-16 items-center overflow-visible" style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom * 1.3})` }}>
+                           {renderVisuals()}
+                      </div>
+                  </div>
+                  
+                  {st.isSuccess && (
+                        <div className="absolute inset-0 z-[120] flex items-center justify-center p-8 backdrop-blur-md pointer-events-none">
+                            <div className={`bg-[#0f172a] border-4 rounded-[4rem] p-16 shadow-[0_0_150px_rgba(0,0,0,0.5)] animate-in zoom-in duration-500 pointer-events-auto max-w-2xl w-full text-center relative overflow-hidden border-emerald-500 shadow-emerald-500/30`}>
+                                <div className={`absolute top-0 left-0 w-full h-2 bg-emerald-500`}></div>
+                                <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-10 animate-bounce shadow-lg ring-4 bg-emerald-500/20 text-emerald-500 ring-emerald-500/10`}>
+                                    <PartyPopper size={48} />
+                                </div>
+                                <h2 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-4 tracking-widest leading-tight text-center">
+                                    COMPLETED
+                                </h2>
+                                <p className={`font-mono text-xl uppercase mb-8 tracking-widest text-emerald-400 max-w-lg break-words`}>
+                                    Merged String: <span className="font-black text-3xl text-white ml-2 block mt-2">"{st.finalAns}"</span>
+                                </p>
+                                <div className="flex gap-4">
+                                    <button onClick={handleReset} className={`flex-1 py-6 text-white font-black uppercase tracking-widest rounded-3xl transition-all shadow-xl flex items-center justify-center gap-4 text-lg bg-emerald-600 hover:bg-emerald-700 shadow-emerald-900/20`}>
+                                        <RotateCcw size={24}/> RESTART VIZ
+                                    </button>
+                                    <button onClick={toggleFullscreen} className="py-6 px-10 bg-slate-800 hover:bg-slate-700 text-white font-black uppercase tracking-widest rounded-3xl transition-all border border-slate-700 shadow-xl shadow-black/20">
+                                        CLOSE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                   )}
+              </div>
+          </div>
+      )}
     </div>
-);
-
-// Define TopicButton component
-const TopicButton = ({ active, onClick, title, desc }: { active: boolean; onClick: () => void; title: string; desc: string }) => (
-  <button onClick={onClick} className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group ${active ? 'bg-blue-50 border-blue-500 shadow-md ring-1 ring-blue-100' : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-50'}`}>
-    <div className={`font-black uppercase tracking-tight text-sm ${active ? 'text-blue-800' : 'text-slate-700 group-hover:text-blue-700'}`}>{title}</div>
-    <div className={`text-[10px] font-bold mt-1 ${active ? 'text-blue-600' : 'text-slate-400'}`}>{desc}</div>
-  </button>
-);
-
-export default MergeStringsVisualizer;
+  );
+}
