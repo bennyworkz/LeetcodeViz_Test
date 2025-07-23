@@ -11,6 +11,9 @@ const InverseNotes = lazy(() => import('./Apti_Notes/InverseNotes.tsx'));
 const SpeedTimeDistanceNotes =  lazy(() => import('./Apti_Notes/SpeedTimeDistanceNotes.tsx'));
 const TimeAndWorkNotes = lazy(() => import('./Apti_Notes/TimeAndWorkNotes.tsx'));
 const BoatsAndStreamsNotes = lazy(() => import('./Apti_Notes/BoatsAndStreamsNotes.tsx'));
+const PipesAndCisternsNotes = lazy(() => import('./Apti_Notes/PipesAndCisternsNotes.tsx'));
+const AveragesNotes = lazy(() => import('./Apti_Notes/AveragesNotes.tsx'));
+const MixturesNotes = lazy(() => import('./Apti_Notes/MixturesNotes.tsx'));
 
 export interface AptitudeNote {
   id: string;
@@ -39,13 +42,13 @@ export interface AptitudeModule {
 export const aptitudeModules: AptitudeModule[] = [
   {
     id: 'quantitative-aptitude',
-    title: 'Quantitative Aptitude',
+    title: 'Quantitative Aptitude Module',
     description: 'Complete quantitative aptitude preparation covering all essential topics for competitive exams and interviews.',
     problems: [],
     subModules: [
       {
         id: 'number-system',
-        title: 'Number System',
+        title: 'Number System Sub-module',
         description: 'Fundamental concepts of numbers, operations, divisibility rules, and mathematical properties.',
         problems: [
           {
@@ -57,7 +60,7 @@ export const aptitudeModules: AptitudeModule[] = [
           },
           {
             id: 'number-system-notes',
-            title: 'Number System Notes',
+            title: 'Number System Notes (comprehensive tutorial)',
             difficulty: 'beginner',
             component: NumberSystemNotes,
             tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
@@ -118,6 +121,28 @@ export const aptitudeModules: AptitudeModule[] = [
             component: BoatsAndStreamsNotes,
             tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
           },
+          {
+            id: 'Pipes and Cisterns',
+            title: 'Pipes and Cisterns',
+            difficulty: 'beginner',
+            component: PipesAndCisternsNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'Averages',
+            title: 'Averages',
+            difficulty: 'beginner',
+            component: AveragesNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'Mixtures',
+            title: 'Alligations and Mixture',
+            difficulty: 'beginner',
+            component: MixturesNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          
         ]
       }
     ]
