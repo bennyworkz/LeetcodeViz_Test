@@ -343,7 +343,7 @@ const Welcome = () => {
                 <p className="text-slate-600 text-lg">Select a collection to start your learning journey</p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 {javaModule && <ModuleCard module={javaModule} />}
                 {amazonModule && <ModuleCard module={amazonModule} />}
                 {linkedListModule && <ModuleCard module={linkedListModule} />}
