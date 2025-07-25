@@ -63,6 +63,37 @@ const ValidPalindromeVisualizer = lazy(() => import('./problems/ValidPalindromeV
 const CompareVersionNumbersVisualizer = lazy(() => import('./problems/CompareVersionNumbersVisualizer'));
 const LongestMountainVisualizer = lazy(() => import('./problems/LongestMountainVisualizer'));
 const PalindromicSubstringsVisualizer = lazy(() => import('./problems/PalindromicSubstringsVisualizer'));
+const LongestRepeatingCharacterVisualizer = lazy(() => import('./problems/LongestRepeatingCharacterVisualizer'));
+const PermutationInStringVisualizer = lazy(() => import('./problems/PermutationInStringVisualizer'));
+const MaxPointsCardsVisualizer = lazy(() => import('./problems/MaxPointsCardsVisualizer'));
+const MinSizeSubarraySumVisualizer = lazy(() => import('./problems/MinSizeSubarraySumVisualizer'));
+const SlidingWindowMaximumVisualizer = lazy(() => import('./problems/SlidingWindowMaximumVisualizer.tsx'));
+const FindMinimumRotatedVisualizer = lazy(() => import('./problems/FindMinimumRotatedVisualizer.tsx'));
+const BestTimeToBuySellVisualizer = lazy(() => import('./problems/BestTimeToBuySellVisualizer'));
+const MaxProductSubarrayVisualizer = lazy(() => import('./problems/MaxProductSubarrayVisualizer.tsx'));
+const BestTimeToBuySellIIVisualizer = lazy(() => import('./problems/BestTimeToBuySellIIVisualizer'));
+const MeetingRoomsVisualizer = lazy(() => import('./problems/MeetingRoomsVisualizer.tsx'));
+const MeetingRoomsVisualizerI = lazy(() => import('./problems/MeetingRoomsVisualizerI.tsx'));
+const FindDifferenceVisualizer = lazy(() => import('./problems/FindDifferenceVisualizer.tsx'));
+const UniqueOccurrencesVisualizer = lazy(() => import('./problems/UniqueOccurrencesVisualizer.tsx'));
+const DetermineStringsCloseVisualizer = lazy(() => import('./problems/DetermineStringsCloseVisualizer.tsx'));
+const EqualPairsVisualizer = lazy(() => import('./problems/EqualPairsVisualizer.tsx'));
+const RemovingStarsVisualizer = lazy(() => import('./problems/RemovingStarsVisualizer.tsx'));
+const AsteroidCollisionVisualizer = lazy(() => import('./problems/AsteroidCollisionVisualizer.tsx'));
+const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+
+const RecentCounterVisualizer = lazy(() => import('./problems/RecentCounterVisualizer.tsx'));
+const Dota2SenateVisualizer = lazy(() => import('./problems/Dota2SenateVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+// const DecodeStringVisualizer = lazy(() => import('./problems/DecodeStringVisualizer.tsx'));
+
+
 
 // Linked List Module
 const SinglyLinkedListTutorial = lazy(() => import('./linkedlist-tutorials/SinglyLinkedListTutorial'));
@@ -110,6 +141,7 @@ const InPlaceMergeLinkedListViz = lazy(() => import('./linkedlist-tutorials/InPl
 const LongestPalindromeLinkedListViz = lazy(() => import('./linkedlist-tutorials/LongestPalindromeLinkedListViz'));
 const BlockRotateLinkedListViz = lazy(() => import('./linkedlist-tutorials/BlockRotateLinkedListViz'));
 const CountRotationsLinkedListViz = lazy(() => import('./linkedlist-tutorials/CountRotationsLinkedListViz'));
+const FindAllAnagramsVisualizer = lazy(() => import('./problems/FindAllAnagramsVisualizer'));
 
 // LeetCode Problems
 const LinkedListCycleIIViz = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/LinkedListCycleIIViz'));
@@ -254,6 +286,7 @@ export const modules: Module[] = [
           { id: '229-majority-element-11', number: 229, title: 'Majority Element II', difficulty: 'Medium', component: MajorityElementIIVisualizer },
           { id: '268-missing-number', number: 268, title: 'Missing Number', difficulty: 'Easy', component: MissingNumberVisualizer },
           { id: '189-rotate-array', number: 189, title: 'Rotate Array', difficulty: 'Easy', component: RotateArrayVisualizer },
+          { id: '252-meeting-rooms-2', number: 252, title: 'Meeting Rooms I', difficulty: 'Medium', component: MeetingRoomsVisualizerI, tags: ['Array', 'Two Pointers', 'Greedy'] },
         ]
       },
       {
@@ -270,6 +303,7 @@ export const modules: Module[] = [
           { id: '5-longest-palindromic-substring', number: 5, title: 'Longest Palindromic Substring', difficulty: 'Medium', component: LongestPalindromicSubstringVisualizer, tags: ['Two Pointers', 'String', 'Dynamic Programming'] },
           { id: '647-palindromic-substring', number: 647, title: 'Palindromic Substrings', difficulty: 'Medium', component: PalindromicSubstringsVisualizer, tags: ['Two Pointers', 'String', 'Dynamic Programming'] },
           { id: '845-longest-mountain-in-array', number: 845, title: 'Longest Mountain in Array', difficulty: 'Medium', component: LongestMountainVisualizer, tags: ['Array', 'Two Pointers']},
+          { id: '253-meeting-rooms-2', number: 253, title: 'Meeting Rooms II', difficulty: 'Medium', component: MeetingRoomsVisualizer, tags: ['Array', 'Two Pointers', 'Greedy'] },
           { id: '15-3sum', number: 15, title: '3Sum', difficulty: 'Medium', component: ThreeSumVisualizer, tags: ['Array', 'Two Pointers', 'Sorting'] },
           { id: '16-3sum-closest', number: 16, title: '3Sum Closest', difficulty: 'Medium', component: ThreeSumClosestVisualizer, tags: ['Array', 'Two Pointers', 'Sorting'] },
           { id: '18-4sum', number: 18, title: '4Sum', difficulty: 'Medium', component: FourSumVisualizer, tags: ['Array', 'Two Pointers', 'Sorting']},
@@ -288,7 +322,13 @@ export const modules: Module[] = [
         description: 'Sliding window for substring problems.',
         problems: [
           { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
+          { id: '424-Longest Repeating Character Replacement', number: 424, title: 'Longest Repeating Character Replacement', difficulty: 'Medium', component: LongestRepeatingCharacterVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
           { id: '76-minimum-window-substring', number: 76, title: 'Minimum Window Substring', difficulty: 'Hard', component: MinWindowVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
+          { id: '438-find-all-anagramss', number: 438, title: 'Find All Anagrams in a String', difficulty: 'Medium', component: FindAllAnagramsVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
+          { id: '567-permutation-in-a-string', number: 567, title: 'Permutation in String', difficulty: 'Medium', component: PermutationInStringVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
+          { id: '1423-maximum-points-yuo-can-obtain-from-your-cards', number: 1423, title: 'Maximum Points You Can Obtain from Cards', difficulty: 'Medium', component: MaxPointsCardsVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
+          { id: '209-minimum-size-subarray-sum', number: 209, title: 'Minimum Size Subarray Sum', difficulty: 'Medium', component: MinSizeSubarraySumVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
+          { id: '239-sliding-window-maxium', number: 239, title: 'Sliding Window Maximum', difficulty: 'Hard', component: SlidingWindowMaximumVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
           { id: '28-find-the-index-of-first-occurence-in-a-string', number: 28, title: 'Find the Index of the First Occurrence in a String', difficulty: 'Easy', component: StrStrVisualizer, tags: ['Two Pointers', 'String', 'String Matching'] },
           { id: '30-substring-with-concatenation', number: 30, title: 'Substring with Concatenation of All Words', difficulty: 'Hard', component: SubstringConcatenationVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
         ]
@@ -298,6 +338,7 @@ export const modules: Module[] = [
         title: 'Binary Search',
         description: 'Binary search on sorted arrays.',
         problems: [
+          { id: '153-find-minimum-in-rotated-sorted-array', number: 153, title: 'Find Minimum in Rotated Sorted Array', difficulty: 'Medium', component: FindMinimumRotatedVisualizer, tags: ['Math', 'Binary Search']},
           { id: '4-median-two-sorted-arrays', number: 4, title: 'Median of Two Sorted Arrays', difficulty: 'Hard', component: MedianTwoSortedArraysVisualizer, tags: ['Array', 'Binary Search', 'Divide and Conquer'] },
           { id: '33-search-in-rotated-sorted-array', number: 33, title: 'Search in Rotated Sorted Array', difficulty: 'Medium', component: SearchRotatedArrayVisualizer, tags: ['Array', 'Binary Search'] },
           { id: '34-find-first-and-last-position-of-element-in-sorted-array', number: 34, title: 'Find First and Last Position of Element in Sorted Array', difficulty: 'Medium', component: SearchRangeVisualizer, tags: ['Array', 'Binary Search']},
@@ -312,6 +353,8 @@ export const modules: Module[] = [
         title: 'Dynamic Programming',
         description: 'DP: paths, subsequences, pattern matching.',
         problems: [
+          { id: '121-besttimetosellandbutstock', number: 121, title: 'Best Time to Buy and Sell Stock', difficulty: 'Easy', component: BestTimeToBuySellVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
+          { id: '152-maximum-product-subarray', number: 152, title: 'Maximum Product Subarray', difficulty: 'Medium', component: MaxProductSubarrayVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
           { id: '10-regular-expression-matching', number: 10, title: 'Regular Expression Matching', difficulty: 'Hard', component: RegexVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
           { id: '53-maximum-subarray-amazon', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer, tags: ['Array', 'Divide and Conquer', 'Dynamic Programming'] },
           { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer, tags: ['Math', 'Dynamic Programming', 'Combinatorics']},
@@ -331,6 +374,8 @@ export const modules: Module[] = [
         title: 'Greedy Algorithms',
         description: 'Greedy optimization problems.',
         problems: [
+          { id: '122-best-time-to-buy-and-sell-stock-ii', number: 122, title: 'Best Time to Buy and Sell Stock II', difficulty: 'Medium', component: BestTimeToBuySellIIVisualizer, tags: ['Array', 'Dynamic Programming', 'Greedy']},
+          { id: '334-increasing-triplet-subsequence', number: 334, title: 'Increasing Triplet Subsequence', difficulty: 'Medium', component: IncreasingTripletVisualizer, tags: ['Array', 'Dynamic Programming', 'Greedy']},
           { id: '45-jump-game-ii', number: 45, title: 'Jump Game II', difficulty: 'Medium', component: JumpGameIIVisualizer, tags: ['Array', 'Dynamic Programming', 'Greedy']},
           { id: '55-jump-game-amazon', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer, tags: ['Array', 'Dynamic Programming', 'Greedy'] },
           { id: '12-integrer-to-roman', number: 12, title: 'Integer to Roman', difficulty: 'Medium', component: IntegerToRomanVisualizer, tags: ['Hash Table', 'Math', 'String'] },
@@ -458,15 +503,8 @@ export const modules: Module[] = [
         title: 'Array / String',
         description: 'Fundamental array manipulation and string traversal techniques.',
         problems: [
-          { id: '1768-merge-strings', number: 1768, title: 'Merge Strings Alternately', difficulty: 'Easy', component: MergeStringsVisualizer },
           { id: '1071-gcd-strings', number: 1071, title: 'GCD of Strings', difficulty: 'Easy', component: GCDStringsVisualizer },
           { id: '1431-kids-candies', number: 1431, title: 'Kids With the Greatest Number of Candies', difficulty: 'Easy', component: KidsCandiesVisualizer },
-          { id: '605-can-place-flowers', number: 605, title: 'Can Place Flowers', difficulty: 'Easy', component: CanPlaceFlowersVisualizer },
-          { id: '345-reverse-vowels', number: 345, title: 'Reverse Vowels of a String', difficulty: 'Easy', component: ReverseVowelsVisualizer },
-          { id: '151-reverse-words', number: 151, title: 'Reverse Words in a String', difficulty: 'Medium', component: ReverseWordsVisualizer },
-          { id: '238-product-except-self', number: 238, title: 'Product of Array Except Self', difficulty: 'Medium', component: ProductExceptSelfVisualizer },
-          { id: '334-increasing-triplet', number: 334, title: 'Increasing Triplet Subsequence', difficulty: 'Medium', component: IncreasingTripletVisualizer },
-          { id: '443-string-compression', number: 443, title: 'String Compression', difficulty: 'Medium', component: StringCompressionVisualizer },
           { id: '53-maximum-subarray', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
           { id: '14-longest-common-prefix', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
         ],
@@ -476,6 +514,10 @@ export const modules: Module[] = [
         title: 'Two Pointers',
         description: 'Efficiently scanning data using multiple pointers at different speeds or directions.',
         problems: [
+          { id: '1768-merge-strings', number: 1768, title: 'Merge Strings Alternately', difficulty: 'Easy', component: MergeStringsVisualizer },
+          { id: '345-reverse-vowels', number: 345, title: 'Reverse Vowels of a String', difficulty: 'Easy', component: ReverseVowelsVisualizer },
+          { id: '151-reverse-words', number: 151, title: 'Reverse Words in a String', difficulty: 'Medium', component: ReverseWordsVisualizer },
+          { id: '443-string-compression', number: 443, title: 'String Compression', difficulty: 'Medium', component: StringCompressionVisualizer },
           { id: '283-move-zeroes', number: 283, title: 'Move Zeroes', difficulty: 'Easy', component: MoveZeroesVisualizer },
           { id: '392-is-subsequence', number: 392, title: 'Is Subsequence', difficulty: 'Easy', component: IsSubsequenceVisualizer },
           { id: '11-container-with-most-water', number: 11, title: 'Container With Most Water', difficulty: 'Medium', component: ContainerWithMostWaterVisualizer },
@@ -498,8 +540,39 @@ export const modules: Module[] = [
         title: 'Prefix Sum',
         description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
         problems: [
+          { id: '238-product-except-self', number: 238, title: 'Product of Array Except Self', difficulty: 'Medium', component: ProductExceptSelfVisualizer },
           { id: '1732-highest-altitude', number: 1732, title: 'Find the Highest Altitude', difficulty: 'Easy', component: HighestAltitudeVisualizer },
           { id: '724-pivot-index', number: 724, title: 'Find Pivot Index', difficulty: 'Easy', component: PivotIndexVisualizer },
+        ]
+      },
+      {
+        id: 'blind-75-hashmaps-and-sets',
+        title: 'Hash Map / Set',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: '2215-find-and-difference-of-two-arrays', number: 2215, title: 'Find the Difference of Two Arrays', difficulty: 'Easy', component: FindDifferenceVisualizer },
+          { id: '1207-unique-number-of-expereience', number: 1207, title: 'Unique Number of Occurrences', difficulty: 'Easy', component: UniqueOccurrencesVisualizer },
+          { id: '1657-determine-if-two-strings-are-close', number: 1657, title: 'Determine if Two Strings Are Close', difficulty: 'Medium', component: DetermineStringsCloseVisualizer },
+          { id: '2352', number: 2352, title: 'Equal Row and Column Pairs', difficulty: 'Medium', component: EqualPairsVisualizer },   
+        ]
+      },
+      {
+        id: 'blind-75-stacks',
+        title: 'Stack',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: '2390', number: 2390, title: 'Removing Stars From a String', difficulty: 'Medium', component: RemovingStarsVisualizer },
+          { id: '735', number: 735, title: 'Asteroid Collision', difficulty: 'Medium', component: AsteroidCollisionVisualizer },
+          { id: '394', number: 394, title: 'Decode String', difficulty: 'Medium', component: DecodeStringVisualizer },
+        ]
+      },
+      {
+        id: 'blind-75-queue',
+        title: 'Queue',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: '933', number: 933, title: 'Number of Recent Calls', difficulty: 'Easy', component: RecentCounterVisualizer },
+          { id: '649', number: 649, title: 'Dota2 Senate', difficulty: 'Medium', component: Dota2SenateVisualizer },
         ]
       },
       {
@@ -507,6 +580,8 @@ export const modules: Module[] = [
         title: 'Greedy & DP',
         description: 'Optimization problems solved by breaking them down into overlapping subproblems or making local optimal choices.',
         problems: [
+          { id: '605-can-place-flowers', number: 605, title: 'Can Place Flowers', difficulty: 'Easy', component: CanPlaceFlowersVisualizer },
+          { id: '334-increasing-triplet', number: 334, title: 'Increasing Triplet Subsequence', difficulty: 'Medium', component: IncreasingTripletVisualizer },
           { id: '55-jump-game', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
           { id: '70-climbing-stairs', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
         ]
