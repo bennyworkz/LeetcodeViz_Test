@@ -14,6 +14,7 @@ const IncreasingTripletVisualizer = lazy(() => import('./problems/IncreasingTrip
 const StringCompressionVisualizer = lazy(() => import('./problems/StringCompressionVisualizer'));
 const LongestCommonPrefixVisualizer = lazy(() => import('./problems/LongestCommonPrefixVisualizer'));
 const SpiralMatrixVisualizer = lazy(() => import('./problems/SpiralMatrixVisualizer'));
+const DiagonalTraverseVisualizer = lazy(() => import('./problems/DiagonalTraverseVisualizer'));
 
 // Two Pointers
 const MoveZeroesVisualizer = lazy(() => import('./problems/MoveZeroesVisualizer'));
@@ -49,6 +50,19 @@ const MergeKSortedListsVisualizer = lazy(() => import('./problems/MergeKSortedLi
 const MaximumSubarrayVisualizer = lazy(() => import('./problems/MaximumSubarrayVisualizer'));
 const LetterCombinationsVisualizer = lazy(() => import('./problems/LetterCombinationsVisualizer'));
 const SearchRotatedArrayVisualizer = lazy(() => import('./problems/SearchRotatedArrayVisualizer'));
+const SubarraySumVisualizer = lazy(() => import('./problems/SubarraySumVisualizer'));
+const LongestConsecutiveVisualizer = lazy(() => import('./problems/LongestConsecutiveVisualizer'));
+const ValidAnagramVisualizer = lazy(() => import('./problems/ValidAnagramVisualizer'));
+const IsomorphicStringsVisualizer = lazy(() => import('./problems/IsomorphicStringsVisualizer'));
+const WordPatternVisualizer = lazy(() => import('./problems/WordPatternVisualizer'));
+const MajorityElementVisualizer = lazy(() => import('./problems/MajorityElementVisualizer'));
+const MajorityElementIIVisualizer = lazy(() => import('./problems/MajorityElementIIVisualizer'));
+const MissingNumberVisualizer = lazy(() => import('./problems/MissingNumberVisualizer'));
+const RotateArrayVisualizer = lazy(() => import('./problems/RotateArrayVisualizer'));
+const ValidPalindromeVisualizer = lazy(() => import('./problems/ValidPalindromeVisualizer'));
+const CompareVersionNumbersVisualizer = lazy(() => import('./problems/CompareVersionNumbersVisualizer'));
+const LongestMountainVisualizer = lazy(() => import('./problems/LongestMountainVisualizer'));
+const PalindromicSubstringsVisualizer = lazy(() => import('./problems/PalindromicSubstringsVisualizer'));
 
 // Linked List Module
 const SinglyLinkedListTutorial = lazy(() => import('./linkedlist-tutorials/SinglyLinkedListTutorial'));
@@ -96,6 +110,16 @@ const InPlaceMergeLinkedListViz = lazy(() => import('./linkedlist-tutorials/InPl
 const LongestPalindromeLinkedListViz = lazy(() => import('./linkedlist-tutorials/LongestPalindromeLinkedListViz'));
 const BlockRotateLinkedListViz = lazy(() => import('./linkedlist-tutorials/BlockRotateLinkedListViz'));
 const CountRotationsLinkedListViz = lazy(() => import('./linkedlist-tutorials/CountRotationsLinkedListViz'));
+
+// LeetCode Problems
+const LinkedListCycleIIViz = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/LinkedListCycleIIViz'));
+const MergeKSortedListsVisualizerLL = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/MergeKSortedListsVisualizer'));
+const MergeTwoSortedListViz = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/MergeTwoSortedListViz'));
+const OddEvenListViz = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/OddEvenListViz'));
+const RemoveNthNodeVizLL = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/RemoveNthNodeViz'));
+const ReorderListViz = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/ReorderListViz'));
+const ReverseSinglyLinkedListIIViz = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/ReverseSinglyLinkedListIIViz'));
+const RotateListVizLL = lazy(() => import('./linkedlist-tutorials/LeetCode_Problems/RotateListViz'));
 
 // Alias for Amazon module compatibility
 // const MergeListsVisualizer = MergeListsVisualizerLL;
@@ -220,6 +244,16 @@ export const modules: Module[] = [
           { id: '36-valid-sudoku', number: 36, title: 'Valid Sudoku', difficulty: 'Medium', component: ValidSudokuVisualizer, tags: ['Array', 'Hash Table', 'Matrix']},
           { id: '41-first-missing-positive', number: 41, title: 'First Missing Positive', difficulty: 'Hard', component: FirstMissingPositiveVisualizer, tags: ['Array', 'Hash Table']},
           { id: '57-insert-interval', number: 57, title: 'Insert Interval', difficulty: 'Medium', component: InsertIntervalVisualizer, tags: ['Array']},
+          { id: '238-product-except-self1', number: 238, title: 'Product of Array Except Self', difficulty: 'Medium', component: ProductExceptSelfVisualizer },
+          { id: '560-subarray-sum-equals-k', number: 560, title: 'Subarray Sum Equals K', difficulty: 'Medium', component: SubarraySumVisualizer },
+          { id: '128-longest-consecutive-sequence', number: 128, title: 'Longest Consecutive Sequence', difficulty: 'Medium', component: LongestConsecutiveVisualizer }, 
+          { id: '242-valid-anagram', number: 242, title: 'Valid Anagram', difficulty: 'Medium', component: ValidAnagramVisualizer }, 
+          { id: '205-isomorphic-strings', number: 205, title: 'Isomorphic Strings', difficulty: 'Easy', component: IsomorphicStringsVisualizer },
+          { id: '290-word-pattern', number: 290, title: 'Word Pattern', difficulty: 'Easy', component: WordPatternVisualizer },
+          { id: '169-majority-element', number: 169, title: 'Majority Element', difficulty: 'Easy', component: MajorityElementVisualizer },
+          { id: '229-majority-element-11', number: 229, title: 'Majority Element II', difficulty: 'Medium', component: MajorityElementIIVisualizer },
+          { id: '268-missing-number', number: 268, title: 'Missing Number', difficulty: 'Easy', component: MissingNumberVisualizer },
+          { id: '189-rotate-array', number: 189, title: 'Rotate Array', difficulty: 'Easy', component: RotateArrayVisualizer },
         ]
       },
       {
@@ -228,6 +262,14 @@ export const modules: Module[] = [
         description: 'Two pointer techniques for arrays.',
         problems: [
           { id: '11-container-with-most-water-amazon', number: 11, title: 'Container With Most Water', difficulty: 'Medium', component: ContainerWithMostWaterVisualizer, tags: ['Array', 'Two Pointers', 'Greedy'] },
+          { id: '283-move-zeroes-', number: 283, title: 'Move Zeroes', difficulty: 'Easy', component: MoveZeroesVisualizer },
+          { id: '125-valid-palindrom', number: 125, title: 'Valid Palindrome', difficulty: 'Easy', component: ValidPalindromeVisualizer },
+          { id: '151-reverse-words-', number: 151, title: 'Reverse Words in a String', difficulty: 'Medium', component: ReverseWordsVisualizer },
+          { id: '165-compare-versions', number: 165, title: 'Compare Version Numbers', difficulty: 'Medium', component: CompareVersionNumbersVisualizer },
+          { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer, tags: ['Array', 'Two Pointers']},
+          { id: '5-longest-palindromic-substring', number: 5, title: 'Longest Palindromic Substring', difficulty: 'Medium', component: LongestPalindromicSubstringVisualizer, tags: ['Two Pointers', 'String', 'Dynamic Programming'] },
+          { id: '647-palindromic-substring', number: 647, title: 'Palindromic Substrings', difficulty: 'Medium', component: PalindromicSubstringsVisualizer, tags: ['Two Pointers', 'String', 'Dynamic Programming'] },
+          { id: '845-longest-mountain-in-array', number: 845, title: 'Longest Mountain in Array', difficulty: 'Medium', component: LongestMountainVisualizer, tags: ['Array', 'Two Pointers']},
           { id: '15-3sum', number: 15, title: '3Sum', difficulty: 'Medium', component: ThreeSumVisualizer, tags: ['Array', 'Two Pointers', 'Sorting'] },
           { id: '16-3sum-closest', number: 16, title: '3Sum Closest', difficulty: 'Medium', component: ThreeSumClosestVisualizer, tags: ['Array', 'Two Pointers', 'Sorting'] },
           { id: '18-4sum', number: 18, title: '4Sum', difficulty: 'Medium', component: FourSumVisualizer, tags: ['Array', 'Two Pointers', 'Sorting']},
@@ -246,7 +288,6 @@ export const modules: Module[] = [
         description: 'Sliding window for substring problems.',
         problems: [
           { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
-          { id: '5-longest-palindromic-substring', number: 5, title: 'Longest Palindromic Substring', difficulty: 'Medium', component: LongestPalindromicSubstringVisualizer, tags: ['Two Pointers', 'String', 'Dynamic Programming'] },
           { id: '76-minimum-window-substring', number: 76, title: 'Minimum Window Substring', difficulty: 'Hard', component: MinWindowVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
           { id: '28-find-the-index-of-first-occurence-in-a-string', number: 28, title: 'Find the Index of the First Occurrence in a String', difficulty: 'Easy', component: StrStrVisualizer, tags: ['Two Pointers', 'String', 'String Matching'] },
           { id: '30-substring-with-concatenation', number: 30, title: 'Substring with Concatenation of All Words', difficulty: 'Hard', component: SubstringConcatenationVisualizer, tags: ['Hash Table', 'String', 'Sliding Window'] },
@@ -357,6 +398,7 @@ export const modules: Module[] = [
         problems: [
           { id: '48-rotate-image', number: 48, title: 'Rotate Image', difficulty: 'Medium', component: RotateImageVisualizer, tags: ['Array', 'Math', 'Matrix']},
           { id: '54-spiral-matrix', number: 54, title: 'Spiral Matrix', difficulty: 'Medium', component: SpiralMatrixVisualizer, tags: ['Array', 'Matrix', 'Simulation'] },
+          { id: '498-diagonal-traverse', number: 498, title: 'Diagonal Traverse', difficulty: 'Medium', component: DiagonalTraverseVisualizer, tags: ['Array', 'Matrix', 'Simulation'] },
           { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer, tags: ['Array', 'Sorting'] },
           { id: '73-set-matrix-zeroes', number: 73, title: 'Set Matrix Zeroes', difficulty: 'Medium', component: SetMatrixZeroesVisualizer, tags: ['Array', 'Hash Table', 'Matrix']},
           { id: '6-zigzag-conversion', number: 6, title: 'Zigzag Conversion', difficulty: 'Medium', component: ZigzagVisualizer, tags: ['String']},
@@ -383,7 +425,6 @@ export const modules: Module[] = [
         title: 'Math & Logic',
         description: 'Mathematical algorithms.',
         problems: [
-          { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer, tags: ['Array', 'Two Pointers']},
           { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer, tags: ['Math', 'Recursion']},
           { id: '66-plus-one', number: 66, title: 'Plus One', difficulty: 'Easy', component: PlusOneVisualizer, tags: ['Array', 'Math']},
           { id: '67-add-binary', number: 67, title: 'Add Binary', difficulty: 'Easy', component: AddBinaryVisualizer, tags: ['Math', 'String', 'Bit Manipulation', 'Simulation']},
@@ -597,16 +638,19 @@ export const modules: Module[] = [
         description: 'Practice with real interview problems.',
         problems: [
           { id: '2-add-two-numbers', number: 2, title: 'Add Two Numbers', difficulty: 'Medium', component: AddTwoNumbersVisualizer, tags: ['Linked List', 'Math', 'Recursion'] },
-          { id: '21-merge-two-sorted-lists', number: 21, title: 'Merge Two Sorted Lists', difficulty: 'Easy', component: MergeListsVisualizer, tags: ['Linked List', 'Recursion'] },
-          { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer, tags: ['Linked List', 'Divide and Conquer', 'Heap (Priority Queue)', 'Merge Sort'] },
+          { id: '21-merge-two-sorted-lists-ll', number: 21, title: 'Merge Two Sorted Lists', difficulty: 'Easy', component: MergeTwoSortedListViz, tags: ['Linked List', 'Recursion'] },
+          { id: '23-merge-k-sorted-lists-ll', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizerLL, tags: ['Linked List', 'Divide and Conquer', 'Heap (Priority Queue)', 'Merge Sort'] },
           { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer, tags: ['Linked List', 'Recursion']},
-          { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer, tags: ['Linked List', 'Two Pointers']},
-          { id: '92-reverse-linked-list-ii', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseLinkedListIIVisualizer, tags: ['Linked List']},
+          { id: '19-remove-nth-node-from-end-of-list-ll', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthNodeVizLL, tags: ['Linked List', 'Two Pointers']},
+          { id: '92-reverse-linked-list-ii-ll', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseSinglyLinkedListIIViz, tags: ['Linked List']},
           { id: '24-swap-nodes', number: 24, title: 'Swap Nodes in Pairs', difficulty: 'Medium', component: SwapNodesInPairsVisualizer, tags: ['Linked List', 'Recursion']},
-          { id: '61-rotate-list', number: 61, title: 'Rotate List', difficulty: 'Medium', component: RotateListVisualizer, tags: ['Linked List', 'Two Pointers']},
+          { id: '61-rotate-list-ll', number: 61, title: 'Rotate List', difficulty: 'Medium', component: RotateListVizLL, tags: ['Linked List', 'Two Pointers']},
           { id: '83-remove-duplicates-from-sorted-list', number: 83, title: 'Remove Duplicates from Sorted List', difficulty: 'Easy', component: RemoveDuplicatesListVisualizer, tags: ['Linked List']},
-          {id: '86-partition-list', number: 86, title: 'Partition List', difficulty: 'Medium', component: PartitionListVisualizer, tags: ['Linked List', 'Two Pointers']},
-          {id: '82-remove-duplicates-from-sorted-list-ii', number: 82, title: 'Remove Duplicates from Sorted List II', difficulty: 'Medium', component: RemoveDuplicatesSortedListVisualizer, tags: ['Linked List', 'Two Pointers']},
+          { id: '86-partition-list', number: 86, title: 'Partition List', difficulty: 'Medium', component: PartitionListVisualizer, tags: ['Linked List', 'Two Pointers']},
+          { id: '82-remove-duplicates-from-sorted-list-ii', number: 82, title: 'Remove Duplicates from Sorted List II', difficulty: 'Medium', component: RemoveDuplicatesSortedListVisualizer, tags: ['Linked List', 'Two Pointers']},
+          { id: '142-linked-list-cycle-ii', number: 142, title: 'Linked List Cycle II', difficulty: 'Medium', component: LinkedListCycleIIViz, tags: ['Hash Table', 'Linked List', 'Two Pointers'] },
+          { id: '328-odd-even-linked-list', number: 328, title: 'Odd Even Linked List', difficulty: 'Medium', component: OddEvenListViz, tags: ['Linked List'] },
+          { id: '143-reorder-list', number: 143, title: 'Reorder List', difficulty: 'Medium', component: ReorderListViz, tags: ['Linked List', 'Two Pointers', 'Stack', 'Recursion'] },
         ]
       }
     ]
