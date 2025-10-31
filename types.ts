@@ -9,6 +9,7 @@ export interface Problem {
   difficulty: Difficulty;
   // Supports standard components or lazy loaded chunks
   component: React.ComponentType | React.LazyExoticComponent<any>;
+  tags?: string[]; // Topic tags for filtering and search
 }
 
 export interface Module {
