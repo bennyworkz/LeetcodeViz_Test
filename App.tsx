@@ -30,8 +30,11 @@ const App: React.FC = () => {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Welcome />} />
+        {/* Landing Page - No Sidebar */}
+        <Route path="/" element={<Welcome />} />
+        
+        {/* Application Layout - Contains Sidebar */}
+        <Route element={<Layout />}>
           <Route path="problem/:id" element={<ProblemWrapper />} />
         </Route>
       </Routes>
