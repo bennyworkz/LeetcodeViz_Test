@@ -1,0 +1,111 @@
+import React, { useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
+import { Menu, X, BookOpen, Github, Code2 } from 'lucide-react';
+import { problems } from '../problemRegistry';
+
+const Layout = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  return (
+    <div className="flex h-screen bg-slate-100 overflow-hidden">
+      
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed lg:static inset-y-0 left-0 z-50
+        w-72 bg-slate-900 text-slate-300 flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-slate-800 flex items-center gap-3">
+          <div className="bg-blue-600 p-2 rounded-lg text-white">
+            <Code2 size={24} />
+          </div>
+          <div>
+            <h1 className="text-white font-bold text-lg leading-tight">LeetCode Viz</h1>
+            <p className="text-xs text-slate-500">Interactive Solutions</p>
+          </div>
+        </div>
+
+        {/* Scrollable Problem List */}
+        <div className="flex-1 overflow-y-auto py-4">
+          <div className="px-4 mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+            Problems
+          </div>
+          <nav className="space-y-1 px-2">
+            {problems.map((problem) => (
+              <NavLink
+                key={problem.id}
+                to={`/problem/${problem.id}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) => `
+                  group flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                  ${isActive 
+                    ? 'bg-blue-600/10 text-blue-400' 
+                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
+                `}
+              >
+                <span className="truncate mr-2">
+                  <span className="opacity-50 mr-2">{problem.number}.</span>
+                  {problem.title}
+                </span>
+                <span className={`
+                  text-[10px] px-1.5 py-0.5 rounded border
+                  ${problem.difficulty === 'Easy' ? 'border-green-800 text-green-500 bg-green-900/20' : ''}
+                  ${problem.difficulty === 'Medium' ? 'border-amber-800 text-amber-500 bg-amber-900/20' : ''}
+                  ${problem.difficulty === 'Hard' ? 'border-red-800 text-red-500 bg-red-900/20' : ''}
+                `}>
+                  {problem.difficulty}
+                </span>
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-slate-800">
+          <a 
+            href="https://github.com" 
+            target="_blank" 
+            rel="noreferrer"
+            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+          >
+            <Github size={16} />
+            <span>View on GitHub</span>
+          </a>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        {/* Mobile Header */}
+        <header className="lg:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between">
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+          >
+            <Menu size={24} />
+          </button>
+          <span className="font-bold text-slate-800">LeetCode Viz</span>
+          <div className="w-10" /> {/* Spacer for centering */}
+        </header>
+
+        {/* Content Area */}
+        <main className="flex-1 overflow-auto bg-slate-50">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Layout;

@@ -1,0 +1,5 @@
+{
+  "name": "LeetCode Visualizer",
+  "description": "An interactive visualization platform for understanding LeetCode algorithms step-by-step.",
+  "requestFramePermissions": []
+}
