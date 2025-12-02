@@ -11,6 +11,13 @@ export interface Problem {
   component: React.ComponentType | React.LazyExoticComponent<any>;
 }
 
+export interface Module {
+  id: string;
+  title: string;
+  description?: string;
+  problems: Problem[];
+}
+
 export interface CodeLineProps {
   num: number;
   code: string;
