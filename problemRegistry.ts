@@ -1,6 +1,9 @@
+import { lazy } from 'react';
 import { Problem } from './types';
-import GCDStringsVisualizer from './problems/GCDStringsVisualizer';
-import MergeStringsVisualizer from './problems/MergeStringsVisualizer';
+
+// Lazy load the problem components to improve initial page load performance
+const GCDStringsVisualizer = lazy(() => import('./problems/GCDStringsVisualizer'));
+const MergeStringsVisualizer = lazy(() => import('./problems/MergeStringsVisualizer'));
 
 export const problems: Problem[] = [
   {

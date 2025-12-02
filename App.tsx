@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Layout from './components/Layout';
 import Welcome from './components/Welcome';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import Loading from './components/Loading';
 import { getProblemById } from './problemRegistry';
 
-// Wrapper to render a problem based on ID
+// Wrapper to render a problem based on ID with Suspense and Error Boundary
 const ProblemWrapper = () => {
   const { id } = useParams<{ id: string }>();
   const problem = getProblemById(id || '');
@@ -14,7 +16,14 @@ const ProblemWrapper = () => {
   }
 
   const Component = problem.component;
-  return <Component />;
+
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<Loading />}>
+        <Component />
+      </Suspense>
+    </ErrorBoundary>
+  );
 };
 
 const App: React.FC = () => {

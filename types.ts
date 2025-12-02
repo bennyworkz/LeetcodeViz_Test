@@ -7,7 +7,8 @@ export interface Problem {
   number: number;
   title: string;
   difficulty: Difficulty;
-  component: React.ComponentType;
+  // Supports standard components or lazy loaded chunks
+  component: React.ComponentType | React.LazyExoticComponent<any>;
 }
 
 export interface CodeLineProps {
