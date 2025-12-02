@@ -1,5 +1,6 @@
 import { Problem } from './types';
 import GCDStringsVisualizer from './problems/GCDStringsVisualizer';
+import MergeStringsVisualizer from './problems/MergeStringsVisualizer';
 
 export const problems: Problem[] = [
   {
@@ -8,6 +9,13 @@ export const problems: Problem[] = [
     title: 'GCD of Strings',
     difficulty: 'Easy',
     component: GCDStringsVisualizer,
+  },
+  {
+    id: '1768-merge-strings',
+    number: 1768,
+    title: 'Merge Strings Alternately',
+    difficulty: 'Easy',
+    component: MergeStringsVisualizer,
   },
   // Future problems will be added here
 ];
