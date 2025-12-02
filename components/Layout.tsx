@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { Menu, Github, Code2, Folder } from 'lucide-react';
+import { NavLink, Outlet, Link } from 'react-router-dom';
+import { Menu, Github, Code2, Folder, ChevronLeft } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 const Layout = () => {
@@ -25,13 +25,21 @@ const Layout = () => {
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Sidebar Header */}
-        <div className="p-6 border-b border-slate-800 flex items-center gap-3">
-          <div className="bg-blue-600 p-2 rounded-lg text-white">
-            <Code2 size={24} />
-          </div>
-          <div>
-            <h1 className="text-white font-bold text-lg leading-tight">LeetCode Viz</h1>
-            <p className="text-xs text-slate-500">Interactive Solutions</p>
+        <div className="p-4 border-b border-slate-800">
+           {/* Back to Home Link */}
+           <Link to="/" className="flex items-center gap-2 text-xs text-slate-500 hover:text-white transition-colors mb-4 group">
+              <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+              Back to Modules
+           </Link>
+           
+           <div className="flex items-center gap-3 px-2">
+            <div className="bg-blue-600 p-2 rounded-lg text-white">
+              <Code2 size={24} />
+            </div>
+            <div>
+              <h1 className="text-white font-bold text-lg leading-tight">LeetCode Viz</h1>
+              <p className="text-xs text-slate-500">Interactive Solutions</p>
+            </div>
           </div>
         </div>
 
