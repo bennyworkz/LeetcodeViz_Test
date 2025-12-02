@@ -1,5 +1,21 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, ArrowRight, Code2, BookOpen, Activity, GitMerge, Layers, Zap } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, ArrowRight, Code2, BookOpen, Activity, GitMerge, Layers, Zap, Copy, Check } from 'lucide-react';
+
+const SOLUTION_CODE = `class Solution {
+    public String mergeAlternately(String word1, String word2) {
+        StringBuilder result = new StringBuilder();
+        int i=0, j=0;
+        while (i < word1.length() || j < word2.length()) {
+            if(i < word1.length()) {
+                result.append(word1.charAt(i++));
+            }
+            if(j < word2.length()) {
+                result.append(word2.charAt(j++));
+            }
+        }
+        return result.toString();
+    }
+}`;
 
 const MergeStringsVisualizer = () => {
   const [activeTab, setActiveTab] = useState<'visualizer' | 'learn'>('visualizer');
@@ -49,6 +65,7 @@ const VisualizerMode = () => {
   
   // Playback State
   const [currentStep, setCurrentStep] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   // --- Logic Engine ---
   const trace = useMemo(() => {
@@ -124,6 +141,12 @@ const VisualizerMode = () => {
     setCurrentStep(0);
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(SOLUTION_CODE);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const currentState = trace[currentStep] || trace[0];
   const { i, j, result } = currentState.state || { i: 0, j: 0, result: "" };
 
@@ -134,11 +157,19 @@ const VisualizerMode = () => {
           <div className="bg-[#1e1e1e] rounded-xl border border-slate-800 shadow-xl overflow-hidden flex flex-col h-full min-h-[500px]">
             <div className="bg-[#2d2d2d] px-4 py-2 text-xs font-mono text-slate-400 flex justify-between items-center border-b border-slate-700">
               <span className="flex items-center gap-2"><Code2 size={14}/> Solution.java</span>
+              <button 
+                onClick={handleCopy}
+                className="flex items-center gap-1.5 text-xs hover:text-white transition-colors group"
+                title="Copy Code"
+              >
+                {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                <span className={copied ? "text-green-400" : ""}>{copied ? 'Copied!' : 'Copy'}</span>
+              </button>
             </div>
             <div className="p-4 overflow-x-auto font-mono text-sm leading-6 relative flex-1">
                 {/* Line Highlighter */}
                 <div 
-                  className="absolute left-0 right-0 bg-blue-500/20 border-l-2 border-blue-500 transition-all duration-300 pointer-events-none"
+                  className="absolute left-0 right-0 bg-blue-500/10 border-l-2 border-blue-500 transition-all duration-300 pointer-events-none"
                   style={{ 
                     top: `${(currentState.line * 24) + 16 - 24}px`, 
                     height: '24px' 
@@ -393,12 +424,27 @@ const LearnMode = () => {
   );
 };
 
-const CodeLine: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => (
-  <div className={`flex relative z-10 group ${active ? 'bg-blue-900/30 text-white font-bold' : 'text-slate-500'}`}>
-    <span className="w-8 select-none text-right pr-3 text-slate-600 border-r border-slate-700 mr-3 shrink-0">{num}</span>
-    <pre className="font-mono whitespace-pre">{code}</pre>
-  </div>
-);
+const CodeLine: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
+  // Simple syntax highlighting regex
+  const parts = code.split(/(\/\/.*|\".*?\"|\b(public|class|return|if|else|while|int|void|String|boolean|new|this)\b|\b\d+\b)/g).filter(Boolean);
+
+  return (
+    <div className={`flex relative z-10 group ${active ? 'bg-blue-900/30 font-bold' : ''}`}>
+      <span className="w-8 select-none text-right pr-3 text-slate-600 border-r border-slate-700 mr-3 shrink-0">{num}</span>
+      <pre className="font-mono whitespace-pre text-slate-300">
+        {parts.map((part, i) => {
+          if (part.startsWith('//')) return <span key={i} className="text-green-600 italic">{part}</span>;
+          if (part.startsWith('"')) return <span key={i} className="text-orange-300">{part}</span>;
+          if (/^\d+$/.test(part)) return <span key={i} className="text-emerald-300">{part}</span>;
+          if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void'].includes(part)) return <span key={i} className="text-pink-400">{part}</span>;
+          if (['int', 'boolean'].includes(part)) return <span key={i} className="text-blue-400">{part}</span>;
+          if (['String', 'StringBuilder'].includes(part)) return <span key={i} className="text-yellow-300">{part}</span>;
+          return part;
+        })}
+      </pre>
+    </div>
+  );
+};
 
 const TopicButton: React.FC<{ active: boolean; onClick: () => void; title: string; desc: string }> = ({ active, onClick, title, desc }) => (
   <button 
