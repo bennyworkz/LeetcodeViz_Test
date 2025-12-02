@@ -196,9 +196,9 @@ const VisualizerMode = () => {
   const currentState = trace[currentStep] || trace[0];
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 animate-in fade-in duration-500">
-      {/* LEFT COLUMN: Code View (5 cols) */}
-      <div className="xl:col-span-5 flex flex-col gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in duration-500">
+      {/* LEFT COLUMN: Code View */}
+      <div className="flex flex-col gap-6">
           <div className="bg-[#1e1e1e] rounded-xl border border-slate-800 shadow-xl overflow-hidden flex flex-col h-full min-h-[500px]">
             <div className="bg-[#2d2d2d] px-4 py-2 text-xs font-mono text-slate-400 flex justify-between items-center border-b border-slate-700">
               <span className="flex items-center gap-2"><Code2 size={14}/> Solution.java</span>
@@ -211,7 +211,8 @@ const VisualizerMode = () => {
                 <span className={copied ? "text-green-400" : ""}>{copied ? 'Copied!' : 'Copy'}</span>
               </button>
             </div>
-            <div className="p-4 overflow-x-auto font-mono text-sm leading-6 relative flex-1">
+            {/* Removed overflow-x-auto to allow wrapping */}
+            <div className="p-4 font-mono text-sm leading-6 relative flex-1">
                 {/* Line Highlighter */}
                 <div 
                   className="absolute left-0 right-0 bg-blue-500/10 border-l-2 border-blue-500 transition-all duration-300 pointer-events-none"
@@ -253,8 +254,8 @@ const VisualizerMode = () => {
         </div>
       </div>
 
-      {/* RIGHT COLUMN: Visuals & Controls (7 cols) */}
-      <div className="xl:col-span-7 space-y-6">
+      {/* RIGHT COLUMN: Visuals & Controls */}
+      <div className="space-y-6">
         
         {/* Controls */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
@@ -758,12 +759,12 @@ const LearnMode = () => {
 
 const CodeLine: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
   // Simple syntax highlighting regex
-  const parts = code.split(/(\/\/.*|\".*?\"|\b(public|class|return|if|else|while|int|void|String|boolean|new|this)\b|\b\d+\b)/g).filter(Boolean);
+  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this)\b|\b\d+\b)/g).filter(Boolean);
 
   return (
     <div className={`flex relative z-10 group ${active ? 'bg-blue-900/30 font-bold' : ''}`}>
       <span className="w-8 select-none text-right pr-3 text-slate-600 border-r border-slate-700 mr-3 shrink-0">{num}</span>
-      <pre className="font-mono whitespace-pre text-slate-300">
+      <pre className="font-mono whitespace-pre-wrap break-all text-slate-300">
         {parts.map((part, i) => {
           if (part.startsWith('//')) return <span key={i} className="text-green-600 italic">{part}</span>;
           if (part.startsWith('"')) return <span key={i} className="text-orange-300">{part}</span>;
