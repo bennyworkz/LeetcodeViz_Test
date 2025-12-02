@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Menu, X, BookOpen, Github, Code2 } from 'lucide-react';
-import { problems } from '../problemRegistry';
+import { Menu, Github, Code2, Folder } from 'lucide-react';
+import { modules } from '../problemRegistry';
 
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -37,37 +37,43 @@ const Layout = () => {
 
         {/* Scrollable Problem List */}
         <div className="flex-1 overflow-y-auto py-4">
-          <div className="px-4 mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-            Problems
-          </div>
-          <nav className="space-y-1 px-2">
-            {problems.map((problem) => (
-              <NavLink
-                key={problem.id}
-                to={`/problem/${problem.id}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) => `
-                  group flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                  ${isActive 
-                    ? 'bg-blue-600/10 text-blue-400' 
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
-                `}
-              >
-                <span className="truncate mr-2">
-                  <span className="opacity-50 mr-2">{problem.number}.</span>
-                  {problem.title}
-                </span>
-                <span className={`
-                  text-[10px] px-1.5 py-0.5 rounded border
-                  ${problem.difficulty === 'Easy' ? 'border-green-800 text-green-500 bg-green-900/20' : ''}
-                  ${problem.difficulty === 'Medium' ? 'border-amber-800 text-amber-500 bg-amber-900/20' : ''}
-                  ${problem.difficulty === 'Hard' ? 'border-red-800 text-red-500 bg-red-900/20' : ''}
-                `}>
-                  {problem.difficulty}
-                </span>
-              </NavLink>
-            ))}
-          </nav>
+          
+          {modules.map((module) => (
+            <div key={module.id} className="mb-6">
+              <div className="px-6 mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+                 <Folder size={12} /> {module.title}
+              </div>
+              <nav className="space-y-1 px-3">
+                {module.problems.map((problem) => (
+                  <NavLink
+                    key={problem.id}
+                    to={`/problem/${problem.id}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) => `
+                      group flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                      ${isActive 
+                        ? 'bg-blue-600/10 text-blue-400' 
+                        : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
+                    `}
+                  >
+                    <span className="truncate mr-2">
+                      <span className="opacity-50 mr-2 font-mono">{problem.number}.</span>
+                      {problem.title}
+                    </span>
+                    <span className={`
+                      text-[10px] px-1.5 py-0.5 rounded border font-mono
+                      ${problem.difficulty === 'Easy' ? 'border-green-900 text-green-600 bg-green-900/10' : ''}
+                      ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-600 bg-amber-900/10' : ''}
+                      ${problem.difficulty === 'Hard' ? 'border-red-900 text-red-600 bg-red-900/10' : ''}
+                    `}>
+                      {problem.difficulty}
+                    </span>
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
+          ))}
+
         </div>
 
         {/* Sidebar Footer */}
