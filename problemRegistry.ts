@@ -4,6 +4,7 @@ import { Module, Problem } from './types';
 // Lazy load the problem components to improve initial page load performance
 const GCDStringsVisualizer = lazy(() => import('./problems/GCDStringsVisualizer'));
 const MergeStringsVisualizer = lazy(() => import('./problems/MergeStringsVisualizer'));
+const KidsCandiesVisualizer = lazy(() => import('./problems/KidsCandiesVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -24,6 +25,13 @@ export const modules: Module[] = [
         title: 'GCD of Strings',
         difficulty: 'Easy',
         component: GCDStringsVisualizer,
+      },
+      {
+        id: '1431-kids-candies',
+        number: 1431,
+        title: 'Kids With the Greatest Number of Candies',
+        difficulty: 'Easy',
+        component: KidsCandiesVisualizer,
       },
     ]
   },

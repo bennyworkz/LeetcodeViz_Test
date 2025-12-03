@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, ArrowRight, Code2, BookOpen, Activity, GitMerge, Layers, Zap, Copy, Check } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, ArrowRight, Code2, BookOpen, Activity, GitMerge, Layers, Zap, Copy, Check, Info, AlignLeft } from 'lucide-react';
 
 const SOLUTION_CODE = `class Solution {
     public String mergeAlternately(String word1, String word2) {
@@ -233,33 +233,47 @@ const VisualizerMode = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-            <button onClick={() => {setCurrentStep(0);}} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full" title="Reset">
-              <RotateCcw size={20} />
-            </button>
-            <div className="flex-1 px-4 flex justify-center gap-4">
-               {/* Previous Button */}
-               <button 
-                  onClick={handlePrev}
-                  disabled={currentStep === 0}
-                  className="px-6 py-2 rounded-lg font-bold flex items-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                >
-                  <ChevronLeft size={18} /> Previous
+          <div className="flex flex-col gap-4 pt-4 border-t border-slate-100">
+            {/* Progress Bar */}
+            <div className="w-full">
+                <div className="flex justify-between text-xs text-slate-400 mb-1 font-mono">
+                    <span>Start</span>
+                    <span>Step {currentStep + 1} / {trace.length}</span>
+                    <span>End</span>
+                </div>
+                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div 
+                        className="h-full bg-blue-500 transition-all duration-300 ease-out"
+                        style={{ width: `${(currentStep / (Math.max(1, trace.length - 1))) * 100}%` }}
+                    />
+                </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex items-center justify-between">
+                <button onClick={() => {setCurrentStep(0);}} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full" title="Reset">
+                  <RotateCcw size={20} />
                 </button>
 
-                {/* Next Button */}
-                <button 
-                  onClick={handleNext}
-                  disabled={currentStep === trace.length - 1}
-                  className="px-6 py-2 rounded-lg font-bold flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm shadow-blue-200"
-                >
-                  Next <ChevronRight size={18} />
-                </button>
+                <div className="flex gap-3">
+                    <button 
+                        onClick={handlePrev}
+                        disabled={currentStep === 0}
+                        className="px-4 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                        <ChevronLeft size={18} /> Prev
+                    </button>
+                    <button 
+                        onClick={handleNext}
+                        disabled={currentStep === trace.length - 1}
+                        className="px-6 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-blue-200"
+                    >
+                        Next <ChevronRight size={18} />
+                    </button>
+                </div>
             </div>
-             <div className="text-xs font-mono text-slate-400 w-12 text-right">
-                {currentStep}/{trace.length - 1}
-             </div>
           </div>
+
           <div className="flex gap-2 text-xs justify-center pt-2 border-t border-slate-50 mt-2">
               <button onClick={() => loadExample("abc", "pqr")} className="px-3 py-1 bg-slate-50 text-slate-600 rounded border border-slate-200 hover:bg-slate-100">Example 1 (Equal)</button>
               <button onClick={() => loadExample("ab", "pqrs")} className="px-3 py-1 bg-slate-50 text-slate-600 rounded border border-slate-200 hover:bg-slate-100">Example 2 (W2 Longer)</button>
@@ -351,19 +365,80 @@ const VisualizerMode = () => {
 
 // --- MODE 2: THE LEARNING MODE ---
 const LearnMode = () => {
-  const [selectedTopic, setSelectedTopic] = useState('pointers');
+  const [selectedTopic, setSelectedTopic] = useState('problem');
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500">
       {/* Navigation Sidebar */}
       <div className="lg:col-span-3 space-y-2">
-         <TopicButton active={selectedTopic === 'pointers'} onClick={() => setSelectedTopic('pointers')} title="1. Two Pointers" desc="The core technique" />
-         <TopicButton active={selectedTopic === 'alternating'} onClick={() => setSelectedTopic('alternating')} title="2. Alternating Logic" desc="How the zip works" />
-         <TopicButton active={selectedTopic === 'leftovers'} onClick={() => setSelectedTopic('leftovers')} title="3. Handling Leftovers" desc="Different lengths" />
+         <TopicButton active={selectedTopic === 'problem'} onClick={() => setSelectedTopic('problem')} title="1. Problem Statement" desc="The Goal & Rules" />
+         <TopicButton active={selectedTopic === 'pointers'} onClick={() => setSelectedTopic('pointers')} title="2. Two Pointers" desc="The core technique" />
+         <TopicButton active={selectedTopic === 'alternating'} onClick={() => setSelectedTopic('alternating')} title="3. Alternating Logic" desc="How the zip works" />
+         <TopicButton active={selectedTopic === 'leftovers'} onClick={() => setSelectedTopic('leftovers')} title="4. Handling Leftovers" desc="Different lengths" />
       </div>
 
       {/* Content Area */}
       <div className="lg:col-span-9 bg-white rounded-xl border border-slate-200 shadow-sm p-8 min-h-[600px] flex flex-col">
+         
+         {selectedTopic === 'problem' && (
+           <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
+             <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-bold mb-1">
+                 <AlignLeft size={16}/> Problem Statement
+             </div>
+             <h2 className="text-2xl font-bold text-slate-800">Merge Strings Alternately</h2>
+             <p className="text-slate-600 leading-relaxed text-lg">
+               You are given two strings, <code className="font-mono bg-blue-50 text-blue-700 px-1 rounded">word1</code> and <code className="font-mono bg-purple-50 text-purple-700 px-1 rounded">word2</code>. 
+               Your task is to merge them by adding letters in <strong>alternating order</strong>, starting with <code>word1</code>.
+             </p>
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                   <h3 className="font-bold text-slate-700 mb-4 flex items-center gap-2"><Zap size={18} className="text-amber-500"/> Scenario 1: Equal Lengths</h3>
+                   <div className="space-y-2 text-sm">
+                      <div className="flex justify-between"><span>word1</span> <span className="font-mono">"abc"</span></div>
+                      <div className="flex justify-between"><span>word2</span> <span className="font-mono">"pqr"</span></div>
+                      <div className="h-px bg-slate-300 my-2"></div>
+                      <div className="flex justify-between font-bold"><span>Result</span> <span className="font-mono text-green-600">"apbqcr"</span></div>
+                   </div>
+                   <div className="mt-4 flex justify-center gap-1">
+                      <div className="w-6 h-6 bg-blue-500 text-white flex items-center justify-center text-xs rounded shadow-sm">a</div>
+                      <div className="w-6 h-6 bg-purple-500 text-white flex items-center justify-center text-xs rounded shadow-sm">p</div>
+                      <div className="w-6 h-6 bg-blue-500 text-white flex items-center justify-center text-xs rounded shadow-sm">b</div>
+                      <div className="w-6 h-6 bg-purple-500 text-white flex items-center justify-center text-xs rounded shadow-sm">q</div>
+                      <div className="w-6 h-6 bg-blue-500 text-white flex items-center justify-center text-xs rounded shadow-sm">c</div>
+                      <div className="w-6 h-6 bg-purple-500 text-white flex items-center justify-center text-xs rounded shadow-sm">r</div>
+                   </div>
+                </div>
+
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                   <h3 className="font-bold text-slate-700 mb-4 flex items-center gap-2"><Layers size={18} className="text-indigo-500"/> Scenario 2: Uneven Lengths</h3>
+                   <div className="space-y-2 text-sm">
+                      <div className="flex justify-between"><span>word1</span> <span className="font-mono">"ab"</span></div>
+                      <div className="flex justify-between"><span>word2</span> <span className="font-mono">"pqrs"</span></div>
+                      <div className="h-px bg-slate-300 my-2"></div>
+                      <div className="flex justify-between font-bold"><span>Result</span> <span className="font-mono text-green-600">"apbqrs"</span></div>
+                   </div>
+                   <div className="mt-4 flex justify-center gap-1">
+                      <div className="w-6 h-6 bg-blue-500 text-white flex items-center justify-center text-xs rounded shadow-sm">a</div>
+                      <div className="w-6 h-6 bg-purple-500 text-white flex items-center justify-center text-xs rounded shadow-sm">p</div>
+                      <div className="w-6 h-6 bg-blue-500 text-white flex items-center justify-center text-xs rounded shadow-sm">b</div>
+                      <div className="w-6 h-6 bg-purple-500 text-white flex items-center justify-center text-xs rounded shadow-sm">q</div>
+                      <div className="w-6 h-6 bg-purple-500 opacity-50 text-white flex items-center justify-center text-xs rounded shadow-sm">r</div>
+                      <div className="w-6 h-6 bg-purple-500 opacity-50 text-white flex items-center justify-center text-xs rounded shadow-sm">s</div>
+                   </div>
+                   <p className="text-xs text-center mt-2 text-slate-500">Remaining letters are just appended.</p>
+                </div>
+             </div>
+             
+             <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 p-4 rounded-lg text-sm text-blue-900 mt-4">
+                 <Info size={20} className="shrink-0 text-blue-600"/>
+                 <div>
+                    <strong>Constraints:</strong> 1 ≤ word1.length, word2.length ≤ 100. <br/>
+                    Both strings consist of lowercase English letters.
+                 </div>
+             </div>
+           </div>
+         )}
          
          {selectedTopic === 'pointers' && (
            <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
@@ -426,7 +501,8 @@ const LearnMode = () => {
 };
 
 const CodeLine: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
-  // Simple syntax highlighting regex
+  // Simple syntax highlighting regex. 
+  // Using non-capturing groups (?:) inside the split regex to prevent the delimiter from being included in the result array twice (once as match, once as capture group).
   const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|StringBuilder)\b|\b\d+\b)/g).filter(Boolean);
 
   return (
