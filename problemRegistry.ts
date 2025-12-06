@@ -95,7 +95,15 @@ const SimplifyPathVisualizer = lazy(() => import('./problems/SimplifyPathVisuali
 const DecodeWaysVisualizer = lazy(() => import('./problems/DecodeWaysVisualizer.tsx'));
 const MinimumPathSumVisualizer = lazy(() => import('./problems/MinimumPathSumVisualizer.tsx'));
 const RemoveDuplicatesVisualizerii = lazy(() => import('./problems/RemoveDuplicatesVisualizerii.tsx'));
-
+const RotateListVisualizer = lazy(() => import('./problems/RotateListVisualizer.tsx'));
+const SubsetsIIVisualizer = lazy(() => import('./problems/SubsetsIIVisualizer.tsx'));
+const CombinationSumIIVisualizer = lazy(() => import('./problems/CombinationSumIIVisualizer.tsx'));
+const SameTreeVisualizer = lazy(() => import('./problems/SameTreeVisualizer.tsx'));
+const LengthOfLastWordVisualizer = lazy(() => import('./problems/LengthOfLastWordVisualizer.tsx'));
+const SudokuVisualizer = lazy(() => import('./problems/SudokuVisualizer.tsx'));
+const InsertIntervalVisualizer = lazy(() => import('./problems/InsertIntervalVisualizer.tsx'));
+const WildcardVisualizer = lazy(() => import('./problems/WildcardVisualizer.tsx'));
+const CountAndSayVisualizer = lazy(() => import('./problems/CountAndSayVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -138,6 +146,7 @@ export const modules: Module[] = [
           { id: '13-roman-to-integer', number: 13, title: 'Roman to Integer', difficulty: 'Easy', component: RomanVisualizer },
           { id: '36-valid-sudoku', number: 36, title: 'Valid Sudoku', difficulty: 'Medium', component: ValidSudokuVisualizer},
           { id: '41-first-missing-positive', number: 41, title: 'First Missing Positive', difficulty: 'Hard', component: FirstMissingPositiveVisualizer},
+          { id: '57-insert-interval', number: 57, title: 'Insert Interval', difficulty: 'Medium', component: InsertIntervalVisualizer},
         ]
       },
       {
@@ -155,6 +164,7 @@ export const modules: Module[] = [
           { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
           { id: '27-remove-element', number: 27, title: 'Remove Element', difficulty: 'Easy', component: RemoveElementVisualizer },
           { id: '80-remove-duplicates-from-sorted-array-ii', number: 80, title: 'Remove Duplicates from Sorted Array II', difficulty: 'Medium', component: RemoveDuplicatesVisualizerii },
+          { id: '44-wild-card-matching', number: 44, title: 'Wildcard Matching', difficulty: 'Hard', component: WildcardVisualizer },
         ]
       },
       {
@@ -217,6 +227,9 @@ export const modules: Module[] = [
           { id: '51-N-queens', number: 51, title: 'N-Queens', difficulty: 'Hard', component: NQueensVisualizer},
           { id: '39-combination-sum', number: 39, title: 'Combination Sum', difficulty: 'Medium', component: CombinationSumVisualizer},
           { id: '46-permutations', number: 46, title: 'Permutations', difficulty: 'Medium', component: PermutationsVisualizer},
+          { id: '90-subsets-11', number: 90, title: 'Subsets II', difficulty: 'Medium', component: SubsetsIIVisualizer},
+          { id: '40-combination-sum-ii', number: 40, title: 'Combination Sum II', difficulty: 'Medium', component: CombinationSumIIVisualizer},
+          { id: '37-sudoku-solver', number: 37, title: 'Sudoku Solver', difficulty: 'Medium', component: SudokuVisualizer},
         ]
       },
       {
@@ -242,6 +255,7 @@ export const modules: Module[] = [
           { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer},
           { id: '92-reverse-linked-list-ii', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseLinkedListIIVisualizer},
           { id: '24-swap-nodes', number: 24, title: 'Swap Nodes in Pairs', difficulty: 'Medium', component: SwapNodesInPairsVisualizer},
+          { id: '61-rotate-list', number: 61, title: 'Rotate List', difficulty: 'Medium', component: RotateListVisualizer},
         ]
       },
       {
@@ -265,6 +279,8 @@ export const modules: Module[] = [
           { id: '9-palindrome-number', number: 9, title: 'Palindrome Number', difficulty: 'Easy', component: PalindromeVisualizer },
           { id: '14-longest-common-prefix-amazon', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
           { id: '8-string-to-integer', number: 8, title: 'String to Integer (atoi)', difficulty: 'Medium', component: AtoiVisualizer },
+          { id: '58-length-of-last-word', number: 58, title: 'Length of Last Word', difficulty: 'Easy', component: LengthOfLastWordVisualizer },
+          { id: '38-count-and-say', number: 38, title: 'Count and Say', difficulty: 'Medium', component: CountAndSayVisualizer },
         ]
       },
       {
@@ -285,6 +301,7 @@ export const modules: Module[] = [
         description: 'Tree traversal and BST validation.',
         problems: [
           { id: '98-validate-bst', number: 98, title: 'Validate Binary Search Tree', difficulty: 'Medium', component: ValidateBSTVisualizer },
+          { id: '100-same-tree', number: 100, title: 'Same Tree', difficulty: 'Easy', component: SameTreeVisualizer },
         ]
       },
     ]
