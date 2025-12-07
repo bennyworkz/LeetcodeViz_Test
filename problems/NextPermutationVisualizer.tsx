@@ -3,7 +3,8 @@ import {
   ChevronRight, ChevronLeft, Activity, BookOpen, Code2, 
   Check, Copy, Trophy, Target, AlertCircle, Layers, FileText, ArrowRight, 
   ArrowDown, X, Timer, ArrowUp, RefreshCw, 
-  ShieldAlert, ArrowRightLeft, TrendingDown, ListOrdered, FastForward, Database, Network
+  ShieldAlert, ArrowRightLeft, TrendingDown, ListOrdered, FastForward, Database, Network,
+  ArrowLeftRight
 } from 'lucide-react';
 
 const APPROACHES = {
