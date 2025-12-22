@@ -91,6 +91,10 @@ const EditDistanceVisualizer = lazy(() => import('./problems/EditDistanceVisuali
 const AddBinaryVisualizer = lazy(() => import('./problems/AddBinaryVisualizer.tsx'));
 const DivideTwoIntegersVisualizer = lazy(() => import('./problems/DivideTwoIntegersVisualizer.tsx'));
 const SwapNodesInPairsVisualizer = lazy(() => import('./problems/SwapNodesInPairsVisualizer.tsx'));
+const SimplifyPathVisualizer = lazy(() => import('./problems/SimplifyPathVisualizer.tsx'));
+const DecodeWaysVisualizer = lazy(() => import('./problems/DecodeWaysVisualizer.tsx'));
+const MinimumPathSumVisualizer = lazy(() => import('./problems/MinimumPathSumVisualizer.tsx'));
+const RemoveDuplicatesVisualizerii = lazy(() => import('./problems/RemoveDuplicatesVisualizerii.tsx'));
 
 
 // Dynamic Programming / Greedy
@@ -150,6 +154,7 @@ export const modules: Module[] = [
           { id: '75-sort-colors', number: 75, title: 'Sort Colors', difficulty: 'Medium', component: SortColorsVisualizer},
           { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
           { id: '27-remove-element', number: 27, title: 'Remove Element', difficulty: 'Easy', component: RemoveElementVisualizer },
+          { id: '80-remove-duplicates-from-sorted-array-ii', number: 80, title: 'Remove Duplicates from Sorted Array II', difficulty: 'Medium', component: RemoveDuplicatesVisualizerii },
         ]
       },
       {
@@ -186,6 +191,8 @@ export const modules: Module[] = [
           { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer},
           { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
           { id: '72-Edit-distance', number: 70, title: 'Edit Distance', difficulty: 'Medium', component: EditDistanceVisualizer },
+          { id: '91-decode-ways', number: 91, title: 'Decode Ways', difficulty: 'Medium', component: DecodeWaysVisualizer },
+          { id: '64-minimum-path-sum', number: 64, title: 'Minimum Path Sum', difficulty: 'Medium', component: MinimumPathSumVisualizer },
         ]
       },
       {
@@ -220,6 +227,7 @@ export const modules: Module[] = [
           { id: '20-valid-parentheses', number: 20, title: 'Valid Parentheses', difficulty: 'Easy', component: ValidParenthesesVisualizer },
           { id: '84-longest-rectangle-in-histogram', number: 84, title: 'Largest Rectangle in Histogram', difficulty: 'Hard', component: LargestRectangleVisualizer},
           { id: '32-longest-valid-parenthesis', number: 32, title: 'Longest Valid Parentheses', difficulty: 'Hard', component: LongestValidParenthesesVisualizer},
+          { id: '71-simplify-paths', number: 71, title: 'Simplify Path', difficulty: 'Medium', component: SimplifyPathVisualizer},
         ]
       },
       {
