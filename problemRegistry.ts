@@ -5,6 +5,10 @@ import { Module, Problem } from './types';
 const GCDStringsVisualizer = lazy(() => import('./problems/GCDStringsVisualizer'));
 const MergeStringsVisualizer = lazy(() => import('./problems/MergeStringsVisualizer'));
 const KidsCandiesVisualizer = lazy(() => import('./problems/KidsCandiesVisualizer'));
+const CanPlaceFlowersVisualizer = lazy(() => import('./problems/CanPlaceFlowersVisualizer'));
+const ReverseVowelsVisualizer = lazy(() => import('./problems/ReverseVowelsVisualizer'));
+const ReverseWordsVisualizer = lazy(() => import('./problems/ReverseWordsVisualizer'));
+const ProductExceptSelfVisualizer = lazy(() => import('./problems/ProductExceptSelfVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -33,9 +37,36 @@ export const modules: Module[] = [
         difficulty: 'Easy',
         component: KidsCandiesVisualizer,
       },
+      {
+        id: '605-can-place-flowers',
+        number: 605,
+        title: 'Can Place Flowers',
+        difficulty: 'Easy',
+        component: CanPlaceFlowersVisualizer,
+      },
+      {
+        id: '345-reverse-vowels',
+        number: 345,
+        title: 'Reverse Vowels of a String',
+        difficulty: 'Easy',
+        component: ReverseVowelsVisualizer,
+      },
+      {
+        id: '151-reverse-words',
+        number: 151,
+        title: 'Reverse Words in a String',
+        difficulty: 'Medium',
+        component: ReverseWordsVisualizer,
+      },
+      {
+        id: '238-product-except-self',
+        number: 238,
+        title: 'Product of Array Except Self',
+        difficulty: 'Medium',
+        component: ProductExceptSelfVisualizer,
+      },
     ]
   },
-  // Future modules (e.g., "Top 150 Interview") can be added here
 ];
 
 // Helper to flatten problems for searching by ID

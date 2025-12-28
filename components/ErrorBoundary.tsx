@@ -2,7 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 interface State {
@@ -10,6 +10,9 @@ interface State {
   error: Error | null;
 }
 
+/**
+ * ErrorBoundary class component to catch rendering errors in the visualization modules.
+ */
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
@@ -17,6 +20,7 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(error: Error): State {
+    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
@@ -31,12 +35,12 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="bg-red-100 p-4 rounded-full mb-4">
             <AlertTriangle className="text-red-600" size={32} />
           </div>
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Something went wrong</h2>
+          <h2 className="text-xl font-bold text-slate-800 mb-2">Visualization Error</h2>
           <p className="text-slate-600 mb-6 max-w-md">
-            The visualization encountered an unexpected error. This might be due to a temporary glitch or an edge case in the logic.
+            An unexpected error occurred while rendering the visualization step.
           </p>
           <div className="p-4 bg-white rounded border border-slate-200 font-mono text-xs text-red-500 mb-6 text-left w-full max-w-lg overflow-auto">
-             {this.state.error?.message}
+             {this.state.error?.message || "Unknown error"}
           </div>
           <button
             onClick={() => {
@@ -45,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
             }}
             className="flex items-center gap-2 px-6 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
           >
-            <RefreshCcw size={16} /> Reload Page
+            <RefreshCcw size={16} /> Reset Visualizer
           </button>
         </div>
       );
