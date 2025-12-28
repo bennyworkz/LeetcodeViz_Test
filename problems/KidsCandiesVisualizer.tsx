@@ -345,7 +345,7 @@ const LearnMode = () => {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
                    <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2"><Check className="text-green-500" size={18}/> Non-Exclusive Win</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Multiple kids can be "the greatest" simultaneously. The threshold is simply <code>current_kid + extras >= global_max</code>.</p>
+                   <p className="text-sm text-slate-500 leading-relaxed">Multiple kids can be "the greatest" simultaneously. The threshold is simply <code>current_kid + extras &ge; global_max</code>.</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
                    <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2"><Layers size={18} className="text-pink-500"/> Independent Evaluations</h3>
@@ -443,7 +443,7 @@ const InterviewHelper = () => (
                     </div>
                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                         <p className="font-black text-slate-800 mb-1">"How do you handle edge cases like empty arrays?"</p>
-                        <p className="leading-relaxed text-xs italic">"LeetCode constraints often guarantee N >= 2, but for robust production code, I'd include an immediate return for empty or null inputs to prevent errors during the max calculation."</p>
+                        <p className="leading-relaxed text-xs italic">"LeetCode constraints often guarantee N &ge; 2, but for robust production code, I'd include an immediate return for empty or null inputs to prevent errors during the max calculation."</p>
                     </div>
                 </div>
             </div>
@@ -517,7 +517,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
           if (['List', 'ArrayList', 'Math', 'String'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['add', 'max', 'length'].includes(part)) return <span key={i} className="text-indigo-300">{part}</span>;
+          if (['add', 'max', 'length'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
           return part;
         })}
       </pre>
