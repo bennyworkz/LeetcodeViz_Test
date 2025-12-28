@@ -134,14 +134,14 @@ const VisualizerMode = () => {
           }
 
           if (count >= n) {
-              addStep("Success Check", `Target reached! count (${count}) >= n (${n}).`, 11, { success: true });
+              addStep("Success Check", `Target reached! count (${count}) &ge; n (${n}).`, 11, { success: true });
               return steps;
           }
 
           i++;
           addStep("Iterate", `Incrementing i to ${i}.`, 12);
       }
-      addStep("Finish", `End of bed. count (${count}) >= n (${n}) is ${count >= n}.`, 14, { success: count >= n });
+      addStep("Finish", `End of bed. count (${count}) &ge; n (${n}) is ${count >= n}.`, 14, { success: count >= n });
     } else {
       // Padding Approach
       const padded = [0, ...bed, 0];
@@ -292,7 +292,6 @@ const VisualizerMode = () => {
             </div>
 
             <div className="flex items-end justify-center gap-3 overflow-x-auto w-full pb-10">
-                {/* Fixed: Added fallback to empty array to prevent mapping undefined */}
                 {(selectedApproach === 'padding' ? (paddedView || []) : (flowerbed || [])).map((val: number, idx: number) => {
                     const isFocus = selectedApproach === 'padding' ? paddedIdx === idx : i === idx;
                     const isJustPlanted = justPlantedIndex === (selectedApproach === 'padding' ? idx - 1 : idx);
@@ -519,7 +518,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
           if (['List', 'ArrayList', 'Math', 'String', 'System'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['length', 'canPlaceFlowers', 'arraycopy'].includes(part)) return <span key={i} className="text-indigo-300">{part}</span>;
+          if (['length', 'canPlaceFlowers', 'arraycopy'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
           return part;
         })}
       </pre>
