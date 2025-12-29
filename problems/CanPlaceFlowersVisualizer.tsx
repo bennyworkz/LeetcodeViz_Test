@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Flower, Check, X, Code2, Copy, Sprout, MousePointer2, AlertCircle, Zap, AlignLeft, Trophy, MessageSquare, Target, Cpu, AlertTriangle } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Flower, Check, X, Code2, Copy, Sprout, MousePointer2, AlertCircle, Zap, AlignLeft, Trophy, MessageSquare, Target, Cpu, AlertTriangle, FileText } from 'lucide-react';
 
 const APPROACHES = {
   optimal: {
@@ -52,8 +52,44 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">605. Can Place Flowers</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          You have a long flowerbed in which some of the plots are planted, and some are not. However, flowers cannot be planted in <strong>adjacent</strong> plots.
+        </p>
+        <p className="text-lg leading-relaxed">
+          Given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">flowerbed</code> containing <code className="font-bold text-slate-800">0</code>'s and <code className="font-bold text-slate-800">1</code>'s, where <code className="font-bold text-slate-800">0</code> means empty and <code className="font-bold text-slate-800">1</code> means not empty, and an integer <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">n</code>, return <code className="font-bold text-slate-800">true</code> if <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">n</code> new flowers can be planted in the <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">flowerbed</code> without violating the no-adjacent-flowers rule and <code className="font-bold text-slate-800">false</code> otherwise.
+        </p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm">
+              <p><span className="text-slate-400 font-bold">Input:</span> flowerbed = [1,0,0,0,1], n = 1</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> true</p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} flowerbed.length {'<='} 2 * 10<sup>4</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">flowerbed[i]</code> is 0 or 1.</li>
+            <li>There are no two adjacent flowers in <code className="bg-slate-100 px-1.5 rounded text-slate-800">flowerbed</code>.</li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">0 {'<='} n {'<='} flowerbed.length</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const CanPlaceFlowersVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -75,6 +111,7 @@ const CanPlaceFlowersVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -82,6 +119,7 @@ const CanPlaceFlowersVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -145,7 +183,7 @@ const VisualizerMode = () => {
     } else {
       // Padding Approach
       const padded = [0, ...bed, 0];
-      // Fixed: First step of padding approach now includes the paddedView
+      // First step of padding approach now includes the paddedView
       addStep("Init", "Create padded array [0, ...bed, 0] to simplify logic.", 4, { paddedView: [...padded] });
       
       let pCount = 0;

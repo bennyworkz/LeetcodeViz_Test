@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, User, Crown, Check, X, Code2, BarChart3, Info, Copy, Zap, AlignLeft, Lightbulb, Trophy, MessageSquare, Target, AlertCircle, Layers, ArrowRight, MousePointer2, Cpu, AlertTriangle } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, User, Crown, Check, X, Code2, BarChart3, Info, Copy, Zap, AlignLeft, Lightbulb, Trophy, MessageSquare, Target, AlertCircle, Layers, ArrowRight, MousePointer2, Cpu, AlertTriangle, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -51,8 +51,45 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">1431. Kids With the Greatest Number of Candies</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          There are <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">n</code> kids with candies. You are given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">candies</code>, where each <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">candies[i]</code> represents the number of candies the <code className="bg-slate-100 px-1.5 py-0.5 rounded">i<sup>th</sup></code> kid has, and an integer <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">extraCandies</code>, denoting the number of extra candies that you have.
+        </p>
+        <p className="text-lg leading-relaxed">
+          Return a boolean array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">result</code> of length <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">n</code>, where <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">result[i]</code> is <code className="font-bold text-slate-800">true</code> if, after giving the <code className="bg-slate-100 px-1.5 py-0.5 rounded">i<sup>th</sup></code> kid all the <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">extraCandies</code>, they will have the <strong>greatest</strong> number of candies among all the kids, or <code className="font-bold text-slate-800">false</code> otherwise.
+        </p>
+        <p className="text-lg font-bold text-slate-800">Note that multiple kids can have the greatest number of candies.</p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> candies = [2,3,5,1,3], extraCandies = 3</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> [true,true,true,false,true] </p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">n == candies.length</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">2 {'<='} n {'<='} 100</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} candies[i] {'<='} 100</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} extraCandies {'<='} 50</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const KidsCandiesVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -74,6 +111,7 @@ const KidsCandiesVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -81,6 +119,7 @@ const KidsCandiesVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}

@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Code2, BookOpen, Activity, GitMerge, Layers, Zap, Copy, Check, Trophy, MessageSquare, Target, AlertCircle, Clock, Save, HardDrive, AlertTriangle, Cpu, AlignLeft, MousePointer2, ArrowRight } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Code2, BookOpen, Activity, GitMerge, Layers, Zap, Copy, Check, Trophy, MessageSquare, Target, AlertCircle, Clock, Save, HardDrive, AlertTriangle, Cpu, AlignLeft, MousePointer2, ArrowRight, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -76,8 +75,87 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">1768. Merge Strings Alternately</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          You are given two strings <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">word1</code> and <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">word2</code>. Merge the strings by adding letters in alternating order, starting with <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">word1</code>. If a string is longer than the other, append the additional letters onto the end of the merged string.
+        </p>
+        
+        <p className="text-lg font-bold text-slate-800">Return the merged string.</p>
+
+        <div className="space-y-8 mt-10">
+          {/* Example 1 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "abc", word2 = "pqr"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> "apbqcr"</p>
+              <div className="pt-4 mt-4 border-t border-slate-200/60">
+                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: The merged string will be merged as so:</p>
+                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
+                  word1:  a   b   c{'\n'}
+                  word2:    p   q   r{'\n'}
+                  merged: a p b q c r
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Example 2 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "ab", word2 = "pqrs"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> "apbqrs"</p>
+              <div className="pt-4 mt-4 border-t border-slate-200/60">
+                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: Notice that as word2 is longer, "rs" is appended to the end.</p>
+                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
+                  word1:  a   b{'\n'}
+                  word2:    p   q   r   s{'\n'}
+                  merged: a p b q   r   s
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Example 3 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 3:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "abcd", word2 = "pq"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> "apbqcd"</p>
+              <div className="pt-4 mt-4 border-t border-slate-200/60">
+                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: Notice that as word1 is longer, "cd" is appended to the end.</p>
+                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
+                  word1:  a   b   c   d{'\n'}
+                  word2:    p   q{'\n'}
+                  merged: a p b q c   d
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} word1.length, word2.length {'<='} 100</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">word1</code> and <code className="bg-slate-100 px-1.5 rounded text-slate-800">word2</code> consist of lowercase English letters.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const MergeStringsVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -99,12 +177,14 @@ const MergeStringsVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
           </div>
         </div>
 
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -356,7 +436,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
           if (['String', 'StringBuilder', 'Math'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['substring', 'equals', 'length', 'min', 'max', 'append', 'toString', 'charAt'].includes(part)) return <span key={i} className="text-indigo-300">{part}</span>;
+          if (['substring', 'equals', 'length', 'min', 'max', 'append', 'toString', 'charAt'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
           return part;
         })}
       </pre>

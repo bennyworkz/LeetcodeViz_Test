@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Minus, Plus, Search, Expand, Trash2, History, Layers, Calculator } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Minus, Plus, Search, Expand, Trash2, History, Layers, Calculator, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -58,8 +58,51 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">1493. Longest Subarray of 1's After Deleting One Element</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given a binary array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code>, you should delete one element from it.
+        </p>
+        <p className="text-lg leading-relaxed">
+          Return <em>the size of the longest non-empty subarray containing only</em> <code className="font-bold text-slate-800">1</code>'s <em>in the resulting array.</em> Return <code className="font-bold text-slate-800">0</code> if there is no such subarray.
+        </p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [1,1,0,1]</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 3</p>
+              <p className="mt-2 text-slate-500 italic">Explanation: After deleting the number in position 2, [1,1,1] contains 3 numbers with value of 1's.</p>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [0,1,1,1,0,1,1,0,1]</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 5</p>
+              <p className="mt-2 text-slate-500 italic">Explanation: After deleting the number in position 4, [0,1,1,1,1,1,0,1] contains 5 numbers with value of 1's in the longest subarray.</p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} nums.length {'<='} 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">nums[i]</code> is either <code className="font-bold text-slate-800">0</code> or <code className="font-bold text-slate-800">1</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const LongestSubarrayOnesVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -81,6 +124,7 @@ const LongestSubarrayOnesVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -88,6 +132,7 @@ const LongestSubarrayOnesVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -192,7 +237,7 @@ const VisualizerMode = () => {
           <div className="bg-[#0f172a] rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col h-[500px]">
             <div className="bg-[#1e293b] px-4 py-3 text-xs font-mono text-slate-400 flex justify-between items-center border-b border-slate-800/50">
               <div className="flex items-center gap-2 text-indigo-400 font-bold">Solution.java</div>
-              <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors">
+              <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors group">
                 {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
                 <span className={copied ? "text-green-400" : "text-slate-300"}>{copied ? 'Copied' : 'Copy'}</span>
               </button>
@@ -230,13 +275,13 @@ const VisualizerMode = () => {
                     <span>Result</span>
                 </div>
                 <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
-                    <div className="h-full bg-indigo-500 transition-all duration-500 ease-out" style={{ width: `${(currentStep / (Math.max(1, trace.length - 1))) * 100}%` }} />
+                    <div className="h-full bg-indigo-500 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(79,70,229,0.5)]" style={{ width: `${(currentStep / (Math.max(1, trace.length - 1))) * 100}%` }} />
                 </div>
             </div>
             <div className="flex items-center justify-between gap-4">
                 <button onClick={() => setCurrentStep(0)} className="p-3 text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-xl transition-all" title="Reset Simulation"><RotateCcw size={20}/></button>
                 <div className="flex gap-3 flex-1">
-                    <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition-all disabled:opacity-30 flex items-center justify-center gap-2">
+                    <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                         <ChevronLeft size={18} /> Prev
                     </button>
                     <button onClick={handleNext} disabled={currentStep === trace.length - 1} className="flex-[2] px-6 py-3 bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl font-bold transition-all disabled:opacity-30 shadow-lg shadow-indigo-200 flex items-center justify-center gap-2">
@@ -334,8 +379,8 @@ const VisualizerMode = () => {
             {finished && (
                <div className="animate-in zoom-in duration-500">
                   <div className="bg-indigo-50 border-2 border-indigo-200 px-10 py-6 rounded-3xl flex flex-col items-center gap-2 shadow-xl">
-                      <Check className="text-indigo-600" size={40} />
-                      <span className="text-xs font-black uppercase tracking-widest text-indigo-700">Scan Complete</span>
+                      <Check className="text-green-600" size={40} />
+                      <span className="text-xs font-black uppercase tracking-widest text-green-700">Scan Complete</span>
                       <span className="text-4xl font-black text-slate-900">{maxLen}</span>
                   </div>
                </div>
@@ -360,7 +405,7 @@ const LearnMode = () => {
 
             <div className="lg:col-span-9 bg-white p-8 rounded-xl border border-slate-200 shadow-sm min-h-[600px] flex flex-col">
                 {selectedTopic === 'rules' && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4">
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
                         <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-black mb-1">
                             <AlignLeft size={16}/> Problem Intuition
                         </div>
@@ -467,7 +512,7 @@ const InterviewHelper = () => (
             </div>
 
             <div className="bg-slate-900 text-white rounded-xl p-6 shadow-lg border-l-4 border-indigo-500">
-                <h3 className="text-lg font-bold flex items-center gap-2 mb-4 uppercase tracking-widest text-indigo-400">
+                <h3 className="text-lg font-bold flex items-center gap-2 mb-4 uppercase tracking-widest text-blue-400">
                     <Target size={20} />
                     The Elite Pitch
                 </h3>
@@ -490,7 +535,7 @@ const InterviewHelper = () => (
                     </div>
                     <div className="bg-white p-3 rounded border border-amber-100 shadow-sm">
                         <span className="text-[10px] font-black text-amber-600 block mb-1 uppercase tracking-widest tracking-tighter">DATA REDUNDANCY</span>
-                        <p className="text-xs text-slate-600 leading-relaxed">Highlight why Brute Force is $O(N^2)$. It's not just 'slow'; it's mathematically redundant because it recalculates sums for overlapping regions.</p>
+                        <p className="text-xs text-slate-600 leading-relaxed">Highlight why Brute Force is O(N²). It's not just 'slow'; it's mathematically redundant because it recalculates sums for overlapping regions.</p>
                     </div>
                 </div>
             </div>

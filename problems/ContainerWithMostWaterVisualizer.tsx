@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Waves, Ruler, Maximize, X } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Waves, Ruler, Maximize, X, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -52,8 +52,61 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">11. Container With Most Water</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          You are given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">height</code> of length <code className="italic text-slate-800">n</code>. There are <code className="italic text-slate-800">n</code> vertical lines drawn such that the two endpoints of the <code className="italic text-slate-800">i<sup>th</sup></code> line are <code className="bg-slate-100 px-1.5 rounded">(i, 0)</code> and <code className="bg-slate-100 px-1.5 rounded">(i, height[i])</code>.
+        </p>
+        
+        <p className="text-lg leading-relaxed">
+          Find two lines that together with the x-axis form a container, such that the container contains the most water.
+        </p>
+
+        <p className="text-lg leading-relaxed">
+          Return <em>the maximum amount of water a container can store.</em>
+        </p>
+
+        <p className="text-lg font-bold text-slate-800 italic underline">
+          Notice that you may not slant the container.
+        </p>
+
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2 text-center">
+              <div className="bg-white border rounded p-4 mb-4 flex items-end justify-center gap-1 h-32">
+                {[1,8,6,2,5,4,8,3,7].map((h, i) => (
+                  <div key={i} className={`w-3 rounded-t ${(i === 1 || i === 8) ? 'bg-blue-500 h-full' : 'bg-slate-200'}`} style={{ height: `${h * 10}%` }}></div>
+                ))}
+              </div>
+              <p className="text-left"><span className="text-slate-400 font-bold">Input:</span> height = [1,8,6,2,5,4,8,3,7]</p>
+              <p className="text-left"><span className="text-slate-400 font-bold">Output:</span> 49</p>
+              <p className="text-xs text-slate-500 italic text-left mt-2">Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water the container can contain is 49 (height of 7 & width between index 1 and 8).</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">n == height.length</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">2 {'<='} n {'<='} 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">0 {'<='} height[i] {'<='} 10<sup>4</sup></code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const ContainerWithMostWaterVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -75,6 +128,7 @@ const ContainerWithMostWaterVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -82,6 +136,7 @@ const ContainerWithMostWaterVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -431,7 +486,7 @@ const LearnMode = () => {
                             </p>
                         </div>
                         
-                        <p className="text-sm text-slate-500 border-t pt-4">
+                        <p className="text-sm text-slate-500 border-t pt-4 italic">
                             This greedy decision-making reduces the problem from O(N²) checking all combinations to a single O(N) pass.
                         </p>
                     </div>
@@ -549,7 +604,7 @@ const TopicButton: React.FC<{ active: boolean; onClick: () => void; title: strin
     <div className={`font-bold ${active ? 'text-blue-800' : 'text-slate-700 group-hover:text-blue-700'}`}>
       {title}
     </div>
-    <div className={`text-xs mt-1 ${active ? 'text-blue-600' : 'text-slate-400'}`}>
+    <div className={`text-xs mt-1 ${active ? 'text-indigo-600' : 'text-slate-400'}`}>
       {desc}
     </div>
   </button>

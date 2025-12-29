@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Minus, Plus, Search, Expand, History, MousePointer2 } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Minus, Plus, Search, Expand, History, MousePointer2, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -58,8 +58,41 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">1004. Max Consecutive Ones III</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given a binary array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code> and an integer <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">k</code>, return <em>the maximum number of consecutive</em> <code className="font-bold text-slate-800">1</code>'s <em>in the array if you can flip at most</em> <code className="bg-slate-100 px-1.5 rounded text-pink-600 font-mono font-bold">k</code> <code className="font-bold text-slate-800">0</code>'s.
+        </p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 6</p>
+              <p className="mt-2 text-slate-500 italic">Explanation: [1,1,1,0,0,<strong>1,1,1,1,1,1</strong>] - Bold numbers were flipped from 0 to 1. The longest subarray is underlined.</p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} nums.length {'<='} 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">nums[i]</code> is either 0 or 1.</li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">0 {'<='} k {'<='} nums.length</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const MaxConsecutiveOnesIIIVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -81,6 +114,7 @@ const MaxConsecutiveOnesIIIVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -88,6 +122,7 @@ const MaxConsecutiveOnesIIIVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -372,7 +407,7 @@ const LearnMode = () => {
 
             <div className="lg:col-span-9 bg-white p-8 rounded-xl border border-slate-200 shadow-sm min-h-[500px] flex flex-col">
                 {selectedTopic === 'window' && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4">
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
                         <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-black mb-1">
                             <AlignLeft size={16}/> Problem Intuition
                         </div>
@@ -513,11 +548,11 @@ const InterviewHelper = () => (
                 </h3>
                 <div className="grid grid-cols-2 gap-4 mt-4 text-xs font-mono">
                     <div className="bg-blue-700/50 p-4 rounded-xl border border-blue-400/30">
-                        <div className="font-black text-blue-100 mb-1 uppercase tracking-widest text-[9px]">Time Complexity</div>
+                        <div className="font-black text-indigo-100 mb-1 uppercase tracking-widest text-[9px]">Time Complexity</div>
                         O(N) (One Pass)
                     </div>
                     <div className="bg-blue-700/50 p-4 rounded-xl border border-blue-400/30">
-                        <div className="font-black text-blue-100 mb-1 uppercase tracking-widest text-[9px]">Space Complexity</div>
+                        <div className="font-black text-indigo-100 mb-1 uppercase tracking-widest text-[9px]">Space Complexity</div>
                         O(1) Auxiliary
                     </div>
                 </div>

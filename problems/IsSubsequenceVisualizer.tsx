@@ -1,7 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-// Added missing 'X' icon to the lucide-react import
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, ListChecks, ArrowDown, X } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, ListChecks, ArrowDown, X, FileText } from 'lucide-react';
 
 const APPROACHES = {
   optimal: {
@@ -52,8 +50,55 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">392. Is Subsequence</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given two strings <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">s</code> and <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">t</code>, return <code className="font-bold text-slate-800">true</code> if <code className="italic text-slate-800">s</code> is a <strong>subsequence</strong> of <code className="italic text-slate-800">t</code>, or <code className="font-bold text-slate-800">false</code> otherwise.
+        </p>
+        
+        <p className="text-lg leading-relaxed">
+          A <strong>subsequence</strong> of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (i.e., <code className="bg-slate-100 px-1.5 rounded">"ace"</code> is a subsequence of <code className="bg-slate-100 px-1.5 rounded">"abcde"</code> while <code className="bg-slate-100 px-1.5 rounded">"aec"</code> is not).
+        </p>
+
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> s = "abc", t = "ahbgdc"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> true</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> s = "axc", t = "ahbgdc"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> false</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">0 {'<='} s.length {'<='} 100</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">0 {'<='} t.length {'<='} 10<sup>4</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">s</code> and <code className="bg-slate-100 px-1.5 rounded text-slate-800">t</code> consist only of lowercase English letters.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const IsSubsequenceVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -75,6 +120,7 @@ const IsSubsequenceVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -82,6 +128,7 @@ const IsSubsequenceVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}

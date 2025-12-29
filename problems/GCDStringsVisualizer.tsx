@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Code2, BookOpen, Activity, Divide, Layers, Zap, Copy, Check, Trophy, MessageSquare, Target, AlertCircle, Clock, Save, HardDrive, AlertTriangle, Cpu, AlignLeft, X, ArrowRight } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Code2, BookOpen, Activity, Divide, Layers, Zap, Copy, Check, Trophy, MessageSquare, Target, AlertCircle, Clock, Save, HardDrive, AlertTriangle, Cpu, AlignLeft, X, ArrowRight, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -57,8 +57,65 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">1071. Greatest Common Divisor of Strings</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          For two strings <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">s</code> and <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">t</code>, we say <code className="font-bold text-slate-800">"t divides s"</code> if and only if <code className="italic text-slate-800">s = t + t + t + ... + t</code> (i.e., <code className="italic">t</code> is concatenated with itself one or more times).
+        </p>
+        
+        <p className="text-lg leading-relaxed text-slate-800">
+          Given two strings <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">str1</code> and <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">str2</code>, return the largest string <code className="italic font-bold text-slate-900">x</code> such that <code className="italic">x</code> divides both <code className="bg-slate-100 px-1.5 rounded">str1</code> and <code className="bg-slate-100 px-1.5 rounded">str2</code>.
+        </p>
+
+        <div className="space-y-8 mt-10">
+          {/* Example 1 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm">
+              <p><span className="text-slate-400 font-bold">Input:</span> str1 = "ABCABC", str2 = "ABC"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> "ABC"</p>
+            </div>
+          </div>
+
+          {/* Example 2 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm">
+              <p><span className="text-slate-400 font-bold">Input:</span> str1 = "ABABAB", str2 = "ABAB"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> "AB"</p>
+            </div>
+          </div>
+
+          {/* Example 3 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 3:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm">
+              <p><span className="text-slate-400 font-bold">Input:</span> str1 = "LEET", str2 = "CODE"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> ""</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} str1.length, str2.length {'<='} 1000</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">str1</code> and <code className="bg-slate-100 px-1.5 rounded text-slate-800">str2</code> consist of English uppercase letters.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const GCDStringsVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -80,6 +137,7 @@ const GCDStringsVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -87,6 +145,7 @@ const GCDStringsVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -351,7 +410,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
           if (['String', 'StringBuilder', 'Math'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['substring', 'equals', 'length', 'min', 'max', 'gcd', 'isEmpty', 'replace'].includes(part)) return <span key={i} className="text-indigo-300">{part}</span>;
+          if (['substring', 'equals', 'length', 'min', 'max', 'gcd', 'isEmpty', 'replace'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
           return part;
         })}
       </pre>

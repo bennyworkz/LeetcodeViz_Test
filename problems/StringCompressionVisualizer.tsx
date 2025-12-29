@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Hash, Type, ArrowRight, Save } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Hash, Type, ArrowRight, Save, FileText } from 'lucide-react';
 
 const APPROACHES = {
   optimal: {
@@ -32,8 +32,73 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">443. String Compression</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given an array of characters <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">chars</code>, compress it using the following algorithm:
+        </p>
+        
+        <p className="text-lg leading-relaxed">
+          Begin with an empty string <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">s</code>. For each group of <strong>consecutive repeating characters</strong> in <code className="bg-slate-100 px-1.5 rounded">chars</code>:
+        </p>
+
+        <ul className="list-disc list-inside space-y-2 ml-4">
+          <li>If the group's length is <code className="font-bold text-slate-800">1</code>, append the character to <code className="bg-slate-100 px-1.5 rounded text-pink-600 font-mono font-bold">s</code>.</li>
+          <li>Otherwise, append the character followed by the group's length.</li>
+        </ul>
+
+        <p className="text-lg leading-relaxed">
+          The compressed string <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">s</code> <strong>should not be returned separately</strong>, but instead, be stored in the input character array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">chars</code>. Note that group lengths that are 10 or longer will be split into multiple characters in <code className="bg-slate-100 px-1.5 rounded">chars</code>.
+        </p>
+
+        <p className="text-lg leading-relaxed">
+          After you are done <strong>modifying the input array</strong>, return <em>the new length of the array</em>.
+        </p>
+
+        <p className="text-lg font-bold text-slate-800 italic underline">You must write an algorithm that uses only O(1) extra space.</p>
+
+        <div className="space-y-8 mt-10">
+          {/* Example 1 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> chars = ["a","a","b","b","c","c","c"]</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> Return 6, and the first 6 characters of the input array should be: ["a","2","b","2","c","3"]</p>
+              <p className="text-xs text-slate-500 italic mt-2">Explanation: The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".</p>
+            </div>
+          </div>
+
+          {/* Example 2 */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> chars = ["a"]</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> Return 1, and the first character of the input array should be: ["a"]</p>
+              <p className="text-xs text-slate-500 italic mt-2">Explanation: The only group is "a", which remains uncompressed since its length is 1.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} chars.length {'<='} 2000</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">chars[i]</code> is a lowercase English letter, uppercase English letter, digit, or symbol.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const StringCompressionVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -55,6 +120,7 @@ const StringCompressionVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -62,6 +128,7 @@ const StringCompressionVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
