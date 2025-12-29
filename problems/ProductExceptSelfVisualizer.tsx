@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, BarChart3, Trophy, MessageSquare, Target, AlertCircle, Cpu, Layers, MousePointer2, Calculator } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, BarChart3, Trophy, MessageSquare, Target, AlertCircle, Cpu, Layers, MousePointer2, Calculator, FileText } from 'lucide-react';
 
 const APPROACHES = {
   prefixSuffix: {
@@ -63,8 +63,44 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">238. Product of Array Except Self</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code>, return <em>an array</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">answer</code> <em>such that</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">answer[i]</code> <em>is equal to the product of all the elements of</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code> <em>except</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums[i]</code>.
+        </p>
+        <p className="text-lg leading-relaxed">
+          The product of any prefix or suffix of <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code> is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.
+        </p>
+        <p className="text-lg font-bold text-slate-800 underline">You must write an algorithm that runs in O(n) time and without using the division operation.</p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [1,2,3,4]</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> [24,12,8,6]</p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">2 {'<='} nums.length {'<='} 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">-30 {'<='} nums[i] {'<='} 30</code></li>
+            <li>The product of any prefix or suffix of <code className="bg-slate-100 px-1.5 rounded text-slate-800">nums</code> is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const ProductExceptSelfVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -86,6 +122,7 @@ const ProductExceptSelfVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -93,6 +130,7 @@ const ProductExceptSelfVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -218,7 +256,7 @@ const VisualizerMode = () => {
               </button>
             </div>
             <div className="p-6 font-mono text-[13px] leading-relaxed overflow-auto relative scrollbar-thin scrollbar-thumb-slate-700">
-                <div className="absolute left-0 right-0 bg-indigo-500/15 border-l-4 border-indigo-500 transition-all duration-300 pointer-events-none z-0" style={{ top: `${(currentState.line * 20.8) + 24 - 20.8}px`, height: '20.8px' }} />
+                <div className="absolute left-0 right-0 bg-blue-500/15 border-l-4 border-blue-500 transition-all duration-300 pointer-events-none z-0" style={{ top: `${(currentState.line * 20.8) + 24 - 20.8}px`, height: '20.8px' }} />
                 {APPROACHES[selectedApproach].code.split('\n').map((line, idx) => (
                     <CodeLineRenderer key={idx} num={idx + 1} code={line} active={currentState.line === idx + 1} />
                 ))}
@@ -556,7 +594,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void', 'for'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
           if (['String', 'Math', 'res', 'prefix', 'suffix', 'right'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['length', 'substring'].includes(part)) return <span key={i} className="text-indigo-300">{part}</span>;
+          if (['length', 'substring'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
           return part;
         })}
       </pre>

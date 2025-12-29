@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, BarChart3, Trophy, MessageSquare, Target, AlertCircle, Cpu, Layers, MousePointer2, TrendingUp, AlertTriangle, X } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, BarChart3, Trophy, MessageSquare, Target, AlertCircle, Cpu, Layers, MousePointer2, TrendingUp, AlertTriangle, X, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -53,8 +53,40 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">334. Increasing Triplet Subsequence</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code>, return <code className="font-bold text-slate-800">true</code> <em>if there exists a triple of indices</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">(i, j, k)</code> <em>such that</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">i {'<'} j {'<'} k</code> <em>and</em> <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums[i] {'<'} nums[j] {'<'} nums[k]</code>. If no such indices exist, return <code className="font-bold text-slate-800">false</code>.
+        </p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [1,2,3,4,5]</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> true</p>
+              <p className="mt-2 text-slate-500 italic">Explanation: Any triplet where i {'<'} j {'<'} k is valid.</p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} nums.length {'<='} 5 * 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">-2<sup>31</sup> {'<='} nums[i] {'<='} 2<sup>31</sup> - 1</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const IncreasingTripletVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -76,6 +108,7 @@ const IncreasingTripletVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -83,6 +116,7 @@ const IncreasingTripletVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -298,7 +332,7 @@ const VisualizerMode = () => {
                     }
 
                     return (
-                        <div key={idx} className="flex flex-col items-center transition-all duration-500">
+                        <div key={idx} className="flex flex-col items-center transition-all duration-300">
                             <div className={`
                                 w-12 h-14 border-2 rounded-xl flex items-center justify-center font-mono text-lg transition-all duration-300 relative
                                 ${bgClass} ${borderClass} ${textClass}
@@ -492,25 +526,25 @@ const InterviewHelper = () => (
                         <p className="text-xs text-slate-600 leading-relaxed">Ensure you clarify that you understand the difference. A <strong>subsequence</strong> doesn't need to be contiguous, which is why we don't just check triplets in a sliding window.</p>
                     </div>
                     <div className="bg-white p-3 rounded border border-amber-100 shadow-sm">
-                        <span className="text-xs font-bold text-amber-600 block mb-1 uppercase tracking-widest">CONSTRAINTS</span>
-                        <p className="text-xs text-slate-600 leading-relaxed">Note that if the triplet length were a variable <code>k</code> instead of 3, the complexity would shift to <strong>O(N log N)</strong> or <strong>O(N²)</strong> using DP.</p>
+                        <span className="text-xs font-bold text-amber-600 block mb-1 uppercase tracking-widest">VARIABLE UPDATES</span>
+                        <p className="text-xs text-slate-600 leading-relaxed">Explain that updating 'first' doesn't invalidate 'second'. 'second' is a legacy of a previous 'first'.</p>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-emerald-600 text-white rounded-xl p-6 shadow-lg shadow-emerald-100">
-                <h3 className="text-lg font-bold flex items-center gap-2 mb-2">
+            <div className="bg-emerald-600 text-white rounded-xl p-6 shadow-lg shadow-emerald-100 flex flex-col justify-center">
+                <h3 className="text-lg font-bold flex items-center gap-2 mb-4">
                     <Check size={20} />
                     Complexity Overview
                 </h3>
-                <div className="grid grid-cols-2 gap-4 mt-4 text-xs font-mono">
+                <div className="grid grid-cols-2 gap-4 text-xs font-mono">
                     <div className="bg-emerald-700/50 p-4 rounded-xl border border-emerald-400/30">
-                        <div className="font-black text-emerald-100 mb-1 uppercase tracking-widest text-[9px]">Time Complexity</div>
-                        O(N) (Single Pass)
+                        <div className="font-black text-emerald-100 mb-1 uppercase tracking-widest text-[9px]">Time</div>
+                        O(N)
                     </div>
                     <div className="bg-emerald-700/50 p-4 rounded-xl border border-emerald-400/30">
-                        <div className="font-black text-emerald-100 mb-1 uppercase tracking-widest text-[9px]">Space Complexity</div>
-                        O(1) Auxiliary
+                        <div className="font-black text-emerald-100 mb-1 uppercase tracking-widest text-[9px]">Space</div>
+                        O(1)
                     </div>
                 </div>
             </div>
@@ -518,14 +552,16 @@ const InterviewHelper = () => (
     </div>
 );
 
+// Define TabButton component
 const TabButton: React.FC<{ active: boolean, onClick: () => void, icon: React.ReactNode, label: string }> = ({ active, onClick, icon, label }) => (
   <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-black transition-all duration-300 ${active ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
     {icon} {label}
   </button>
 );
 
+// Define CodeLineRenderer component
 const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
-  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|for|Math|Integer|MAX_VALUE)\b|\b\d+\b|\b(?:length|increasingTriplet)\b)/g).filter(Boolean);
+  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|for|void|Integer|MAX_VALUE|Math|max|length)\b|\b\d+\b)/g).filter(Boolean);
 
   return (
     <div className={`flex relative z-10 group min-h-[20.8px] ${active ? 'font-bold' : ''}`}>
@@ -537,8 +573,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (/^\d+$/.test(part)) return <span key={i} className="text-cyan-300">{part}</span>;
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void', 'for'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
-          if (['String', 'Math', 'Integer', 'MAX_VALUE'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['length', 'increasingTriplet'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
+          if (['Integer', 'MAX_VALUE', 'Math', 'max', 'length', 'String'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
           return part;
         })}
       </pre>
@@ -546,19 +581,20 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
   );
 };
 
+// Define TopicButton component
 const TopicButton: React.FC<{ active: boolean; onClick: () => void; title: string; desc: string }> = ({ active, onClick, title, desc }) => (
   <button 
     onClick={onClick}
-    className={`w-full text-left p-4 rounded-xl border transition-all duration-200 group
+    className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group
       ${active 
-        ? 'bg-emerald-50 border-emerald-500 shadow-md ring-1 ring-emerald-200' 
+        ? 'bg-emerald-50 border-emerald-500 shadow-md ring-1 ring-emerald-100' 
         : 'bg-white border-slate-200 hover:border-emerald-300 hover:bg-slate-50'}
     `}
   >
-    <div className={`font-bold ${active ? 'text-emerald-800' : 'text-slate-700 group-hover:text-emerald-700'}`}>
+    <div className={`font-black uppercase tracking-tight text-sm ${active ? 'text-emerald-800' : 'text-slate-700 group-hover:text-emerald-700'}`}>
       {title}
     </div>
-    <div className={`text-xs mt-1 ${active ? 'text-emerald-600' : 'text-slate-400'}`}>
+    <div className={`text-[10px] font-bold mt-1 ${active ? 'text-emerald-600' : 'text-slate-400'}`}>
       {desc}
     </div>
   </button>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Calculator, Layers, ArrowRightLeft, Search } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Calculator, Layers, ArrowRightLeft, Search, FileText } from 'lucide-react';
 
 const APPROACHES = {
   sorting: {
@@ -57,8 +57,61 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">1679. Max Number of K-Sum Pairs</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          You are given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code> and an integer <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">k</code>.
+        </p>
+        
+        <p className="text-lg leading-relaxed">
+          In one operation, you can pick two numbers from the array whose sum equals <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">k</code> and remove them from the array.
+        </p>
+
+        <p className="text-lg leading-relaxed">
+          Return <em>the maximum number of operations you can perform on the array.</em>
+        </p>
+
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [1,2,3,4], k = 5</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 2</p>
+              <p className="text-xs text-slate-500 italic mt-2">Explanation: Starting with nums = [1,2,3,4]:<br/>- Remove numbers 1 and 4, then nums = [2,3]<br/>- Remove numbers 2 and 3, then nums = []<br/>There are no more pairs that sum up to 5, hence a total of 2 operations.</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [3,1,3,4,3], k = 6</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 1</p>
+              <p className="text-xs text-slate-500 italic mt-2">Explanation: Starting with nums = [3,1,3,4,3]:<br/>- Remove the first two 3's, then nums = [1,4,3]<br/>There are no more pairs that sum up to 6, hence a total of 1 operation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} nums.length {'<='} 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} nums[i] {'<='} 10<sup>9</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} k {'<='} 10<sup>9</sup></code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const MaxNumberKSumPairsVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -80,6 +133,7 @@ const MaxNumberKSumPairsVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -87,6 +141,7 @@ const MaxNumberKSumPairsVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}

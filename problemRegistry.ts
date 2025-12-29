@@ -19,6 +19,8 @@ const MaxAverageSubarrayVisualizer = lazy(() => import('./problems/MaxAverageSub
 const MaxVowelsSubstringVisualizer = lazy(() => import('./problems/MaxVowelsSubstringVisualizer'));
 const MaxConsecutiveOnesIIIVisualizer = lazy(() => import('./problems/MaxConsecutiveOnesIIIVisualizer'));
 const LongestSubarrayOnesVisualizer = lazy(() => import('./problems/LongestSubarrayOnesVisualizer'));
+const HighestAltitudeVisualizer = lazy(() => import('./problems/HighestAltitudeVisualizer'));
+const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -57,6 +59,15 @@ export const modules: Module[] = [
       { id: '1456-max-vowels-substring', number: 1456, title: 'Max Vowels in a Substring', difficulty: 'Medium', component: MaxVowelsSubstringVisualizer },
       { id: '1004-max-consecutive-ones-iii', number: 1004, title: 'Max Consecutive Ones III', difficulty: 'Medium', component: MaxConsecutiveOnesIIIVisualizer },
       { id: '1493-longest-subarray-ones', number: 1493, title: "Longest Subarray of 1's After Deleting One", difficulty: 'Medium', component: LongestSubarrayOnesVisualizer },
+    ]
+  },
+  {
+    id: 'prefix-sum',
+    title: 'Prefix Sum',
+    description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+    problems: [
+      { id: '1732-highest-altitude', number: 1732, title: 'Find the Highest Altitude', difficulty: 'Easy', component: HighestAltitudeVisualizer },
+      { id: '724-pivot-index', number: 724, title: 'Find Pivot Index', difficulty: 'Easy', component: PivotIndexVisualizer },
     ]
   }
 ];

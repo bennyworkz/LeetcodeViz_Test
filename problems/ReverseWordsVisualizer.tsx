@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, ArrowRight, Check, Copy, Info, AlignLeft, Zap, Type, Layers, ListFilter, Repeat, Trophy, MessageSquare, Target, AlertCircle, Cpu } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, ArrowRight, Check, Copy, Info, AlignLeft, Zap, Type, Layers, ListFilter, Repeat, Trophy, MessageSquare, Target, AlertCircle, Cpu, FileText } from 'lucide-react';
 
 const APPROACHES = {
   optimal: {
@@ -57,8 +57,47 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">151. Reverse Words in a String</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          Given an input string <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">s</code>, reverse the order of the <strong>words</strong>.
+        </p>
+        <p className="text-lg leading-relaxed">
+          A <strong>word</strong> is defined as a sequence of non-space characters. The <strong>words</strong> in <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono font-bold">s</code> will be separated by at least one space.
+        </p>
+        <p className="text-lg leading-relaxed">
+          Return <em>a string of the words in reverse order concatenated by a single space.</em>
+        </p>
+        <p className="text-lg font-bold text-slate-800">Note that <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono font-bold">s</code> may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.</p>
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> s = "the sky is blue"</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> "blue is sky the"</p>
+            </div>
+          </div>
+        </div>
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} s.length {'<='} 10<sup>4</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">s</code> contains English letters (upper-case and lower-case), digits, and spaces <code className="bg-slate-100 px-1.5 rounded text-slate-800">' '</code>.</li>
+            <li>There is <strong>at least one</strong> word in <code className="bg-slate-100 px-1.5 rounded text-slate-800">s</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const ReverseWordsVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -80,6 +119,7 @@ const ReverseWordsVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -87,6 +127,7 @@ const ReverseWordsVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}

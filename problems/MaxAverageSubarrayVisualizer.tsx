@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Calculator, ArrowRight, Minus, Plus, Search, History, BarChart3 } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Calculator, ArrowRight, Minus, Plus, Search, History, BarChart3, FileText } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -49,8 +49,60 @@ const APPROACHES = {
   }
 };
 
+const ProblemStatement = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
+    <div className="max-w-3xl">
+      <h2 className="text-2xl font-black text-slate-900 mb-6">643. Maximum Average Subarray I</h2>
+      
+      <div className="prose prose-slate max-w-none text-slate-600 space-y-6">
+        <p className="text-lg leading-relaxed">
+          You are given an integer array <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">nums</code> consisting of <code className="italic text-slate-800">n</code> elements, and an integer <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">k</code>.
+        </p>
+        
+        <p className="text-lg leading-relaxed">
+          Find a contiguous subarray whose length is equal to <code className="bg-slate-100 px-1.5 py-0.5 rounded text-pink-600 font-mono font-bold">k</code> that has the maximum average value and return this value.
+        </p>
+
+        <p className="text-lg leading-relaxed">
+          Any answer with a calculation error less than <code className="bg-slate-100 px-1.5 rounded">10<sup>-5</sup></code> will be accepted.
+        </p>
+
+        <div className="space-y-8 mt-10">
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [1,12,-5,-6,50,3], k = 4</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 12.75000</p>
+              <p className="text-xs text-slate-500 italic mt-2">Explanation: Maximum average is (12 - 5 - 6 + 50) / 4 = 51 / 4 = 12.75</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
+              <p><span className="text-slate-400 font-bold">Input:</span> nums = [5], k = 1</p>
+              <p><span className="text-slate-400 font-bold">Output:</span> 5.00000</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-slate-100 mt-10">
+          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+            <AlertCircle size={14} /> Constraints:
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">n == nums.length</code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 {'<='} k {'<='} n {'<='} 10<sup>5</sup></code></li>
+            <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">-10<sup>4</sup> {'<='} nums[i] {'<='} 10<sup>4</sup></code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const MaxAverageSubarrayVisualizer = () => {
-  const [activeTab, setActiveTab] = useState<'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -72,6 +124,7 @@ const MaxAverageSubarrayVisualizer = () => {
           </div>
           
           <div className="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
             <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
             <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Learn" />
             <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
@@ -79,6 +132,7 @@ const MaxAverageSubarrayVisualizer = () => {
         </div>
 
         {/* Content Area */}
+        {activeTab === 'problem' && <ProblemStatement />}
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
@@ -515,7 +569,7 @@ const InterviewHelper = () => (
                 </div>
             </div>
 
-            <div className="bg-blue-600 text-white rounded-xl p-6 shadow-lg shadow-blue-100">
+            <div className="bg-blue-600 text-white rounded-xl p-6 shadow-lg shadow-blue-100 flex flex-col justify-center">
                 <h3 className="text-lg font-bold flex items-center gap-2 mb-2">
                     <Check size={20} />
                     Complexity Summary
