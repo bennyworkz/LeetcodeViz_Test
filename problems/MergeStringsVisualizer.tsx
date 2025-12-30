@@ -88,54 +88,11 @@ const ProblemStatement = () => (
         <p className="text-lg font-bold text-slate-800">Return the merged string.</p>
 
         <div className="space-y-8 mt-10">
-          {/* Example 1 */}
           <div className="space-y-3">
             <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
               <p><span className="text-slate-400 font-bold">Input:</span> word1 = "abc", word2 = "pqr"</p>
               <p><span className="text-slate-400 font-bold">Output:</span> "apbqcr"</p>
-              <div className="pt-4 mt-4 border-t border-slate-200/60">
-                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: The merged string will be merged as so:</p>
-                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
-                  word1:  a   b   c{'\n'}
-                  word2:    p   q   r{'\n'}
-                  merged: a p b q c r
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Example 2 */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
-              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "ab", word2 = "pqrs"</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> "apbqrs"</p>
-              <div className="pt-4 mt-4 border-t border-slate-200/60">
-                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: Notice that as word2 is longer, "rs" is appended to the end.</p>
-                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
-                  word1:  a   b{'\n'}
-                  word2:    p   q   r   s{'\n'}
-                  merged: a p b q   r   s
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Example 3 */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 3:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
-              <p><span className="text-slate-400 font-bold">Input:</span> word1 = "abcd", word2 = "pq"</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> "apbqcd"</p>
-              <div className="pt-4 mt-4 border-t border-slate-200/60">
-                <p className="text-slate-500 font-bold mb-2 text-xs">Explanation: Notice that as word1 is longer, "cd" is appended to the end.</p>
-                <div className="whitespace-pre overflow-x-auto text-slate-700 bg-white/50 p-4 rounded-xl border border-slate-100 text-xs">
-                  word1:  a   b   c   d{'\n'}
-                  word2:    p   q{'\n'}
-                  merged: a p b q c   d
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -160,8 +117,6 @@ const MergeStringsVisualizer = () => {
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
       <div className="max-w-7xl w-full space-y-6">
-        
-        {/* Main Header */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <div className="bg-blue-600 p-3 rounded-xl shadow-lg shadow-blue-200">
@@ -188,7 +143,6 @@ const MergeStringsVisualizer = () => {
         {activeTab === 'visualizer' && <VisualizerMode />}
         {activeTab === 'learn' && <LearnMode />}
         {activeTab === 'interview' && <InterviewHelper />}
-        
       </div>
     </div>
   );
@@ -247,7 +201,7 @@ const VisualizerMode = () => {
       }
       addStep("Done", "Final result ready.", 19);
     } else {
-      addStep("Init", "Pointers i=0, j=0.", 3);
+      addStep("Init", "Pointers i=0, j=0.", 4);
       while (i < w1.length || j < w2.length) {
         addStep("Loop", `Condition: i<${w1.length} || j<${w2.length}`, 7);
         if (i < w1.length) {
@@ -257,11 +211,11 @@ const VisualizerMode = () => {
         }
         if (j < w2.length) {
           res += w2[j];
-          addStep("W2", `Appending word2[${j}]: '${w2[j]}'`, 11, { activeWord: 2, activeIdx: j });
+          addStep("W2", `Appending word2[${j}]: '${w2[j]}'`, 9, { activeWord: 2, activeIdx: j });
           j++;
         }
       }
-      addStep("Done", "Merged complete.", 15);
+      addStep("Done", "Merged complete.", 11);
     }
     return steps;
   }, [word1, word2, selectedApproach]);
@@ -311,10 +265,6 @@ const VisualizerMode = () => {
                  <h4 className="text-sm font-black uppercase tracking-widest">Architectural Summary</h4>
               </div>
               <p className="text-sm text-slate-600 leading-relaxed">{APPROACHES[selectedApproach].explanation}</p>
-              <div className={`p-4 rounded-xl border flex gap-3 items-start transition-all duration-300 ${selectedApproach === 'optimal' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-amber-50 border-amber-200 text-amber-800'}`}>
-                {selectedApproach === 'optimal' ? <Zap className="shrink-0 mt-0.5" size={16}/> : <AlertTriangle className="shrink-0 mt-0.5" size={16}/>}
-                <div className="text-xs font-bold leading-relaxed">{APPROACHES[selectedApproach].lag}</div>
-              </div>
           </div>
       </div>
 
@@ -345,10 +295,10 @@ const VisualizerMode = () => {
             <div className="flex items-center justify-between gap-4">
                 <button onClick={() => setCurrentStep(0)} className="p-3 text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-xl transition-all" title="Reset Simulation"><RotateCcw size={20}/></button>
                 <div className="flex gap-3 flex-1">
-                    <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                    <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold transition-all disabled:opacity-30 flex items-center justify-center gap-2">
                         <ChevronLeft size={18} /> Prev
                     </button>
-                    <button onClick={handleNext} disabled={currentStep === trace.length - 1} className="flex-[2] px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold transition-all disabled:opacity-30 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+                    <button onClick={handleNext} disabled={currentStep === trace.length - 1} className="flex-[2] px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold transition-all disabled:opacity-30 shadow-lg shadow-blue-200 flex items-center justify-center gap-2">
                         Next Action <ChevronRight size={18} />
                     </button>
                 </div>
@@ -363,9 +313,7 @@ const VisualizerMode = () => {
               </div>
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Step Detail</span>
             </div>
-            <div className="text-lg font-black tracking-tight mb-2 flex items-center gap-3">
-                {currentState.phase}
-            </div>
+            <div className="text-lg font-black tracking-tight mb-2 uppercase">{currentState.phase}</div>
             <p className="text-sm text-slate-300 leading-relaxed pt-2 border-t border-slate-700/50">{currentState.description}</p>
         </div>
 
@@ -373,34 +321,25 @@ const VisualizerMode = () => {
             <div className="relative pl-14">
               <span className="absolute left-0 top-3 text-[10px] font-black text-blue-500 uppercase w-10 text-right">word1</span>
               <div className="flex gap-1 flex-wrap">
-                {word1.split('').map((char, idx) => {
-                  const isActive = currentState.activeWord === 1 && currentState.activeIdx === idx;
-                  const isTail = currentState.isTail && currentState.tailWord === 1 && idx >= Math.min(word1.length, word2.length);
-                  return (
+                {word1.split('').map((char, idx) => (
                     <div key={idx} className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center font-mono font-black text-xs transition-all duration-300 
-                      ${isActive ? 'bg-blue-500 border-blue-600 text-white scale-110 shadow-lg' : isTail ? 'bg-blue-50 border-blue-300 text-blue-700' : 'bg-white border-slate-100 text-slate-300'}`}>
+                      ${currentState.activeWord === 1 && currentState.activeIdx === idx ? 'bg-blue-500 border-blue-600 text-white scale-110 shadow-lg' : (currentState.isTail && currentState.tailWord === 1 && idx >= Math.min(word1.length, word2.length) ? 'bg-blue-50 border-blue-300 text-blue-700' : 'bg-white border-slate-100 text-slate-300')}`}>
                       {char}
                     </div>
-                  );
-                })}
+                ))}
               </div>
             </div>
             <div className="relative pl-14">
               <span className="absolute left-0 top-3 text-[10px] font-black text-purple-500 uppercase w-10 text-right">word2</span>
               <div className="flex gap-1 flex-wrap">
-                {word2.split('').map((char, idx) => {
-                  const isActive = currentState.activeWord === 2 && currentState.activeIdx === idx;
-                  const isTail = currentState.isTail && currentState.tailWord === 2 && idx >= Math.min(word1.length, word2.length);
-                  return (
+                {word2.split('').map((char, idx) => (
                     <div key={idx} className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center font-mono font-black text-xs transition-all duration-300 
-                      ${isActive ? 'bg-purple-500 border-purple-600 text-white scale-110 shadow-lg' : isTail ? 'bg-purple-50 border-purple-300 text-purple-700' : 'bg-white border-slate-100 text-slate-300'}`}>
+                      ${currentState.activeWord === 2 && currentState.activeIdx === idx ? 'bg-purple-500 border-purple-600 text-white scale-110 shadow-lg' : (currentState.isTail && currentState.tailWord === 2 && idx >= Math.min(word1.length, word2.length) ? 'bg-purple-50 border-purple-300 text-purple-700' : 'bg-white border-slate-100 text-slate-300')}`}>
                       {char}
                     </div>
-                  );
-                })}
+                ))}
               </div>
             </div>
-            
             {resStr && (
               <div className="pt-8 border-t border-slate-100 flex flex-col items-center">
                 <span className="text-[10px] font-black text-green-600 uppercase tracking-widest mb-3">Merged Result</span>
@@ -415,14 +354,12 @@ const VisualizerMode = () => {
   );
 };
 
-// Define TabButton component
 const TabButton = ({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string }) => (
   <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-black transition-all duration-300 ${active ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
     {icon} {label}
   </button>
 );
 
-// Define CodeLineRenderer component
 const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
   const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|StringBuilder|Math)\b|\b\d+\b|\b(?:substring|equals|length|min|max|append|toString|charAt)\b)/g).filter(Boolean);
   return (
@@ -444,7 +381,6 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
   );
 };
 
-// Define LearnMode component
 const LearnMode = () => {
   const [selectedTopic, setSelectedTopic] = useState('problem');
   return (
@@ -461,55 +397,7 @@ const LearnMode = () => {
                  <AlignLeft size={16}/> Problem Analysis
              </div>
              <h2 className="text-3xl font-black text-slate-900 tracking-tight">How Merging Works</h2>
-             <p className="text-slate-600 leading-relaxed text-lg">
-                The core idea is to take characters from each string one by one. If one string is longer than the other, you simply append the remaining characters at the end.
-             </p>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
-                   <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2"><Check className="text-green-500" size={18}/> Alternating</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">Index 0 from s1, then index 0 from s2, then index 1 from s1, etc.</p>
-                </div>
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
-                   <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2"><Layers className="text-blue-500" size={18}/> Handling the Tail</h3>
-                   <p className="text-sm text-slate-500 leading-relaxed">If s1 has 5 chars and s2 has 3, characters 4 and 5 of s1 are just appended at the very end.</p>
-                </div>
-             </div>
-           </div>
-         )}
-         {selectedTopic === 'builder' && (
-           <div className="space-y-6 animate-in slide-in-from-right-4">
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">The StringBuilder Advantage</h2>
-              <p className="text-slate-600 text-lg leading-relaxed">
-                In many languages, strings are <b>immutable</b>. Every time you do <code>str = str + "a"</code>, a brand new string object is created in memory.
-              </p>
-              <div className="bg-slate-900 p-8 rounded-3xl text-center font-mono text-2xl text-blue-300 shadow-2xl border-4 border-slate-800">
-                 StringBuilder is Mutable
-              </div>
-              <div className="space-y-4 pt-4">
-                <p className="text-sm text-slate-600 leading-relaxed">Using a <code>StringBuilder</code> allows us to append characters to the <i>same</i> memory buffer, avoiding the O(N²) cost of repeatedly copying the result string.</p>
-              </div>
-           </div>
-         )}
-         {selectedTopic === 'optimal' && (
-           <div className="space-y-6 animate-in slide-in-from-right-4">
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">Single-Pass Pointers</h2>
-              <p className="text-slate-600 leading-relaxed text-lg">
-                The most elegant solution uses a single <code>while</code> loop that continues as long as <i>at least one</i> string still has characters.
-              </p>
-              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4 shadow-inner">
-                 <p className="text-sm text-slate-500 font-bold uppercase tracking-widest text-center mb-2">The Loop Pipeline</p>
-                 <div className="flex items-center gap-4">
-                    <div className="bg-white p-4 rounded-xl shadow-md border border-slate-100 flex-1 text-center">
-                       <span className="text-[10px] font-black uppercase text-slate-400 block mb-1">Check i</span>
-                       <span className="text-xs font-bold text-blue-600">Append word1[i]</span>
-                    </div>
-                    <ArrowRight className="text-slate-300" />
-                    <div className="bg-white p-4 rounded-xl shadow-md border border-slate-100 flex-1 text-center">
-                       <span className="text-[10px] font-black uppercase text-slate-400 block mb-1">Check j</span>
-                       <span className="text-xs font-bold text-purple-600">Append word2[j]</span>
-                    </div>
-                 </div>
-              </div>
+             <p className="text-slate-600 leading-relaxed text-lg text-slate-600">The core idea is to take characters from each string one by one. If one string is longer than the other, you simply append the remaining characters at the end.</p>
            </div>
          )}
       </div>
@@ -517,7 +405,6 @@ const LearnMode = () => {
   );
 };
 
-// Define InterviewHelper component
 const InterviewHelper = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in duration-500">
         <div className="space-y-6">
@@ -526,49 +413,24 @@ const InterviewHelper = () => (
                     <MessageSquare className="text-blue-500" size={20} />
                     Common Interview Prep
                 </h3>
-                <div className="space-y-4 text-sm text-slate-600">
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <p className="font-black text-slate-800 mb-1">"Why is string concatenation inside a loop bad?"</p>
-                        <p className="leading-relaxed text-xs italic">"Because strings are immutable. Each concatenation creates a new string and copies all previous characters, turning an O(N) task into O(N²)."</p>
-                    </div>
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <p className="font-black text-slate-800 mb-1">"How do you handle inputs of significantly different lengths?"</p>
-                        <p className="leading-relaxed text-xs italic">"Using a single while loop with independent boundary checks for each pointer is the most robust way. It naturally handles the 'tail' of the longer string without extra conditional blocks."</p>
-                    </div>
-                </div>
-            </div>
-            <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
-                <h3 className="text-lg font-black flex items-center gap-2 mb-4 relative z-10">
-                    <Target className="text-amber-400" size={20} />
-                    The Senior Engineer Pitch
-                </h3>
-                <p className="text-sm text-slate-300 leading-relaxed italic relative z-10">
-                    "My implementation uses a single-pass two-pointer strategy combined with a StringBuilder. By decoupling the iteration from the individual string lengths, the logic remains clean and performs in guaranteed linear O(N+M) time. I specifically chose StringBuilder to ensure constant-time appends, optimizing memory throughput and avoiding redundant object allocations."
-                </p>
+                <p className="text-sm text-slate-600 italic">"My implementation uses a single-pass two-pointer strategy combined with a StringBuilder. By decoupling the iteration from the individual string lengths, the logic remains clean and performs in guaranteed linear O(N+M) time."</p>
             </div>
         </div>
-        <div className="space-y-6 text-slate-800">
+        <div className="space-y-6">
             <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-xl shadow-blue-100 flex flex-col justify-center">
                 <h3 className="text-lg font-black flex items-center gap-2 mb-4">
                     <Check size={20} />
                     Complexity Overview
                 </h3>
-                <div className="grid grid-cols-2 gap-4 text-[10px] font-mono">
-                    <div className="bg-blue-700/50 p-4 rounded-xl border border-blue-400/30">
-                        <div className="font-black opacity-60 uppercase mb-1">Time</div>
-                        O(N + M)
-                    </div>
-                    <div className="bg-blue-700/50 p-4 rounded-xl border border-blue-400/30">
-                        <div className="font-black opacity-60 uppercase mb-1">Space</div>
-                        O(N + M)
-                    </div>
+                <div className="grid grid-cols-2 gap-4 text-xs font-mono">
+                    <div className="bg-blue-700/50 p-4 rounded-xl">O(N+M) Time</div>
+                    <div className="bg-blue-700/50 p-4 rounded-xl">O(N+M) Space</div>
                 </div>
             </div>
         </div>
     </div>
 );
 
-// Define TopicButton component
 const TopicButton = ({ active, onClick, title, desc }: { active: boolean; onClick: () => void; title: string; desc: string }) => (
   <button onClick={onClick} className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group ${active ? 'bg-blue-50 border-blue-500 shadow-md ring-1 ring-blue-100' : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-50'}`}>
     <div className={`font-black uppercase tracking-tight text-sm ${active ? 'text-blue-800' : 'text-slate-700 group-hover:text-blue-700'}`}>{title}</div>
