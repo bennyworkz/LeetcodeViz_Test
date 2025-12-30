@@ -4,8 +4,8 @@ import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, User, Crown, 
 const APPROACHES = {
   brute: {
     id: 'brute',
-    title: '1. Brute Force',
-    subtitle: 'Nested Comparisons',
+    title: '1. BRUTE FORCE',
+    subtitle: 'Time: O(N²)',
     icon: <AlertCircle size={16} />,
     complexity: 'Time: O(N²)',
     code: `class Solution {
@@ -30,8 +30,8 @@ const APPROACHES = {
   },
   optimal: {
     id: 'optimal',
-    title: '2. Optimal',
-    subtitle: 'Two-Pass Benchmark',
+    title: '2. OPTIMAL',
+    subtitle: 'Time: O(N)',
     icon: <Zap size={16} />,
     complexity: 'Time: O(N)',
     code: `class Solution {
@@ -150,15 +150,18 @@ const VisualizerMode = () => {
     if (selectedApproach === 'brute') {
       addStep("Init", "Start solution with Brute Force. Creating results list.", 3);
       for (let i = 0; i < candies.length; i++) {
-        let isGreatest = true;
+        addStep("Outer Loop", `Scanning kid ${i} of ${candies.length}.`, 4, { i });
+        addStep("Check Kid", `Assume kid ${i} is greatest.`, 5, { i });
         const total = candies[i] + extraCandies;
-        addStep("Check Kid", `Evaluating Kid ${i}. Potential candies: ${candies[i]} + ${extraCandies} = ${total}.`, 5, { i, total });
+        addStep("Calculate Total", `Evaluating Kid ${i}. Potential candies: ${candies[i]} + ${extraCandies} = ${total}.`, 6, { i, total });
         
+        let isGreatest = true;
         for (let j = 0; j < candies.length; j++) {
             addStep("Compare", `Comparing Kid ${i}'s ${total} against Kid ${j}'s ${candies[j]}.`, 8, { i, j, total });
             if (total < candies[j]) {
                 isGreatest = false;
-                addStep("Mismatch", `Kid ${j} has more candies! Kid ${i} cannot be the greatest.`, 10, { i, j, total, isGreatest: false });
+                addStep("Mismatch", `Kid ${j} has more candies! Kid ${i} cannot be the greatest.`, 9, { i, j, total, isGreatest: false });
+                addStep("Break", `Breaking inner loop for kid ${i}.`, 10, { i, j, total, isGreatest: false });
                 break;
             }
         }
@@ -172,16 +175,17 @@ const VisualizerMode = () => {
         addStep("Find Max", `Scanning index ${i}: ${candies[i]}. Current max: ${max}`, 4, { i });
         if (candies[i] > max) {
             max = candies[i];
-            addStep("Update Max", `New maximum benchmark found: ${max}`, 5, { i });
+            addStep("Update Max", `New maximum benchmark found: ${max}`, 4, { i });
         }
       }
-      addStep("Benchmark Ready", `Max found: ${max}. Starting second pass for comparisons.`, 8);
+      addStep("Benchmark Ready", `Max found: ${max}. Creating results list.`, 6);
       for (let i = 0; i < candies.length; i++) {
+        addStep("Loop", `Evaluating kid ${i}.`, 7, { i });
         const canReach = candies[i] + extraCandies >= max;
         result.push(canReach);
-        addStep("Evaluate", `Kid ${i}: ${candies[i]} + ${extraCandies} = ${candies[i] + extraCandies}. Is it >= ${max}? ${canReach}`, 10, { i, checking: true, canReach });
+        addStep("Evaluate", `Kid ${i}: ${candies[i]} + ${extraCandies} = ${candies[i] + extraCandies}. Is it >= ${max}? ${canReach}`, 8, { i, checking: true, canReach });
       }
-      addStep("Return", "Completed comparison pass. Returning result.", 12);
+      addStep("Return", "Completed comparison pass. Returning result.", 10);
     }
 
     return steps;
@@ -228,7 +232,6 @@ const VisualizerMode = () => {
               </button>
             </div>
             <div className="p-6 font-mono text-[13px] leading-relaxed overflow-auto relative scrollbar-thin scrollbar-thumb-slate-700">
-                <div className="absolute left-0 right-0 bg-pink-500/15 border-l-4 border-pink-500 transition-all duration-300 pointer-events-none z-0" style={{ top: `${(currentState.line * 20.8) + 24 - 20.8}px`, height: '20.8px' }} />
                 {APPROACHES[selectedApproach].code.split('\n').map((line, idx) => (
                     <CodeLineRenderer key={idx} num={idx + 1} code={line} active={currentState.line === idx + 1} />
                 ))}
@@ -471,14 +474,14 @@ const InterviewHelper = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in duration-500">
         <div className="space-y-6">
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2 mb-4">
+                <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
                     <MessageSquare className="text-pink-500" size={20} />
                     Interview Q&A
                 </h3>
                 <div className="space-y-4 text-sm text-slate-600">
                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                         <p className="font-black text-slate-800 mb-1">"Why not find the max and compare in one pass?"</p>
-                        <p className="leading-relaxed text-xs italic">"Because the global maximum might be the very last element in the array. We cannot determine if the first kid could reach the maximum until we have scanned every single plot to find what that maximum actually is."</p>
+                        <p className="leading-relaxed text-xs italic">"Because the global maximum might be the very last element in the array. We cannot determine if the first kid could reach the maximum until we have scanned every single kid to find what that maximum actually is."</p>
                     </div>
                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                         <p className="font-black text-slate-800 mb-1">"How do you handle edge cases like empty arrays?"</p>
@@ -488,7 +491,7 @@ const InterviewHelper = () => (
             </div>
 
             <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
-                <h3 className="text-lg font-black flex items-center gap-2 mb-4 relative z-10">
+                <h3 className="text-lg font-bold flex items-center gap-2 mb-4 relative z-10">
                     <Target className="text-amber-400" size={20} />
                     The Senior Engineer Pitch
                 </h3>
@@ -500,7 +503,7 @@ const InterviewHelper = () => (
 
         <div className="space-y-6">
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 shadow-sm">
-                <h3 className="text-lg font-black text-amber-900 flex items-center gap-2 mb-4">
+                <h3 className="text-lg font-bold text-amber-900 flex items-center gap-2 mb-4">
                     <AlertCircle size={20} />
                     Key Concepts
                 </h3>
@@ -517,7 +520,7 @@ const InterviewHelper = () => (
             </div>
 
             <div className="bg-pink-600 text-white rounded-2xl p-6 shadow-xl shadow-pink-100">
-                <h3 className="text-lg font-black flex items-center gap-2 mb-2">
+                <h3 className="text-lg font-bold flex items-center gap-2 mb-2">
                     <Check size={20} />
                     Complexity Overview
                 </h3>
@@ -546,9 +549,10 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
   const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|List|ArrayList|Math)\b|\b\d+\b|\b(?:add|max|length)\b)/g).filter(Boolean);
 
   return (
-    <div className={`flex relative z-10 group min-h-[20.8px] ${active ? 'font-bold' : ''}`}>
-      <span className="w-8 select-none text-right pr-4 text-slate-700 border-r border-slate-800/50 mr-4 shrink-0 font-mono text-xs">{num}</span>
-      <pre className={`font-mono whitespace-pre text-slate-300 transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-70 group-hover:opacity-100'}`}>
+    <div className={`flex relative z-10 group min-h-[24px] items-center transition-colors duration-200 ${active ? 'bg-pink-500/15' : ''}`}>
+      {active && <div className="absolute left-0 top-0 bottom-0 w-1 bg-pink-500" />}
+      <span className={`w-8 select-none text-right pr-4 border-r border-slate-800/50 mr-4 shrink-0 font-mono text-xs ${active ? 'text-pink-400 font-bold' : 'text-slate-700'}`}>{num}</span>
+      <pre className={`font-mono whitespace-pre text-slate-300 transition-opacity duration-300 ${active ? 'opacity-100 font-bold' : 'opacity-70 group-hover:opacity-100'}`}>
         {parts.map((part, i) => {
           if (part.startsWith('//')) return <span key={i} className="text-slate-500 italic">{part}</span>;
           if (part.startsWith('"')) return <span key={i} className="text-orange-300">{part}</span>;

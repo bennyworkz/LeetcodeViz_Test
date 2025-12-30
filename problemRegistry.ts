@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 import { Module, Problem } from './types';
 
-// Lazy load the problem components
-const GCDStringsVisualizer = lazy(() => import('./problems/GCDStringsVisualizer'));
+// Array / String
 const MergeStringsVisualizer = lazy(() => import('./problems/MergeStringsVisualizer'));
+const GCDStringsVisualizer = lazy(() => import('./problems/GCDStringsVisualizer'));
 const KidsCandiesVisualizer = lazy(() => import('./problems/KidsCandiesVisualizer'));
 const CanPlaceFlowersVisualizer = lazy(() => import('./problems/CanPlaceFlowersVisualizer'));
 const ReverseVowelsVisualizer = lazy(() => import('./problems/ReverseVowelsVisualizer'));
@@ -11,14 +11,20 @@ const ReverseWordsVisualizer = lazy(() => import('./problems/ReverseWordsVisuali
 const ProductExceptSelfVisualizer = lazy(() => import('./problems/ProductExceptSelfVisualizer'));
 const IncreasingTripletVisualizer = lazy(() => import('./problems/IncreasingTripletVisualizer'));
 const StringCompressionVisualizer = lazy(() => import('./problems/StringCompressionVisualizer'));
+
+// Two Pointers
 const MoveZeroesVisualizer = lazy(() => import('./problems/MoveZeroesVisualizer'));
 const IsSubsequenceVisualizer = lazy(() => import('./problems/IsSubsequenceVisualizer'));
 const ContainerWithMostWaterVisualizer = lazy(() => import('./problems/ContainerWithMostWaterVisualizer'));
 const MaxNumberKSumPairsVisualizer = lazy(() => import('./problems/MaxNumberKSumPairsVisualizer'));
+
+// Sliding Window
 const MaxAverageSubarrayVisualizer = lazy(() => import('./problems/MaxAverageSubarrayVisualizer'));
 const MaxVowelsSubstringVisualizer = lazy(() => import('./problems/MaxVowelsSubstringVisualizer'));
 const MaxConsecutiveOnesIIIVisualizer = lazy(() => import('./problems/MaxConsecutiveOnesIIIVisualizer'));
 const LongestSubarrayOnesVisualizer = lazy(() => import('./problems/LongestSubarrayOnesVisualizer'));
+
+// Prefix Sum
 const HighestAltitudeVisualizer = lazy(() => import('./problems/HighestAltitudeVisualizer'));
 const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'));
 
