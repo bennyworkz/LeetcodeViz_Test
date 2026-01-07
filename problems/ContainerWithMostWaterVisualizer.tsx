@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Waves, Ruler, Maximize, X, FileText } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, MousePointer2, Waves, Ruler, Maximize, X, FileText, ArrowRight } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -192,10 +192,10 @@ const VisualizerMode = () => {
         addStep("Calculate", `Current container: left=${left}, right=${right}. Width=${w}, Height=${h}, Area=${currentArea}.`, 8, { left, right, maxArea, currentArea, h, w, isNewMax });
 
         if (heights[left] < heights[right]) {
-          addStep("Move Left", `Left line (${heights[left]}) is shorter than right (${heights[right]}). Moving left pointer inward.`, 11, { left, right, maxArea, currentArea, moving: 'left' });
+          addStep("Move Left", `Left line (${heights[left]}) is shorter than right (${heights[right]}). Moving left pointer inward.`, 11, { left, right, maxArea, currentArea, moving: 'left', h, w });
           left++;
         } else {
-          addStep("Move Right", `Right line (${heights[right]}) is shorter or equal to left (${heights[left]}). Moving right pointer inward.`, 13, { left, right, maxArea, currentArea, moving: 'right' });
+          addStep("Move Right", `Right line (${heights[right]}) is shorter or equal to left (${heights[left]}). Moving right pointer inward.`, 13, { left, right, maxArea, currentArea, moving: 'right', h, w });
           right--;
         }
       }
@@ -210,10 +210,11 @@ const VisualizerMode = () => {
   const handleCopy = () => { navigator.clipboard.writeText(APPROACHES[selectedApproach].code); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   const currentState = trace[currentStep] || trace[0];
-  const { left, right, maxArea, currentArea, h, w, finished, moving, i: bruteI, j: bruteJ } = currentState.state;
+  const { left, right, maxArea, currentArea, h, w, finished, moving, i: bruteI, j: bruteJ, isNewMax } = currentState.state;
 
   const L = selectedApproach === 'optimal' ? left : bruteI;
   const R = selectedApproach === 'optimal' ? right : bruteJ;
+  const globalMaxHeight = Math.max(...heights, 1);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in duration-500">
@@ -276,11 +277,11 @@ const VisualizerMode = () => {
             <div className="w-full px-2">
                 <div className="flex justify-between text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
                     <span>Initial</span>
-                    <span className="text-blue-500">Step {currentStep + 1} / {trace.length}</span>
+                    <span className="text-blue-500 font-bold font-mono">Step {currentStep + 1} / {trace.length}</span>
                     <span>Result</span>
                 </div>
                 <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
-                    <div className="h-full bg-blue-500 transition-all duration-500 ease-out" style={{ width: `${(currentStep / (Math.max(1, trace.length - 1))) * 100}%` }} />
+                    <div className="h-full bg-blue-500 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: `${(currentStep / (Math.max(1, trace.length - 1))) * 100}%` }} />
                 </div>
             </div>
             <div className="flex items-center justify-between gap-4">
@@ -302,68 +303,98 @@ const VisualizerMode = () => {
               <Target size={14}/>
               <span className="text-[10px] font-black uppercase tracking-widest">Simulation Context</span>
             </div>
-            <div className="text-lg font-black tracking-tight mb-2 uppercase">{currentState.phase}</div>
+            <div className="text-lg font-black tracking-tight mb-2 uppercase flex items-center gap-2">
+                {isNewMax && <span className="bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full animate-pulse">RECORD!</span>}
+                {currentState.phase}
+            </div>
             <p className="text-sm text-slate-300 leading-relaxed pt-2 border-t border-slate-700/50">{currentState.description}</p>
         </div>
 
         {/* Visual Arena */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 min-h-[450px] relative overflow-hidden flex flex-col justify-center items-center gap-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-10 min-h-[500px] relative overflow-hidden flex flex-col justify-between items-center">
             
-            {/* Stats Dashboard */}
-            <div className="w-full flex justify-around mb-4">
-                <div className="flex flex-col items-center">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Current Area</span>
-                    <div className={`text-2xl font-black transition-all duration-300 ${currentState.state.isNewMax ? 'text-green-500 scale-125' : 'text-blue-600'}`}>{currentArea || 0}</div>
+            {/* Top Stats */}
+            <div className="w-full grid grid-cols-2 gap-4">
+                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col items-center justify-center">
+                    <span className="text-[9px] font-black text-slate-400 uppercase mb-1 tracking-tighter">Current Iteration</span>
+                    <div className={`text-2xl font-mono font-black tabular-nums transition-all ${isNewMax ? 'text-green-600 scale-110' : 'text-blue-600'}`}>
+                        {currentArea || 0}
+                    </div>
                 </div>
-                <div className="flex flex-col items-center">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Max Area So Far</span>
-                    <div className="text-2xl font-black text-indigo-700">{maxArea || 0}</div>
+                <div className="bg-indigo-50/50 rounded-2xl p-4 border border-indigo-100 flex flex-col items-center justify-center">
+                    <span className="text-[9px] font-black text-indigo-400 uppercase mb-1 tracking-tighter">Maximum Area</span>
+                    <div className="text-2xl font-mono font-black tabular-nums text-indigo-700">
+                        {maxArea || 0}
+                    </div>
                 </div>
             </div>
 
-            {/* Container Visualization */}
-            <div className="relative w-full h-[250px] flex items-end justify-center px-8">
-                {/* Grid Lines */}
-                <div className="absolute inset-0 border-b-2 border-slate-200 z-0"></div>
+            {/* Container Visualization Area */}
+            <div className="relative w-full h-[300px] mt-10 flex items-end justify-center px-10 border-b-2 border-slate-100">
                 
-                {/* Water Shading */}
-                {!finished && L !== undefined && R !== undefined && L !== -1 && R !== -1 && (
+                {/* Horizontal Width Guide */}
+                {!finished && L !== undefined && R !== undefined && L !== -1 && (
                     <div 
-                        className="absolute bg-blue-400/20 border-t-2 border-dashed border-blue-400 transition-all duration-500 z-0"
+                        className="absolute bottom-[-32px] flex flex-col items-center transition-all duration-500"
                         style={{
                             left: `${(L / (heights.length - 1)) * 100}%`,
-                            right: `${100 - (R / (heights.length - 1)) * 100}%`,
-                            height: `${(h / Math.max(...heights, 1)) * 100}%`,
-                            bottom: '0'
+                            width: `${((R - L) / (heights.length - 1)) * 100}%`
                         }}
                     >
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-black text-blue-600 uppercase bg-white/80 px-2 rounded-full border border-blue-100 shadow-sm">
-                            Area: {h} &times; {w} = {currentArea}
+                        <div className="w-full flex items-center">
+                            <div className="h-px flex-1 bg-blue-300"></div>
+                            <div className="px-2 font-mono text-[10px] font-black text-blue-600 bg-white border border-blue-100 rounded-full shadow-sm z-10">W: {w}</div>
+                            <div className="h-px flex-1 bg-blue-300"></div>
+                        </div>
+                        <div className="flex justify-between w-full -mt-1 px-1">
+                            <div className="h-1.5 w-px bg-blue-300"></div>
+                            <div className="h-1.5 w-px bg-blue-300"></div>
                         </div>
                     </div>
                 )}
 
-                {/* Bars */}
+                {/* Water Body Overlay */}
+                {!finished && L !== undefined && R !== undefined && L !== -1 && (
+                    <div 
+                        className="absolute bg-gradient-to-t from-blue-500/30 to-blue-400/10 border-t-2 border-dashed border-blue-400 transition-all duration-500 z-0 flex items-center justify-center"
+                        style={{
+                            left: `${(L / (heights.length - 1)) * 100}%`,
+                            width: `${((R - L) / (heights.length - 1)) * 100}%`,
+                            height: `${(h / globalMaxHeight) * 100}%`,
+                            bottom: '0'
+                        }}
+                    >
+                        <div className="flex flex-col items-center animate-in zoom-in duration-300 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-2xl border border-blue-200 shadow-xl shadow-blue-500/10 scale-90">
+                           <div className="flex items-center gap-1.5">
+                              <span className="text-xs font-black text-blue-700">{h}</span>
+                              <span className="text-[10px] text-slate-400 font-bold">&times;</span>
+                              <span className="text-xs font-black text-blue-700">{w}</span>
+                           </div>
+                           <div className="h-px w-full bg-blue-200 my-1"></div>
+                           <div className="text-sm font-black text-blue-600">{currentArea}</div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Bars Rendering */}
                 {heights.map((val, idx) => {
                     const isLeft = L === idx;
                     const isRight = R === idx;
                     const isActive = isLeft || isRight;
-                    const isShorter = isActive && val === h && !finished;
-                    
-                    const barHeight = (val / Math.max(...heights, 1)) * 100;
+                    const isMin = isActive && val === h && !finished;
+                    const barHeight = (val / globalMaxHeight) * 100;
 
                     return (
                         <div 
                             key={idx} 
-                            className="flex-1 flex flex-col items-center group transition-all duration-300"
-                            style={{ maxWidth: '40px' }}
+                            className="flex-1 flex flex-col items-center h-full group"
                         >
                             <div className="relative h-full w-full flex items-end justify-center px-1">
                                 <div 
                                     className={`
-                                        w-full rounded-t-md transition-all duration-500 relative
-                                        ${isActive ? 'bg-blue-600 shadow-lg' : 'bg-slate-200'}
-                                        ${isShorter && moving ? 'ring-4 ring-rose-400/30' : ''}
+                                        w-full rounded-t-lg transition-all duration-500 relative
+                                        ${isActive ? 'bg-blue-600 shadow-lg scale-x-110 z-10' : 'bg-slate-100'}
+                                        ${isMin ? 'ring-4 ring-rose-400/30 ring-offset-2' : ''}
                                     `}
                                     style={{ height: `${barHeight}%` }}
                                 >
@@ -374,17 +405,13 @@ const VisualizerMode = () => {
                                     )}
                                 </div>
                                 
-                                {/* Pointer Labels */}
-                                {isLeft && !finished && (
-                                    <div className="absolute -bottom-10 flex flex-col items-center animate-in slide-in-from-bottom-2">
-                                        <div className="bg-blue-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase mb-1">Left</div>
-                                        <Target size={12} className="text-blue-600" />
-                                    </div>
-                                )}
-                                {isRight && !finished && (
-                                    <div className="absolute -bottom-10 flex flex-col items-center animate-in slide-in-from-bottom-2">
-                                        <div className="bg-blue-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase mb-1">Right</div>
-                                        <Target size={12} className="text-blue-600" />
+                                {/* Pointer Indicators */}
+                                {isActive && !finished && (
+                                    <div className={`absolute -bottom-7 flex flex-col items-center transition-all duration-300 ${isLeft ? 'text-blue-600' : 'text-indigo-600'}`}>
+                                        <div className={`text-[8px] font-black px-1.5 rounded-full mb-0.5 uppercase tracking-tighter ${isLeft ? 'bg-blue-600 text-white' : 'bg-indigo-600 text-white'}`}>
+                                            {isLeft ? 'Left' : 'Right'}
+                                        </div>
+                                        <div className="h-2 w-0.5 bg-current"></div>
                                     </div>
                                 )}
                             </div>
@@ -393,12 +420,13 @@ const VisualizerMode = () => {
                 })}
             </div>
 
+            {/* Completion Result Overlay */}
             {finished && (
-               <div className="mt-12 animate-in zoom-in duration-500">
-                  <div className="bg-green-50 border-2 border-green-200 px-10 py-6 rounded-3xl flex flex-col items-center gap-2 shadow-xl">
-                      <Check className="text-green-600" size={40} />
-                      <span className="text-xs font-black uppercase tracking-widest text-green-700">Result Max Area</span>
-                      <span className="text-4xl font-black text-slate-900">{maxArea}</span>
+               <div className="animate-in zoom-in duration-700 mt-4">
+                  <div className="bg-blue-600 text-white px-12 py-8 rounded-[2.5rem] flex flex-col items-center gap-2 shadow-2xl shadow-blue-200">
+                      <Trophy className="text-amber-300 mb-2" size={48} strokeWidth={2.5}/>
+                      <span className="text-xs font-black uppercase tracking-[0.2em] opacity-80">Max Capacity Found</span>
+                      <span className="text-6xl font-black tabular-nums">{maxArea}</span>
                   </div>
                </div>
             )}
@@ -407,6 +435,8 @@ const VisualizerMode = () => {
     </div>
   );
 };
+
+// --- HELPER COMPONENTS ---
 
 const LearnMode = () => {
     const [selectedTopic, setSelectedTopic] = useState('problem');
@@ -419,7 +449,7 @@ const LearnMode = () => {
                 <TopicButton active={selectedTopic === 'proof'} onClick={() => setSelectedTopic('proof')} title="3. Logical Proof" desc="Why not skip the tall line?" />
             </div>
 
-            <div className="lg:col-span-9 bg-white p-8 rounded-xl border border-slate-200 shadow-sm min-h-[500px] flex flex-col">
+            <div className="lg:col-span-9 bg-white p-8 rounded-xl border border-slate-200 shadow-sm min-h-[600px] flex flex-col">
                 {selectedTopic === 'problem' && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
                         <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-bold mb-1">
@@ -506,11 +536,11 @@ const InterviewHelper = () => (
                 </h3>
                 <div className="space-y-4 text-sm text-slate-600">
                     <div className="p-3 bg-slate-50 rounded border border-slate-200">
-                        <p className="font-black text-slate-800 mb-1">"Why does the two-pointer approach work here?"</p>
+                        <p className="font-bold text-slate-800 mb-1">"Why does the two-pointer approach work here?"</p>
                         <p>Answer: "It works because we exploit the monotonicity of width. Since width decreases with every step inward, the only way to find a better solution is to increase height. Moving the pointer that limits the height (the shorter one) is the only logical move that could possibly improve the area."</p>
                     </div>
                     <div className="p-3 bg-slate-50 rounded border border-slate-200">
-                        <p className="font-black text-slate-800 mb-1">"Is there any scenario where moving the taller line is better?"</p>
+                        <p className="font-bold text-slate-800 mb-1">"Is there any scenario where moving the taller line is better?"</p>
                         <p>Answer: "No. If you have lines of height 5 and 10, the container is height 5. If you move the 10, the new container height will either be &le; 5 (still capped by the original shorter line) or &le; (new height). In either case, the area decreases because width shrunk."</p>
                     </div>
                 </div>
@@ -545,7 +575,7 @@ const InterviewHelper = () => (
                 </div>
             </div>
 
-            <div className="bg-blue-600 text-white rounded-xl p-6 shadow-lg shadow-blue-100">
+            <div className="bg-blue-600 text-white rounded-xl p-6 shadow-lg shadow-blue-100 flex flex-col justify-center">
                 <h3 className="text-lg font-bold flex items-center gap-2 mb-2">
                     <Check size={20} />
                     Complexity Overview
@@ -604,7 +634,7 @@ const TopicButton: React.FC<{ active: boolean; onClick: () => void; title: strin
     <div className={`font-bold ${active ? 'text-blue-800' : 'text-slate-700 group-hover:text-blue-700'}`}>
       {title}
     </div>
-    <div className={`text-xs mt-1 ${active ? 'text-indigo-600' : 'text-slate-400'}`}>
+    <div className={`text-xs mt-1 ${active ? 'text-blue-600' : 'text-slate-400'}`}>
       {desc}
     </div>
   </button>
