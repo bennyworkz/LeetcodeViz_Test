@@ -90,6 +90,7 @@ const AtoiVisualizer = lazy(() => import('./problems/AtoiVisualizer.tsx'));
 const EditDistanceVisualizer = lazy(() => import('./problems/EditDistanceVisualizer.tsx'));
 const AddBinaryVisualizer = lazy(() => import('./problems/AddBinaryVisualizer.tsx'));
 const DivideTwoIntegersVisualizer = lazy(() => import('./problems/DivideTwoIntegersVisualizer.tsx'));
+const SwapNodesInPairsVisualizer = lazy(() => import('./problems/SwapNodesInPairsVisualizer.tsx'));
 
 
 // Dynamic Programming / Greedy
@@ -232,6 +233,7 @@ export const modules: Module[] = [
           { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer},
           { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer},
           { id: '92-reverse-linked-list-ii', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseLinkedListIIVisualizer},
+          { id: '24-swap-nodes', number: 24, title: 'Swap Nodes in Pairs', difficulty: 'Medium', component: SwapNodesInPairsVisualizer},
         ]
       },
       {
