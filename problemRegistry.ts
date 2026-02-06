@@ -89,6 +89,7 @@ const ReverseLinkedListIIVisualizer = lazy(() => import('./problems/ReverseLinke
 const AtoiVisualizer = lazy(() => import('./problems/AtoiVisualizer.tsx'));
 const EditDistanceVisualizer = lazy(() => import('./problems/EditDistanceVisualizer.tsx'));
 const AddBinaryVisualizer = lazy(() => import('./problems/AddBinaryVisualizer.tsx'));
+const DivideTwoIntegersVisualizer = lazy(() => import('./problems/DivideTwoIntegersVisualizer.tsx'));
 
 
 // Dynamic Programming / Greedy
@@ -265,6 +266,7 @@ export const modules: Module[] = [
           { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer},
           { id: '66-plus-one', number: 66, title: 'Plus One', difficulty: 'Medium', component: PlusOneVisualizer},
           { id: '67-add-binary', number: 66, title: 'Add Binary', difficulty: 'Easy', component: AddBinaryVisualizer},
+          { id: '29-divide-two-integers', number: 29, title: 'Divide Two Integers', difficulty: 'Medium', component: DivideTwoIntegersVisualizer},
         ]
       },
       {
