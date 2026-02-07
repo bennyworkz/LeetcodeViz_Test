@@ -88,6 +88,7 @@ const LongestValidParenthesesVisualizer = lazy(() => import('./problems/LongestV
 const ReverseLinkedListIIVisualizer = lazy(() => import('./problems/ReverseLinkedListIIVisualizer.tsx'));
 const AtoiVisualizer = lazy(() => import('./problems/AtoiVisualizer.tsx'));
 const EditDistanceVisualizer = lazy(() => import('./problems/EditDistanceVisualizer.tsx'));
+const AddBinaryVisualizer = lazy(() => import('./problems/AddBinaryVisualizer.tsx'));
 
 
 // Dynamic Programming / Greedy
@@ -263,6 +264,7 @@ export const modules: Module[] = [
           { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer},
           { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer},
           { id: '66-plus-one', number: 66, title: 'Plus One', difficulty: 'Medium', component: PlusOneVisualizer},
+          { id: '67-add-binary', number: 66, title: 'Add Binary', difficulty: 'Easy', component: AddBinaryVisualizer},
         ]
       },
       {
