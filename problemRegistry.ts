@@ -87,6 +87,7 @@ const SearchInsertVisualizer = lazy(() => import('./problems/SearchInsertVisuali
 const LongestValidParenthesesVisualizer = lazy(() => import('./problems/LongestValidParenthesesVisualizer.tsx'));
 const ReverseLinkedListIIVisualizer = lazy(() => import('./problems/ReverseLinkedListIIVisualizer.tsx'));
 const AtoiVisualizer = lazy(() => import('./problems/AtoiVisualizer.tsx'));
+const EditDistanceVisualizer = lazy(() => import('./problems/EditDistanceVisualizer.tsx'));
 
 
 // Dynamic Programming / Greedy
@@ -181,6 +182,7 @@ export const modules: Module[] = [
           { id: '53-maximum-subarray-amazon', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
           { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer},
           { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
+          { id: '72-Edit-distance', number: 70, title: 'Edit Distance', difficulty: 'Medium', component: EditDistanceVisualizer },
         ]
       },
       {
