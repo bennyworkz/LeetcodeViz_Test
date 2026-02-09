@@ -86,6 +86,7 @@ const PermutationsVisualizer = lazy(() => import('./problems/PermutationsVisuali
 const SearchInsertVisualizer = lazy(() => import('./problems/SearchInsertVisualizer.tsx'));
 const LongestValidParenthesesVisualizer = lazy(() => import('./problems/LongestValidParenthesesVisualizer.tsx'));
 const ReverseLinkedListIIVisualizer = lazy(() => import('./problems/ReverseLinkedListIIVisualizer.tsx'));
+const AtoiVisualizer = lazy(() => import('./problems/AtoiVisualizer.tsx'));
 
 
 // Dynamic Programming / Greedy
@@ -249,6 +250,7 @@ export const modules: Module[] = [
           { id: '7-reverse-integer', number: 7, title: 'Reverse Integer', difficulty: 'Medium', component: ReverseIntegerVisualizer },
           { id: '9-palindrome-number', number: 9, title: 'Palindrome Number', difficulty: 'Easy', component: PalindromeVisualizer },
           { id: '14-longest-common-prefix-amazon', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
+          { id: '8-string-to-integer', number: 8, title: 'String to Integer (atoi)', difficulty: 'Medium', component: AtoiVisualizer },
         ]
       },
       {
