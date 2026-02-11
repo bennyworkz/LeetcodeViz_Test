@@ -85,6 +85,8 @@ const PlusOneVisualizer = lazy(() => import('./problems/PlusOneVisualizer.tsx'))
 const PermutationsVisualizer = lazy(() => import('./problems/PermutationsVisualizer.tsx'));
 const SearchInsertVisualizer = lazy(() => import('./problems/SearchInsertVisualizer.tsx'));
 const LongestValidParenthesesVisualizer = lazy(() => import('./problems/LongestValidParenthesesVisualizer.tsx'));
+const ReverseLinkedListIIVisualizer = lazy(() => import('./problems/ReverseLinkedListIIVisualizer.tsx'));
+
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -224,6 +226,7 @@ export const modules: Module[] = [
           { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer },
           { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer},
           { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer},
+          { id: '92-reverse-linked-list-ii', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseLinkedListIIVisualizer},
         ]
       },
       {
