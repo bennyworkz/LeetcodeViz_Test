@@ -153,7 +153,7 @@ const TwoSumVisualizer = () => {
             <div>
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">Two Sum</h1>
               <div className="flex items-center gap-2 text-slate-500 text-xs mt-0.5">
-                <span className="font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">Amazon Prep</span>
+                <span className="font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded uppercase tracking-widest font-black">Amazon Prep</span>
                 <span>LC 1 • Easy</span>
               </div>
             </div>
@@ -329,11 +329,11 @@ const TwoSumVisualizer = () => {
         {activeTab === 'interview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in">
             <div className="space-y-6">
-                <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+                <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-2xl relative overflow-hidden group border border-slate-800">
                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
                         <Target size={120} />
                     </div>
-                    <h3 className="text-lg font-bold flex items-center gap-2 mb-4 relative z-10 text-orange-400">
+                    <h3 className="text-lg font-bold flex items-center gap-2 mb-4 relative z-10 text-orange-400 font-black tracking-tight uppercase">
                         <Trophy size={20} />
                         The Senior Amazon Pitch
                     </h3>
@@ -342,47 +342,47 @@ const TwoSumVisualizer = () => {
                     </p>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4 uppercase tracking-tight">
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4 uppercase tracking-tight font-black">
                         <MessageSquare className="text-orange-500" size={20} />
-                        Critical Follow-ups
+                        Interview Rebuttal
                     </h3>
                     <div className="space-y-4 text-sm text-slate-600">
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="font-black text-slate-800 mb-1">"What if the array is already sorted?"</p>
-                            <p className="leading-relaxed">"If the input is sorted, I would switch to a <strong>Two-Pointer</strong> approach (converging left and right). This achieves O(N) time but improves space complexity to <strong>O(1)</strong>, which is the absolute most memory-efficient solution possible."</p>
+                            <p className="font-black text-slate-800 mb-1 uppercase tracking-tighter">"What if the array is already sorted?"</p>
+                            <p className="leading-relaxed italic">"If the input is sorted, I would switch to a <strong>Two-Pointer</strong> approach (converging left and right). This achieves O(N) time but improves space complexity to <strong>O(1)</strong>, which is the absolute most memory-efficient solution possible."</p>
                         </div>
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="font-black text-slate-800 mb-1">"Can we use the same index twice?"</p>
-                            <p className="leading-relaxed">"No, the problem restricts this. By checking for the complement <i>before</i> adding the current number to the map, my solution naturally prevents using the same element twice."</p>
+                            <p className="font-black text-slate-800 mb-1 uppercase tracking-tighter">"Can we use the same index twice?"</p>
+                            <p className="leading-relaxed italic">"No, the problem restricts this. By checking for the complement <i>before</i> adding the current number to the map, my solution naturally prevents using the same element twice."</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="space-y-6">
-                <div className="bg-orange-50 border border-orange-200 rounded-3xl p-8">
-                    <h3 className="text-lg font-bold text-orange-900 mb-4 uppercase tracking-widest flex items-center gap-2">
-                        <AlertCircle size={20}/> Interviewer Focus Points
+                <div className="bg-orange-50 border border-orange-200 rounded-3xl p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-orange-900 mb-4 uppercase tracking-widest flex items-center gap-2 font-black">
+                        <AlertCircle size={20}/> Focus Points
                     </h3>
                     <ul className="space-y-6">
                         <li className="flex gap-4">
                             <div className="w-8 h-8 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">1</div>
                             <div>
-                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Edge Case: Empty/Small Input</p>
+                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Edge Case Rigor</p>
                               <p className="text-xs text-orange-800 leading-relaxed mt-1">Mention that if <code>nums.length &lt; 2</code>, we should return immediately as no pair exists.</p>
                             </div>
                         </li>
                         <li className="flex gap-4">
                             <div className="w-8 h-8 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">2</div>
                             <div>
-                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Collision Handling</p>
-                              <p className="text-xs text-orange-800 leading-relaxed mt-1">Understand how the Hash Map handles collisions (Chaining vs Open Addressing) if asked deep dive questions.</p>
+                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">System Performance</p>
+                              <p className="text-xs text-orange-800 leading-relaxed mt-1">Understand collision handling. In production, we'd ensure our Hash Map has a good load factor to maintain O(1) lookups.</p>
                             </div>
                         </li>
                         <li className="flex gap-4">
                             <div className="w-8 h-8 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">3</div>
                             <div>
-                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Return Values</p>
-                              <p className="text-xs text-orange-800 leading-relaxed mt-1">If no pair exists, the method returns an empty array or throws an exception. Clarifying this demonstrates professional rigor.</p>
+                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Return Strategy</p>
+                              <p className="text-xs text-orange-800 leading-relaxed mt-1">Returning an empty array or throwing an exception? Aligning this with API standards shows engineering maturity.</p>
                             </div>
                         </li>
                     </ul>
