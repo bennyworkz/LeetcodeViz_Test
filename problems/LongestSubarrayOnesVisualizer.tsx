@@ -1,5 +1,7 @@
+
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Minus, Plus, Search, Expand, Trash2, History, Layers, Calculator, FileText } from 'lucide-react';
+// Fixed: Added missing 'X' icon to the lucide-react imports to resolve potential "Cannot find name 'X'" error in the UI
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Minus, Plus, Search, Expand, Trash2, History, Layers, Calculator, FileText, X } from 'lucide-react';
 
 const APPROACHES = {
   brute: {
@@ -579,7 +581,7 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (/^\d+$/.test(part)) return <span key={i} className="text-cyan-300">{part}</span>;
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'void', 'for'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
-          if (['Math', 'max', 'length', 'String'].includes(part)) return <span key={i} className="text-indigo-300 font-bold">{part}</span>;
+          if (['Math', 'max', 'length', 'String'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
           return part;
         })}
       </pre>
