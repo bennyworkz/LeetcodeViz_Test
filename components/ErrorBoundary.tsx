@@ -1,5 +1,5 @@
 
-import React, { ErrorInfo, ReactNode } from "react";
+import React, { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
 interface Props {
@@ -14,9 +14,9 @@ interface State {
 /**
  * ErrorBoundary class component to catch rendering errors in the visualization modules.
  */
-// Fix: Explicitly use React.Component to ensure correct inheritance recognition for setState and props.
-export class ErrorBoundary extends React.Component<Props, State> {
-  // Fix: Standard property initialization for state.
+// Fix: Use direct Component import from react to resolve type recognition issues.
+export class ErrorBoundary extends Component<Props, State> {
+  // Fix: Use property initializer for state instead of constructor to ensure state property exists on the type.
   public state: State = {
     hasError: false,
     error: null,
@@ -31,7 +31,8 @@ export class ErrorBoundary extends React.Component<Props, State> {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  public render() {
+  public render(): ReactNode {
+    // Fix: Access state from this.state as inherited from Component.
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center bg-slate-50 rounded-xl border border-red-100">
@@ -47,7 +48,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
           </div>
           <button
             onClick={() => {
-                // Fix: Correctly access setState from the inherited React.Component class.
+                // Fix: Correctly access location from the component instance and reset state.
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
             }}
@@ -59,7 +60,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
       );
     }
 
-    // Fix: Access children from this.props which is correctly inherited from React.Component.
+    // Fix: Access children from this.props which is correctly inherited from Component.
     return this.props.children;
   }
 }

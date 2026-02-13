@@ -31,9 +31,13 @@ const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'
 
 // Amazon Favorites (New)
 const TwoSumVisualizer = lazy(() => import('./problems/TwoSumVisualizer'));
+const AddTwoNumbersVisualizer = lazy(() => import('./problems/AddTwoNumbersVisualizer'));
 const LongestSubstringVisualizer = lazy(() => import('./problems/LongestSubstringVisualizer'));
+const ValidParenthesesVisualizer = lazy(() => import('./problems/ValidParenthesesVisualizer'));
 const TrappingRainWaterVisualizer = lazy(() => import('./problems/TrappingRainWaterVisualizer'));
 const ThreeSumClosestVisualizer = lazy(() => import('./problems/ThreeSumClosestVisualizer'));
+const MergeSortedArrayVisualizer = lazy(() => import('./problems/MergeSortedArrayVisualizer'));
+const GroupAnagramsVisualizer = lazy(() => import('./problems/GroupAnagramsVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -42,9 +46,13 @@ export const modules: Module[] = [
     description: 'Frequently asked questions in Amazon technical interviews. Focus on Hash Maps, Two Pointers, and complex DP.',
     problems: [
       { id: '1-two-sum', number: 1, title: 'Two Sum', difficulty: 'Easy', component: TwoSumVisualizer },
+      { id: '2-add-two-numbers', number: 2, title: 'Add Two Numbers', difficulty: 'Medium', component: AddTwoNumbersVisualizer },
       { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer },
       { id: '16-3sum-closest', number: 16, title: '3Sum Closest', difficulty: 'Medium', component: ThreeSumClosestVisualizer },
+      { id: '20-valid-parentheses', number: 20, title: 'Valid Parentheses', difficulty: 'Easy', component: ValidParenthesesVisualizer },
       { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
+      { id: '49-group-anagrams', number: 49, title: 'Group Anagrams', difficulty: 'Medium', component: GroupAnagramsVisualizer },
+      { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
     ]
   },
   {
