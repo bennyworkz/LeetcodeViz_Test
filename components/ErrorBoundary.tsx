@@ -14,8 +14,9 @@ interface State {
 /**
  * ErrorBoundary class component to catch rendering errors in the visualization modules.
  */
-// Fix: Explicitly extending React.Component to ensure the class correctly inherits setState and props, resolving potential shadowing or resolution issues in the environment.
+// Fix: Explicitly use React.Component to ensure correct inheritance recognition for setState and props.
 export class ErrorBoundary extends React.Component<Props, State> {
+  // Fix: Standard property initialization for state.
   public state: State = {
     hasError: false,
     error: null,
@@ -46,7 +47,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
           </div>
           <button
             onClick={() => {
-                // Fix: Resetting error state to allow retry. setState is inherited from React.Component.
+                // Fix: Correctly access setState from the inherited React.Component class.
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
             }}
@@ -58,7 +59,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
       );
     }
 
-    // Fix: Accessing children from props. this.props is inherited from React.Component.
+    // Fix: Access children from this.props which is correctly inherited from React.Component.
     return this.props.children;
   }
 }

@@ -1,14 +1,15 @@
 
 import React, { useState } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, LayoutGrid } from 'lucide-react';
+import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2 } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // Default the Amazon module to open
+  // Track which modules are expanded
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
-    'amazon-favorites': true
+    'amazon-favorites': true,
+    'blind-75-array': true
   });
 
   const toggleModule = (id: string) => {
@@ -56,7 +57,6 @@ const Layout = () => {
 
         {/* Scrollable Problem List */}
         <div className="flex-1 overflow-y-auto py-2 scrollbar-thin scrollbar-thumb-slate-700">
-          
           {modules.map((module) => {
             const isExpanded = expandedModules[module.id];
             const isAmazon = module.id === 'amazon-favorites';
@@ -109,7 +109,6 @@ const Layout = () => {
               </div>
             );
           })}
-
         </div>
 
         {/* Sidebar Footer */}
@@ -128,7 +127,6 @@ const Layout = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        
         {/* Mobile Header */}
         <header className="lg:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between">
           <button 

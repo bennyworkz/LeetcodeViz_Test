@@ -61,7 +61,6 @@ const TwoSumVisualizer = () => {
     const n = nums.length;
     
     if (selectedApproach === 'hashmap') {
-      // INTRO STEPS - Explaining "Why Map?"
       steps.push({
         phase: "Algorithm Strategy",
         description: "GOAL: Find a pair that sums to the target. In a simple array, finding a specific number takes O(N) time. If we search for every number's pair in the array, it becomes O(N²).",
@@ -187,8 +186,11 @@ const TwoSumVisualizer = () => {
             <div className="flex flex-col gap-6">
               <div className="bg-white border border-slate-200 rounded-2xl p-2 flex gap-2">
                 {Object.keys(APPROACHES).map((key) => (
-                  <button key={key} onClick={() => { setSelectedApproach(key as any); setCurrentStep(0); }} className={`flex-1 py-4 px-3 rounded-xl transition-all ${selectedApproach === key ? 'bg-orange-600 text-white shadow-lg shadow-orange-100' : 'text-slate-500 hover:bg-slate-50'}`}>
+                  <button key={key} onClick={() => { setSelectedApproach(key as any); setCurrentStep(0); }} className={`flex-1 flex flex-col items-center justify-center py-4 px-3 rounded-xl transition-all duration-300 ${selectedApproach === key ? 'bg-orange-600 text-white shadow-lg shadow-orange-100' : 'bg-transparent text-slate-500 hover:bg-slate-50'}`}>
                     <span className="text-xs font-black uppercase tracking-tight">{APPROACHES[key as keyof typeof APPROACHES].title}</span>
+                    <span className={`text-[10px] opacity-70 ${selectedApproach === key ? 'text-white' : 'text-slate-400'}`}>
+                      {APPROACHES[key as keyof typeof APPROACHES].complexity}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -398,7 +400,7 @@ const TabButton = ({ active, onClick, icon, label }: { active: boolean, onClick:
 );
 
 const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
-  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|for|Map|HashMap|Integer|contains|containsKey|get|put|length)\b|\b\d+\b)/g).filter(Boolean);
+  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|Map|HashMap|Integer|contains|containsKey|get|put|length)\b|\b\d+\b)/g).filter(Boolean);
   return (
     <div className={`flex relative z-10 min-h-[20.8px] ${active ? 'font-bold bg-orange-500/5' : ''}`}>
       <span className="w-8 text-right pr-4 text-slate-700 border-r border-slate-800/50 mr-4 font-mono text-[11px] select-none">{num}</span>
