@@ -1,10 +1,22 @@
+
 import React, { useState } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Menu, Github, Code2, Folder, ChevronLeft } from 'lucide-react';
+import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, LayoutGrid } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Default the Amazon module to open
+  const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
+    'amazon-favorites': true
+  });
+
+  const toggleModule = (id: string) => {
+    setExpandedModules(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   return (
     <div className="flex h-screen bg-slate-100 overflow-hidden">
@@ -26,10 +38,9 @@ const Layout = () => {
       `}>
         {/* Sidebar Header */}
         <div className="p-4 border-b border-slate-800">
-           {/* Back to Home Link */}
            <Link to="/" className="flex items-center gap-2 text-xs text-slate-500 hover:text-white transition-colors mb-4 group">
               <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-              Back to Modules
+              Back to Dashboard
            </Link>
            
            <div className="flex items-center gap-3 px-2">
@@ -38,49 +49,66 @@ const Layout = () => {
             </div>
             <div>
               <h1 className="text-white font-bold text-lg leading-tight">LeetCode Viz</h1>
-              <p className="text-xs text-slate-500">Interactive Solutions</p>
+              <p className="text-[10px] uppercase font-black tracking-widest text-slate-500">Algorithm Studio</p>
             </div>
           </div>
         </div>
 
         {/* Scrollable Problem List */}
-        <div className="flex-1 overflow-y-auto py-4">
+        <div className="flex-1 overflow-y-auto py-2 scrollbar-thin scrollbar-thumb-slate-700">
           
-          {modules.map((module) => (
-            <div key={module.id} className="mb-6">
-              <div className="px-6 mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-                 <Folder size={12} /> {module.title}
+          {modules.map((module) => {
+            const isExpanded = expandedModules[module.id];
+            const isAmazon = module.id === 'amazon-favorites';
+
+            return (
+              <div key={module.id} className="mb-1">
+                <button 
+                  onClick={() => toggleModule(module.id)}
+                  className={`w-full flex items-center justify-between px-6 py-4 hover:bg-slate-800/50 transition-colors border-l-4 ${isExpanded ? (isAmazon ? 'border-orange-500 bg-slate-800/30' : 'border-blue-500 bg-slate-800/30') : 'border-transparent'}`}
+                >
+                  <div className="flex items-center gap-3">
+                    {isAmazon ? <Building2 size={14} className="text-orange-400" /> : <Folder size={14} className="text-blue-400" />}
+                    <span className={`text-[11px] font-black uppercase tracking-wider ${isExpanded ? 'text-white' : 'text-slate-500'}`}>
+                      {module.title}
+                    </span>
+                  </div>
+                  {isExpanded ? <ChevronDown size={14} className="text-slate-500" /> : <ChevronRight size={14} className="text-slate-500" />}
+                </button>
+
+                {isExpanded && (
+                  <nav className="space-y-0.5 px-3 py-2 animate-in slide-in-from-top-1 duration-200">
+                    {module.problems.map((problem) => (
+                      <NavLink
+                        key={problem.id}
+                        to={`/problem/${problem.id}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={({ isActive }) => `
+                          group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
+                          ${isActive 
+                            ? 'bg-blue-600/10 text-blue-400 ring-1 ring-blue-500/20 shadow-sm' 
+                            : 'text-slate-400 hover:bg-slate-800/80 hover:text-white'}
+                        `}
+                      >
+                        <span className="truncate mr-2">
+                          <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>
+                          {problem.title}
+                        </span>
+                        <span className={`
+                          text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
+                          ${problem.difficulty === 'Easy' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
+                          ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
+                          ${problem.difficulty === 'Hard' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
+                        `}>
+                          {problem.difficulty}
+                        </span>
+                      </NavLink>
+                    ))}
+                  </nav>
+                )}
               </div>
-              <nav className="space-y-1 px-3">
-                {module.problems.map((problem) => (
-                  <NavLink
-                    key={problem.id}
-                    to={`/problem/${problem.id}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={({ isActive }) => `
-                      group flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                      ${isActive 
-                        ? 'bg-blue-600/10 text-blue-400' 
-                        : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
-                    `}
-                  >
-                    <span className="truncate mr-2">
-                      <span className="opacity-50 mr-2 font-mono">{problem.number}.</span>
-                      {problem.title}
-                    </span>
-                    <span className={`
-                      text-[10px] px-1.5 py-0.5 rounded border font-mono
-                      ${problem.difficulty === 'Easy' ? 'border-green-900 text-green-600 bg-green-900/10' : ''}
-                      ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-600 bg-amber-900/10' : ''}
-                      ${problem.difficulty === 'Hard' ? 'border-red-900 text-red-600 bg-red-900/10' : ''}
-                    `}>
-                      {problem.difficulty}
-                    </span>
-                  </NavLink>
-                ))}
-              </nav>
-            </div>
-          ))}
+            );
+          })}
 
         </div>
 
@@ -90,10 +118,10 @@ const Layout = () => {
             href="https://github.com" 
             target="_blank" 
             rel="noreferrer"
-            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-3 px-3 py-2 rounded-xl bg-slate-800/50 text-xs text-slate-400 hover:text-white transition-all hover:bg-slate-800"
           >
-            <Github size={16} />
-            <span>View on GitHub</span>
+            <Github size={14} />
+            <span className="font-bold">Project Repository</span>
           </a>
         </div>
       </aside>
@@ -109,8 +137,8 @@ const Layout = () => {
           >
             <Menu size={24} />
           </button>
-          <span className="font-bold text-slate-800">LeetCode Viz</span>
-          <div className="w-10" /> {/* Spacer for centering */}
+          <span className="font-black text-slate-900 tracking-tight">LeetCode<span className="text-blue-600">Viz</span></span>
+          <div className="w-10" />
         </header>
 
         {/* Content Area */}

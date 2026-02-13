@@ -1,3 +1,4 @@
+
 import { lazy } from 'react';
 import { Module, Problem } from './types';
 
@@ -28,11 +29,26 @@ const LongestSubarrayOnesVisualizer = lazy(() => import('./problems/LongestSubar
 const HighestAltitudeVisualizer = lazy(() => import('./problems/HighestAltitudeVisualizer'));
 const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'));
 
+// Amazon Favorites (New)
+const TwoSumVisualizer = lazy(() => import('./problems/TwoSumVisualizer'));
+const LongestSubstringVisualizer = lazy(() => import('./problems/LongestSubstringVisualizer'));
+const TrappingRainWaterVisualizer = lazy(() => import('./problems/TrappingRainWaterVisualizer'));
+
 export const modules: Module[] = [
   {
-    id: 'array-string',
-    title: 'Array / String',
-    description: 'Fundamental array manipulation and string traversal techniques.',
+    id: 'amazon-favorites',
+    title: 'Amazon Interview Prep',
+    description: 'Frequently asked questions in Amazon technical interviews. Focus on Hash Maps, Two Pointers, and complex DP.',
+    problems: [
+      { id: '1-two-sum', number: 1, title: 'Two Sum', difficulty: 'Easy', component: TwoSumVisualizer },
+      { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer },
+      { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
+    ]
+  },
+  {
+    id: 'blind-75-array',
+    title: 'Blind 75: Array / String',
+    description: 'Fundamental array manipulation and string traversal techniques from the Blind 75 list.',
     problems: [
       { id: '1768-merge-strings', number: 1768, title: 'Merge Strings Alternately', difficulty: 'Easy', component: MergeStringsVisualizer },
       { id: '1071-gcd-strings', number: 1071, title: 'GCD of Strings', difficulty: 'Easy', component: GCDStringsVisualizer },
@@ -46,8 +62,8 @@ export const modules: Module[] = [
     ]
   },
   {
-    id: 'two-pointers',
-    title: 'Two Pointers',
+    id: 'blind-75-two-pointers',
+    title: 'Blind 75: Two Pointers',
     description: 'Efficiently scanning data using multiple pointers at different speeds or directions.',
     problems: [
       { id: '283-move-zeroes', number: 283, title: 'Move Zeroes', difficulty: 'Easy', component: MoveZeroesVisualizer },
@@ -57,8 +73,8 @@ export const modules: Module[] = [
     ]
   },
   {
-    id: 'sliding-window',
-    title: 'Sliding Window',
+    id: 'blind-75-sliding-window',
+    title: 'Blind 75: Sliding Window',
     description: 'Optimizing subarray operations by maintaining a running state across a moving range.',
     problems: [
       { id: '643-max-average-subarray', number: 643, title: 'Maximum Average Subarray I', difficulty: 'Easy', component: MaxAverageSubarrayVisualizer },
@@ -68,8 +84,8 @@ export const modules: Module[] = [
     ]
   },
   {
-    id: 'prefix-sum',
-    title: 'Prefix Sum',
+    id: 'blind-75-prefix-sum',
+    title: 'Blind 75: Prefix Sum',
     description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
     problems: [
       { id: '1732-highest-altitude', number: 1732, title: 'Find the Highest Altitude', difficulty: 'Easy', component: HighestAltitudeVisualizer },

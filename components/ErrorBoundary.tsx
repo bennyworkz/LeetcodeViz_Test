@@ -1,4 +1,5 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
+
+import React, { ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
 interface Props {
@@ -13,7 +14,8 @@ interface State {
 /**
  * ErrorBoundary class component to catch rendering errors in the visualization modules.
  */
-export class ErrorBoundary extends Component<Props, State> {
+// Fix: Explicitly extending React.Component to ensure the class correctly inherits setState and props, resolving potential shadowing or resolution issues in the environment.
+export class ErrorBoundary extends React.Component<Props, State> {
   public state: State = {
     hasError: false,
     error: null,
@@ -44,6 +46,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </div>
           <button
             onClick={() => {
+                // Fix: Resetting error state to allow retry. setState is inherited from React.Component.
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
             }}
@@ -55,6 +58,7 @@ export class ErrorBoundary extends Component<Props, State> {
       );
     }
 
+    // Fix: Accessing children from props. this.props is inherited from React.Component.
     return this.props.children;
   }
 }
