@@ -96,7 +96,7 @@ const LongestSubstringVisualizer = () => {
 
       let ans = 0;
       let i = 0;
-      const map: Record<string, number> = {};
+      const map: Record<number, number> = {};
       for (let j = 0; j < n; j++) {
         const char = inputS[j];
         if (map[char] !== undefined) {
@@ -162,7 +162,7 @@ const LongestSubstringVisualizer = () => {
             <div>
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">Longest Substring</h1>
               <div className="flex items-center gap-2 text-slate-500 text-xs mt-0.5">
-                <span className="font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded uppercase tracking-tighter">Amazon Prep</span>
+                <span className="font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded uppercase tracking-tighter font-black">Amazon Prep</span>
                 <span>LC 3 • Medium</span>
               </div>
             </div>
@@ -333,15 +333,13 @@ const LongestSubstringVisualizer = () => {
                   <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
                       <Calculator size={120} />
                   </div>
-                  <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-orange-400 relative z-10 font-black tracking-tight">
+                  <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-orange-400 relative z-10 font-black tracking-tight uppercase">
                     <Trophy size={20} /> Amazon Interview Defense
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed italic relative z-10">
                     "Amazon interviewers often use this question to test your ability to move from O(N²) to O(N). If you solve it with a HashSet (shrinking left one by one), they will ask if you can make it faster. Mentioning the 'Insta-Jump' with a HashMap or an ASCII array (for constant space O(128)) shows you care about extreme performance and numerical precision."
                   </p>
               </div>
-            </div>
-            <div className="space-y-6">
               <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
                   <h3 className="text-lg font-bold text-slate-800 mb-4 uppercase tracking-widest flex items-center gap-2 font-black">
                     <MessageSquare className="text-orange-500" size={18}/> Technical Q&A
@@ -357,6 +355,29 @@ const LongestSubstringVisualizer = () => {
                       </div>
                   </div>
               </div>
+            </div>
+            <div className="space-y-6">
+                <div className="bg-orange-50 border border-orange-200 rounded-3xl p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-orange-900 mb-4 uppercase tracking-widest flex items-center gap-2 font-black">
+                        <AlertCircle size={20}/> Interviewer Focus
+                    </h3>
+                    <ul className="space-y-6">
+                        <li className="flex gap-4">
+                            <div className="w-8 h-8 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">1</div>
+                            <div>
+                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Window Shrinking vs Jumping</p>
+                              <p className="text-xs text-orange-800 leading-relaxed mt-1">Be ready to explain why <code>i = Math.max(map.get(s.charAt(j)), i)</code> is used instead of just <code>i = map.get(s.charAt(j))</code>. (Hint: the last seen character might be behind the current window start).</p>
+                            </div>
+                        </li>
+                        <li className="flex gap-4">
+                            <div className="w-8 h-8 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">2</div>
+                            <div>
+                              <p className="text-sm font-black text-orange-900 uppercase tracking-tight">Empty Inputs</p>
+                              <p className="text-xs text-orange-800 leading-relaxed mt-1">A string of length 0 should return 0. The current loop handles this naturally since <code>j &lt; n</code> is immediately false.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
           </div>
         )}

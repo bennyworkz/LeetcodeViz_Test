@@ -195,7 +195,7 @@ const TrappingRainWaterVisualizer = () => {
             <div>
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">Trapping Rain Water</h1>
               <div className="flex items-center gap-2 text-slate-500 text-xs mt-0.5">
-                <span className="font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-tighter">Amazon Hard</span>
+                <span className="font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-tighter font-black">Amazon Hard</span>
                 <span>LC 42 • Hard</span>
               </div>
             </div>
@@ -325,7 +325,7 @@ const TrappingRainWaterVisualizer = () => {
                         </div>
                         <div className="p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-2 shadow-sm">
                             <h3 className="font-bold text-slate-900 flex items-center gap-2 uppercase tracking-tighter text-sm"><Target size={18}/> Why Two Pointers?</h3>
-                            <p className="text-sm text-slate-700 leading-relaxed">Most problems require pre-calculating the peak arrays (O(N) space). Two pointers allow us to calculate peaks on-the-fly. If <code>height[left] < height[right]</code>, we know the left peak is definitely the bottleneck, so we can calculate its water without knowing the true right peak yet.</p>
+                            <p className="text-sm text-slate-700 leading-relaxed">Most problems require pre-calculating the peak arrays (O(N) space). Two pointers allow us to calculate peaks on-the-fly. If <code>height[left] &lt; height[right]</code>, we know the left peak is definitely the bottleneck, so we can calculate its water without knowing the true right peak yet.</p>
                         </div>
                     </div>
                     <div className="space-y-6">
@@ -358,7 +358,7 @@ const TrappingRainWaterVisualizer = () => {
                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
                         <Waves size={120} />
                     </div>
-                    <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-orange-400 font-black tracking-tight relative z-10">
+                    <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-orange-400 font-black tracking-tight relative z-10 uppercase">
                         <Trophy size={20} /> Senior Interview Defense
                     </h3>
                     <p className="text-sm text-slate-300 leading-relaxed italic relative z-10">
@@ -366,25 +366,25 @@ const TrappingRainWaterVisualizer = () => {
                     </p>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4 uppercase tracking-tighter">
+                    <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4 uppercase tracking-tighter font-black">
                         <MessageSquare className="text-blue-500" size={18} />
                         Technical Rebuttal
                     </h3>
                     <div className="space-y-4">
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="text-sm font-black text-slate-800 mb-1">"What if the input is a data stream?"</p>
+                            <p className="text-sm font-black text-slate-800 mb-1 uppercase tracking-tighter">"What if the input is a data stream?"</p>
                             <p className="text-xs text-slate-600 leading-relaxed italic">"If we receive data in chunks and can't see the 'future' (Right end), I would switch to a <b>Monotonic Stack</b> approach. This allows us to calculate trapped water as we encounter 'valley' structures, keeping state only for the unresolved bars."</p>
                         </div>
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="text-sm font-black text-slate-800 mb-1">"Is there a faster solution than O(N)?"</p>
+                            <p className="text-sm font-black text-slate-800 mb-1 uppercase tracking-tighter">"Is there a faster solution than O(N)?"</p>
                             <p className="text-xs text-slate-600 leading-relaxed italic">"No. To calculate the water, we must know the peak on both sides of every bar. In an unsorted array, we must visit every element at least once, making O(N) the theoretical lower bound for time complexity."</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="space-y-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-3xl p-8">
-                    <h3 className="text-lg font-bold text-blue-900 mb-4 uppercase tracking-widest flex items-center gap-2">
+                <div className="bg-blue-50 border border-blue-200 rounded-3xl p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-blue-900 mb-4 uppercase tracking-widest flex items-center gap-2 font-black">
                         <AlertCircle size={20}/> Amazon Leadership Check
                     </h3>
                     <ul className="space-y-6">
