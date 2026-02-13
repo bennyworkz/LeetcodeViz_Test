@@ -3,9 +3,9 @@ import React, { useState, useMemo } from 'react';
 import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Maximize, MousePointer2, Calculator, Search, FileText } from 'lucide-react';
 
 const APPROACHES = {
-  slidingWindow: {
-    id: 'slidingWindow',
-    title: '1. Optimal Sliding Window',
+  optimal: {
+    id: 'optimal',
+    title: '1. Optimized Window',
     subtitle: 'HashMap Tracker',
     icon: <Zap size={16} />,
     complexity: 'Time: O(N) | Space: O(min(m, n))',
@@ -24,11 +24,58 @@ const APPROACHES = {
     }
 }`,
     explanation: "This is the most efficient sliding window technique. As we scan with pointer 'j', we store each character's position in a Map. If we see a repeat, we instantly 'jump' the left pointer 'i' to the position after the previous occurrence."
+  },
+  sliding: {
+    id: 'sliding',
+    title: '2. Standard Window',
+    subtitle: 'HashSet Shrinking',
+    icon: <Search size={16} />,
+    complexity: 'Time: O(2N) | Space: O(min(m, n))',
+    code: `class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        Set<Character> set = new HashSet<>();
+        int ans = 0, i = 0, j = 0;
+        while (i < n && j < n) {
+            if (!set.contains(s.charAt(j))) {
+                set.add(s.charAt(j++));
+                ans = Math.max(ans, j - i);
+            } else {
+                set.remove(s.charAt(i++));
+            }
+        }
+        return ans;
+    }
+}`,
+    explanation: "A more common Sliding Window implementation. We expand the window from the right. If we hit a duplicate, we shrink from the left character-by-character until the window is valid again."
+  },
+  brute: {
+    id: 'brute',
+    title: '3. Brute Force',
+    subtitle: 'Check All Substrings',
+    icon: <AlertCircle size={16} />,
+    complexity: 'Time: O(N³) | Space: O(min(n, m))',
+    code: `class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (allUnique(s, i, j)) {
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+}`,
+    explanation: "Checks every possible substring in the string to see if it contains unique characters. This is extremely slow for long inputs."
   }
 };
 
 const LongestSubstringVisualizer = () => {
   const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
+  const [selectedApproach, setSelectedApproach] = useState<keyof typeof APPROACHES>('optimal');
   const [inputS, setInputS] = useState("abcabcbb");
   const [currentStep, setCurrentStep] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -36,57 +83,73 @@ const LongestSubstringVisualizer = () => {
   const trace = useMemo(() => {
     const steps: any[] = [];
     const n = inputS.length;
-    let ans = 0;
-    let i = 0;
-    const map: Record<string, number> = {};
+    let finalAns = 0;
 
-    steps.push({
-      phase: "Strategy Selection",
-      description: "To find the longest unique sequence, we could check all O(N²) substrings, but that's slow. We'll use a 'Sliding Window' with a HashMap. A Map allows us to 'teleport' the window when a duplicate hits, avoiding redundant checks.",
-      line: 3,
-      state: { i: 0, j: -1, ans: 0, map: {} }
-    });
+    const addStep = (phase: string, desc: string, line: number, state: any) => {
+        steps.push({ phase, description: desc, line, state });
+    };
+    
+    if (selectedApproach === 'optimal') {
+      addStep("Strategy Selection", "To find the longest unique sequence, we could check all O(N²) substrings, but that's slow. We'll use a 'Sliding Window' with a HashMap. A Map allows us to 'teleport' the window when a duplicate hits, avoiding redundant checks.", 3, { i: 0, j: -1, ans: 0, map: {} });
 
-    steps.push({
-      phase: "Understanding the Window",
-      description: "Window starts at i=0. The HashMap will store the LAST SEEN position of characters. If we see a character again, we move 'i' past its previous location immediately.",
-      line: 5,
-      state: { i: 0, j: -1, ans: 0, map: {} }
-    });
+      addStep("Understanding the Window", "Window starts at i=0. The HashMap will store the LAST SEEN position of characters. If we see a character again, we move 'i' past its previous location immediately.", 5, { i: 0, j: -1, ans: 0, map: {} });
 
-    for (let j = 0; j < n; j++) {
-      const char = inputS[j];
-      const repeat = map[char] !== undefined;
-      const prevPos = map[char];
-      
-      if (repeat) {
-        const oldI = i;
-        i = Math.max(prevPos, i);
-        steps.push({
-          phase: "Instant Jump",
-          description: `Repeated character '${char}' detected. It was last seen leading to index ${prevPos}. Jumping left boundary 'i' from ${oldI} to ${i}.`,
-          line: 6,
-          state: { i, j, ans, map: { ...map }, repeatChar: char, jumped: true }
-        });
+      let ans = 0;
+      let i = 0;
+      const map: Record<string, number> = {};
+      for (let j = 0; j < n; j++) {
+        const char = inputS[j];
+        if (map[char] !== undefined) {
+          i = Math.max(map[char], i);
+          addStep("Instant Jump", `Repeated character '${char}' detected. Jumping left boundary 'i' to ${i}.`, 6, { i, j, ans, map: { ...map } });
+        }
+        ans = Math.max(ans, j - i + 1);
+        map[char] = j + 1;
+        addStep("Expand Window", `Right pointer 'j' at index ${j} ('${char}'). Substring [${i}...${j}] is valid. Length: ${j-i+1}. Peak: ${ans}.`, 8, { i, j, ans, map: { ...map } });
       }
-
-      ans = Math.max(ans, j - i + 1);
-      map[char] = j + 1;
-      
-      steps.push({
-        phase: "Expand Window",
-        description: `Right pointer 'j' at index ${j} ('${char}'). Substring [${i}...${j}] is "${inputS.substring(i, j + 1)}". Length is ${j-i+1}. Current global max: ${ans}.`,
-        line: 8,
-        state: { i, j, ans, map: { ...map } }
-      });
+      finalAns = ans;
+    } else if (selectedApproach === 'sliding') {
+        let i = 0, j = 0, ans = 0;
+        const set = new Set<string>();
+        addStep("Init", "Initialize pointers i, j at the start.", 4, { i, j, ans, set: new Set() });
+        while (j < n) {
+            const char = inputS[j];
+            if (!set.has(char)) {
+                set.add(char);
+                j++;
+                ans = Math.max(ans, j - i);
+                addStep("Add", `Added '${char}'. Window is valid. Expanding right.`, 8, { i, j, ans, set: new Set(set) });
+            } else {
+                const removedChar = inputS[i];
+                set.delete(removedChar);
+                i++;
+                addStep("Shrink", `Duplicate found. Shrinking left boundary. Removed '${removedChar}'.`, 11, { i, j, ans, set: new Set(set) });
+            }
+        }
+        finalAns = ans;
+    } else {
+        // Brute Force
+        let ans = 0;
+        addStep("Start Brute Force", "We will check every possible substring (i, j) for uniqueness.", 3, { i: -1, j: -1, ans: 0 });
+        for (let i = 0; i < n; i++) {
+            for (let j = i; j < n; j++) {
+                const sub = inputS.substring(i, j + 1);
+                const unique = new Set(sub.split('')).size === sub.length;
+                if (unique) {
+                    ans = Math.max(ans, j - i + 1);
+                }
+                addStep("Check Substring", `Checking "${sub}" [${i}...${j}]. Unique: ${unique}. Max so far: ${ans}`, 7, { i, j, ans });
+            }
+        }
+        finalAns = ans;
     }
 
-    steps.push({ phase: "Finish", description: `Scan complete. The maximum length found without repeating characters is ${ans}.`, line: 11, state: { i, j: n-1, ans, finished: true } });
+    addStep("Finish", `Scan complete. Maximum unique length found is ${finalAns}.`, 11, { ...steps[steps.length-1]?.state, finished: true });
     return steps;
-  }, [inputS]);
+  }, [inputS, selectedApproach]);
 
   const currentState = trace[currentStep] || trace[0];
-  const { i: left, j: right, ans, map: currentMap, finished, repeatChar, jumped } = currentState.state;
+  const { i: left, j: right, ans, map: currentMap, set: currentSet, finished } = currentState.state;
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -129,26 +192,29 @@ const LongestSubstringVisualizer = () => {
         {activeTab === 'visualizer' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in">
             <div className="flex flex-col gap-6">
+              <div className="bg-white border border-slate-200 rounded-2xl p-2 flex gap-2">
+                {Object.keys(APPROACHES).map((key) => (
+                  <button key={key} onClick={() => { setSelectedApproach(key as any); setCurrentStep(0); }} className={`flex-1 flex flex-col items-center justify-center py-4 px-3 rounded-xl transition-all duration-300 ${selectedApproach === key ? 'bg-orange-600 text-white shadow-lg shadow-orange-100' : 'bg-transparent text-slate-500 hover:bg-slate-50'}`}>
+                    <span className="text-xs font-black uppercase tracking-tight">{APPROACHES[key as keyof typeof APPROACHES].title}</span>
+                    <span className={`text-[10px] opacity-70 ${selectedApproach === key ? 'text-white' : 'text-slate-400'}`}>
+                      {APPROACHES[key as keyof typeof APPROACHES].complexity}
+                    </span>
+                  </button>
+                ))}
+              </div>
               <div className="bg-[#0f172a] rounded-2xl h-[400px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
                 <div className="bg-[#1e293b] px-4 py-2 border-b border-slate-700 flex justify-between items-center text-xs text-slate-400 font-mono">
-                  <span className="font-bold uppercase">LongestSubstring.java</span>
-                  <button onClick={() => { navigator.clipboard.writeText(APPROACHES.slidingWindow.code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
+                  <span className="font-bold uppercase tracking-tight">LongestSubstring.java</span>
+                  <button onClick={() => { navigator.clipboard.writeText(APPROACHES[selectedApproach].code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
                     {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
                   </button>
                 </div>
-                <div className="p-6 font-mono text-[13px] overflow-auto">
+                <div className="p-6 font-mono text-[13px] overflow-auto relative">
                     <div className="absolute left-0 right-0 bg-orange-500/15 border-l-4 border-orange-500 pointer-events-none z-0 transition-all duration-300" style={{ top: `${(currentState.line * 20.8) + 24 - 20.8}px`, height: '20.8px' }} />
-                    {APPROACHES.slidingWindow.code.split('\n').map((line, idx) => (
+                    {APPROACHES[selectedApproach].code.split('\n').map((line, idx) => (
                       <CodeLineRenderer key={idx} num={idx + 1} code={line} active={currentState.line === idx + 1} />
                     ))}
                 </div>
-              </div>
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-                  <div className="flex items-center gap-2 text-orange-600">
-                     <Maximize size={18} />
-                     <h4 className="text-sm font-black uppercase tracking-widest">Jump Logic Summary</h4>
-                  </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">{APPROACHES.slidingWindow.explanation}</p>
               </div>
             </div>
 
@@ -166,14 +232,14 @@ const LongestSubstringVisualizer = () => {
 
               <div className="bg-slate-800 text-white rounded-2xl p-6 shadow-xl border border-slate-700 min-h-[120px]">
                 <span className="text-[10px] font-black uppercase text-slate-400 block mb-2 tracking-widest">{currentState.phase}</span>
-                <p className="text-sm leading-relaxed text-slate-200">{currentState.description}</p>
+                <p className="text-sm text-slate-200 leading-relaxed">{currentState.description}</p>
               </div>
 
-              <div className="bg-white rounded-2xl border border-slate-200 p-10 min-h-[350px] flex flex-col justify-center items-center gap-10 relative overflow-hidden shadow-inner">
+              <div className="bg-white rounded-2xl border border-slate-200 p-10 min-h-[350px] flex flex-col justify-center items-center gap-10 relative overflow-hidden">
                 <div className="w-full grid grid-cols-2 gap-4">
                     <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col items-center">
                         <span className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-tighter">Current Width</span>
-                        <div className="text-2xl font-black text-slate-800 tabular-nums">{(right >= 0 ? right - left + 1 : 0)}</div>
+                        <div className="text-2xl font-black text-slate-800 tabular-nums">{(right >= left ? right - left + 1 : 0)}</div>
                     </div>
                     <div className="bg-orange-50 rounded-2xl p-4 border border-orange-100 flex flex-col items-center">
                         <span className="text-[10px] font-black text-orange-400 uppercase mb-1 tracking-tighter">Peak Length</span>
@@ -185,13 +251,11 @@ const LongestSubstringVisualizer = () => {
                   {inputS.split('').map((char, idx) => {
                     const isInWindow = idx >= left && idx <= right;
                     const isRight = right === idx;
-                    const isRepeat = char === repeatChar && repeatChar && jumped && isInWindow;
-                    
                     return (
                       <div key={idx} className="flex flex-col items-center">
-                        <div className={`w-10 h-12 border-2 rounded-lg flex items-center justify-center font-mono text-lg transition-all duration-300 relative ${isRepeat ? 'bg-rose-500 border-rose-600 text-white animate-shake' : isRight ? 'bg-orange-600 border-orange-700 text-white scale-110 shadow-lg' : isInWindow ? 'bg-orange-50 border-orange-300 text-orange-700' : 'bg-white border-slate-100 text-slate-200'}`}>
+                        <div className={`w-10 h-12 border-2 rounded-lg flex items-center justify-center font-mono text-lg transition-all duration-300 relative ${isRight ? 'bg-orange-600 border-orange-700 text-white scale-110 shadow-lg' : isInWindow ? 'bg-orange-50 border-orange-300 text-orange-700' : 'bg-white border-slate-100 text-slate-200'}`}>
                           {char}
-                          {idx === left && right >= 0 && !finished && <div className="absolute -top-5 text-indigo-500 font-black text-[8px] tracking-tighter uppercase">Left</div>}
+                          {idx === left && right >= left && !finished && <div className="absolute -top-5 text-indigo-500 font-black text-[8px] tracking-tighter uppercase">Left</div>}
                         </div>
                         <span className="mt-1 text-[8px] font-mono text-slate-300">[{idx}]</span>
                       </div>
@@ -201,15 +265,22 @@ const LongestSubstringVisualizer = () => {
 
                 <div className="w-full flex flex-col items-center border-t border-slate-100 pt-6">
                     <div className="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest flex items-center gap-2">
-                      <Search size={12}/> Character Registry (Char &rarr; Next Index)
+                      <Search size={12}/> Character Map / Set
                     </div>
                     <div className="flex flex-wrap justify-center gap-2">
-                        {Object.entries(currentMap).map(([k, v]) => (
-                            <div key={k} className="px-2 py-1 bg-slate-50 border rounded-lg text-[10px] font-mono animate-in fade-in shadow-sm">
-                                <span className="font-bold text-orange-600">'{k}':</span> {v as number}
-                            </div>
-                        ))}
-                        {Object.keys(currentMap).length === 0 && <span className="text-xs text-slate-300 italic">No characters seen yet</span>}
+                        {selectedApproach === 'optimal' ? (
+                            Object.entries(currentMap || {}).map(([k, v]) => (
+                                <div key={k} className="px-2 py-1 bg-slate-50 border rounded-lg text-[10px] font-mono animate-in fade-in shadow-sm">
+                                    <span className="font-bold text-orange-600">'{k}':</span> {v as number}
+                                </div>
+                            ))
+                        ) : (
+                            Array.from(currentSet || []).map((v: any) => (
+                                <div key={v} className="px-2 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg text-[10px] font-mono animate-in zoom-in shadow-sm">
+                                    '{v}'
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
               </div>
@@ -226,10 +297,10 @@ const LongestSubstringVisualizer = () => {
                       <h3 className="text-xl font-bold text-orange-600 flex items-center gap-2"><Zap size={20}/> Why Jump?</h3>
                       <p className="text-slate-600 text-lg leading-relaxed">Most naive sliding windows shrink the left side by one step at a time. The <strong>Optimized HashMap Window</strong> doesn't waste time: it checks the map for the last position of the current character and 'teleports' the left pointer immediately past it.</p>
                     </div>
-                    <div className="bg-slate-900 p-6 rounded-2xl text-white font-mono text-xs space-y-3 shadow-xl">
+                    <div className="bg-slate-900 p-6 rounded-2xl text-white font-mono text-xs space-y-3 shadow-xl border border-slate-800">
                         <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"/> Found 'a' at index 2</div>
                         <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500"/> Encounter 'a' again at index 5</div>
-                        <div className="flex items-center gap-2 border-l-2 border-indigo-500 pl-4 py-1 text-indigo-400 font-bold uppercase">Action: Teleport Window</div>
+                        <div className="flex items-center gap-2 border-l-2 border-indigo-500 pl-4 py-1 text-indigo-400 font-bold uppercase tracking-wider">Action: Teleport Window</div>
                         <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500"/> Jump Left pointer to 3</div>
                     </div>
                 </div>
@@ -239,18 +310,17 @@ const LongestSubstringVisualizer = () => {
                     <p className="text-sm text-slate-600 leading-relaxed">By using a HashMap, we visit each character exactly once with the right pointer. The left pointer never needs to "catch up" slowly.</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 text-center">
+                    <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 text-center shadow-sm">
                         <div className="text-[10px] font-black text-orange-400 uppercase mb-1">Time</div>
                         <div className="text-2xl font-black text-orange-600">O(N)</div>
                         <div className="text-[9px] text-orange-400 uppercase mt-1">Single Linear Pass</div>
                     </div>
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center shadow-sm">
                         <div className="text-[10px] font-black text-slate-400 uppercase mb-1">Space</div>
                         <div className="text-2xl font-black text-slate-800">O(m)</div>
                         <div className="text-[9px] text-slate-400 uppercase mt-1">Alphabet Size</div>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-400 italic">"Note: In O(m), 'm' represents the size of the character set (e.g., 26 for English or 128 for ASCII)."</p>
                 </div>
             </div>
           </div>
@@ -259,11 +329,11 @@ const LongestSubstringVisualizer = () => {
         {activeTab === 'interview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in">
             <div className="space-y-6">
-              <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+              <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-2xl relative overflow-hidden group border border-slate-800">
                   <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
                       <Calculator size={120} />
                   </div>
-                  <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-orange-400 relative z-10 font-black">
+                  <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-orange-400 relative z-10 font-black tracking-tight">
                     <Trophy size={20} /> Amazon Interview Defense
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed italic relative z-10">
@@ -300,7 +370,7 @@ const TabButton = ({ active, onClick, icon, label }: { active: boolean, onClick:
 );
 
 const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {
-  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|Map|HashMap|Character|Integer|containsKey|get|put|length|max|charAt)\b|\b\d+\b)/g).filter(Boolean);
+  const parts = code.split(/(\/\/.*|\".*?\"|\b(?:public|class|return|if|else|while|int|void|String|boolean|new|this|for|Map|HashMap|HashSet|Set|Character|Integer|containsKey|contains|get|add|remove|put|length|max|charAt)\b|\b\d+\b)/g).filter(Boolean);
   return (
     <div className={`flex relative z-10 min-h-[20.8px] ${active ? 'font-bold bg-orange-500/5' : ''}`}>
       <span className="w-8 text-right pr-4 text-slate-700 border-r border-slate-800/50 mr-4 font-mono text-[11px] select-none">{num}</span>
@@ -310,8 +380,8 @@ const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }
           if (part.startsWith('"')) return <span key={i} className="text-amber-300">{part}</span>;
           if (['public', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'for'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
           if (['int', 'boolean', 'void'].includes(part)) return <span key={i} className="text-sky-400">{part}</span>;
-          if (['Map', 'HashMap', 'Character', 'Integer', 'String'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
-          if (['containsKey', 'get', 'put', 'length', 'max', 'charAt'].includes(part)) return <span key={i} className="text-blue-400">{part}</span>;
+          if (['Map', 'HashMap', 'Integer', 'String'].includes(part)) return <span key={i} className="text-yellow-400 font-bold">{part}</span>;
+          if (['containsKey', 'contains', 'get', 'add', 'remove', 'put', 'length', 'max', 'charAt'].includes(part)) return <span key={i} className="text-blue-400">{part}</span>;
           if (/^\d+$/.test(part)) return <span key={i} className="text-rose-400">{part}</span>;
           return <span key={i}>{part}</span>;
         })}
