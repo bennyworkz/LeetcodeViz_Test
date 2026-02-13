@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Waves, ArrowDown, Droplet, FileText, Database, Scale, BarChart3 } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Waves, ArrowDown, Droplet, FileText, Database, Scale, BarChart3, Info, ArrowRight, TrendingUp, TrendingDown } from 'lucide-react';
 
 const APPROACHES = {
   twoPointer: {
@@ -95,93 +95,128 @@ const TrappingRainWaterVisualizer = () => {
   const trace = useMemo(() => {
     const steps: any[] = [];
     const n = heights.length;
-    let totalWaterResult = 0;
-    
-    if (selectedApproach === 'twoPointer') {
-      steps.push({
-        phase: "Algorithm Design",
-        description: "TRAP RULE: For any bar, water height = min(max_left, max_right) - current_height. A naive approach uses O(N) memory to pre-store peaks. We choose the Two-Pointer strategy to solve this with O(1) extra space.",
-        line: 3,
-        state: { left: 0, right: n - 1, leftMax: 0, rightMax: 0, totalWater: 0, waterArr: new Array(n).fill(0) }
-      });
 
+    const addStep = (phase: string, desc: string, line: number, state: any) => {
+      steps.push({ phase, description: desc, line, state: { ...state, n, heights: [...heights] } });
+    };
+
+    if (selectedApproach === 'twoPointer') {
       let left = 0, right = n - 1, leftMax = 0, rightMax = 0, totalWater = 0;
       const waterArr = new Array(n).fill(0);
+      
+      addStep("Initialization", "Initialize pointers at ends: left=0, right=n-1.", 3, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
+      addStep("Initialization", "Initialize max trackers to 0.", 4, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
+      addStep("Initialization", "Initialize total water volume to 0.", 5, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
+
       while (left < right) {
-        const isLeftSmaller = heights[left] < heights[right];
-        if (isLeftSmaller) {
+        addStep("Loop Condition", `While left (${left}) &lt; right (${right}). Continuing search...`, 7, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
+        
+        addStep("Boundary Comparison", `Check: height[left] (${heights[left]}) &lt; height[right] (${heights[right]})?`, 8, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: heights[left] < heights[right] ? 'left' : 'right' });
+
+        if (heights[left] < heights[right]) {
+          addStep("Peak Verification", `Check: height[left] (${heights[left]}) &ge; leftMax (${leftMax})?`, 9, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: 'left' });
           if (heights[left] >= leftMax) {
-              leftMax = heights[left];
-              steps.push({ phase: "Process Left", description: `H[L] (${heights[left]}) is a new peak on the left side. No water trapped here.`, line: 8, state: { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] } });
+            leftMax = heights[left];
+            addStep("Update Peak", `H[L] is a new record peak (${leftMax}). No water trapped.`, 9, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: 'left', peakUpdate: true });
           } else {
-              totalWater += leftMax - heights[left];
-              waterArr[left] = leftMax - heights[left];
-              steps.push({ phase: "Process Left", description: `H[L] (${heights[left]}) is lower than LeftPeak (${leftMax}). Trapping ${leftMax - heights[left]} units of water.`, line: 9, state: { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] } });
+            const trapped = leftMax - heights[left];
+            totalWater += trapped;
+            waterArr[left] = trapped;
+            addStep("Trap Water", `H[L] (${heights[left]}) is lower than LeftMax (${leftMax}). Trapping ${trapped} units.`, 10, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: 'left', trappedUnits: trapped });
           }
           left++;
+          addStep("Pointer Advance", "Increment left pointer to next position.", 11, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
         } else {
+          addStep("Peak Verification", `Check: height[right] (${heights[right]}) &ge; rightMax (${rightMax})?`, 13, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: 'right' });
           if (heights[right] >= rightMax) {
-              rightMax = heights[right];
-              steps.push({ phase: "Process Right", description: `H[R] (${heights[right]}) is a new peak on the right side. No water trapped here.`, line: 11, state: { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] } });
+            rightMax = heights[right];
+            addStep("Update Peak", `H[R] is a new record peak (${rightMax}). No water trapped.`, 13, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: 'right', peakUpdate: true });
           } else {
-              totalWater += rightMax - heights[right];
-              waterArr[right] = rightMax - heights[right];
-              steps.push({ phase: "Process Right", description: `H[R] (${heights[right]}) is lower than RightPeak (${rightMax}). Trapping ${rightMax - heights[right]} units of water.`, line: 12, state: { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] } });
+            const trapped = rightMax - heights[right];
+            totalWater += trapped;
+            waterArr[right] = trapped;
+            addStep("Trap Water", `H[R] (${heights[right]}) is lower than RightMax (${rightMax}). Trapping ${trapped} units.`, 14, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], processing: 'right', trappedUnits: trapped });
           }
           right--;
+          addStep("Pointer Advance", "Decrement right pointer to previous position.", 15, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
         }
       }
-      totalWaterResult = totalWater;
+      addStep("Termination", `left (${left}) is no longer &lt; right (${right}). Loop complete.`, 17, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr] });
+      addStep("Return", `Return final calculated total water: ${totalWater}`, 18, { left, right, leftMax, rightMax, totalWater, waterArr: [...waterArr], finished: true });
+
     } else if (selectedApproach === 'dp') {
         const leftMaxArr = new Array(n).fill(0);
         const rightMaxArr = new Array(n).fill(0);
         const waterArr = new Array(n).fill(0);
         let totalWater = 0;
 
-        steps.push({ phase: "Preprocessing", description: "Calculating LeftMax and RightMax arrays to avoid O(N²) nested scanning.", line: 4, state: { totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] } });
+        addStep("Initialization", "Set n = " + n, 3, { totalWater: 0, leftMaxArr, rightMaxArr, waterArr });
+        addStep("Initialization", "Create LeftMax and RightMax arrays of size " + n, 5, { totalWater: 0, leftMaxArr, rightMaxArr, waterArr });
         
         leftMaxArr[0] = heights[0];
+        addStep("Prefix Start", `Base case: leftMax[0] = height[0] = ${heights[0]}`, 8, { totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
+
         for (let i = 1; i < n; i++) {
+            addStep("Prefix Loop", `Iterating Prefix Pass: i = ${i}`, 9, { idx: i, totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
             leftMaxArr[i] = Math.max(heights[i], leftMaxArr[i-1]);
-            steps.push({ phase: "Prefix Pass", description: `leftMax[${i}] = max(height[${i}], leftMax[${i-1}]) = ${leftMaxArr[i]}`, line: 8, state: { idx: i, totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] } });
+            addStep("Store Peak", `leftMax[${i}] = max(${heights[i]}, ${leftMaxArr[i-1]}) = ${leftMaxArr[i]}`, 10, { idx: i, totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
         }
             
         rightMaxArr[n-1] = heights[n-1];
+        addStep("Suffix Start", `Base case: rightMax[n-1] = height[n-1] = ${heights[n-1]}`, 12, { totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
+
         for (let i = n - 2; i >= 0; i--) {
+            addStep("Suffix Loop", `Iterating Suffix Pass: i = ${i}`, 13, { idx: i, totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
             rightMaxArr[i] = Math.max(heights[i], rightMaxArr[i+1]);
-            steps.push({ phase: "Suffix Pass", description: `rightMax[${i}] = max(height[${i}], rightMax[${i+1}]) = ${rightMaxArr[i]}`, line: 12, state: { idx: i, totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] } });
+            addStep("Store Peak", `rightMax[${i}] = max(${heights[i]}, ${rightMaxArr[i+1]}) = ${rightMaxArr[i]}`, 14, { idx: i, totalWater: 0, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
         }
             
+        addStep("Init Result", "Initialize total water sum to 0.", 16, { totalWater: 0, leftMaxArr, rightMaxArr, waterArr });
         for (let i = 0; i < n; i++) {
-            const trapped = Math.min(leftMaxArr[i], rightMaxArr[i]) - heights[i];
+            addStep("Final Pass", `Calculating water at index i = ${i}`, 17, { idx: i, totalWater, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
+            const trapped = Math.max(0, Math.min(leftMaxArr[i], rightMaxArr[i]) - heights[i]);
             totalWater += trapped;
             waterArr[i] = trapped;
-            steps.push({ phase: "Calculate Water", description: `water[${i}] = min(${leftMaxArr[i]}, ${rightMaxArr[i]}) - ${heights[i]} = ${trapped}`, line: 16, state: { idx: i, totalWater, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] } });
+            addStep("Accumulate", `water += min(${leftMaxArr[i]}, ${rightMaxArr[i]}) - ${heights[i]} = ${trapped}. Total: ${totalWater}`, 18, { idx: i, totalWater, leftMaxArr: [...leftMaxArr], rightMaxArr: [...rightMaxArr], waterArr: [...waterArr] });
         }
-        totalWaterResult = totalWater;
+        addStep("Return", `Return final sum: ${totalWater}`, 20, { totalWater, finished: true });
+
     } else {
         // Brute Force
         let totalWater = 0;
         const waterArr = new Array(n).fill(0);
-        steps.push({ phase: "Start Brute Force", description: "Scanning every bar individually to find its left and right peaks.", line: 4, state: { totalWater: 0, waterArr: [...waterArr] } });
+        addStep("Init", "Initialize total water to 0.", 3, { totalWater: 0, waterArr: [...waterArr] });
         for (let i = 0; i < n; i++) {
+            addStep("Outer Loop", `Scanning bar i = ${i}`, 4, { idx: i, totalWater, waterArr: [...waterArr] });
             let lMax = 0, rMax = 0;
-            for (let j = i; j >= 0; j--) lMax = Math.max(lMax, heights[j]);
-            for (let j = i; j < n; j++) rMax = Math.max(rMax, heights[j]);
+            addStep("Init Peaks", "Resetting lMax and rMax for this bar.", 5, { idx: i, totalWater, waterArr: [...waterArr], lMax: 0, rMax: 0 });
+            
+            for (let j = i; j >= 0; j--) {
+                lMax = Math.max(lMax, heights[j]);
+                addStep("Left Peak Scan", `Searching left: Current lMax is ${lMax}`, 6, { idx: i, scanIdx: j, totalWater, waterArr: [...waterArr], lMax, rMax });
+            }
+            
+            for (let j = i; j < n; j++) {
+                rMax = Math.max(rMax, heights[j]);
+                addStep("Right Peak Scan", `Searching right: Current rMax is ${rMax}`, 7, { idx: i, scanIdx: j, totalWater, waterArr: [...waterArr], lMax, rMax });
+            }
+            
             const trapped = Math.min(lMax, rMax) - heights[i];
             totalWater += trapped;
             waterArr[i] = trapped;
-            steps.push({ phase: "N² Peak Scan", description: `Bar ${i}: Highest to left is ${lMax}, highest to right is ${rMax}. Water = ${trapped}.`, line: 7, state: { idx: i, totalWater, waterArr: [...waterArr], lMax, rMax } });
+            addStep("Calculate", `Area at index ${i} = min(${lMax}, ${rMax}) - ${heights[i]} = ${trapped}`, 8, { idx: i, totalWater, waterArr: [...waterArr], lMax, rMax });
         }
-        totalWaterResult = totalWater;
+        addStep("Return", "Return final total: " + totalWater, 10, { totalWater, finished: true });
     }
 
-    steps.push({ phase: "Scan Finished", description: `Calculation complete. Total trapped water volume is ${totalWaterResult} units.`, line: 20, state: { ...steps[steps.length-1]?.state, finished: true } });
     return steps;
   }, [heights, selectedApproach]);
 
+  const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, trace.length - 1));
+  const handlePrev = () => setCurrentStep(prev => Math.max(0, prev - 1));
+
   const currentState = trace[currentStep] || trace[0];
-  const { left, right, leftMax, rightMax, totalWater, waterArr, finished, lMax, rMax, leftMaxArr, rightMaxArr, idx: activeIdx } = currentState.state;
+  const { left, right, leftMax, rightMax, totalWater, waterArr, finished, lMax, rMax, leftMaxArr, rightMaxArr, idx: activeIdx, processing, trappedUnits, peakUpdate } = currentState.state;
   const globalMaxHeight = Math.max(...heights, 1);
 
   return (
@@ -209,15 +244,62 @@ const TrappingRainWaterVisualizer = () => {
         </div>
 
         {activeTab === 'problem' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500">
-            <h2 className="text-2xl font-black text-slate-900 mb-6">42. Trapping Rain Water</h2>
-            <div className="prose prose-slate max-w-none text-slate-600 space-y-4 text-lg leading-relaxed">
-              <p>Given <code>n</code> non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.</p>
-              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 font-mono text-sm space-y-2 mt-6">
-                <p><span className="text-slate-400 font-bold uppercase">Input:</span> height = [0,1,0,2,1,0,1,3,2,1,2,1]</p>
-                <p><span className="text-slate-400 font-bold uppercase">Output:</span> 6</p>
-                <p className="text-slate-400 italic text-xs mt-2">Constraint: Must handle arrays up to 20,000 elements efficiently.</p>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 space-y-8">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-black text-slate-900">42. Trapping Rain Water</h2>
+                <span className="text-xs font-black bg-rose-50 text-rose-600 border border-rose-100 px-3 py-1 rounded-full uppercase tracking-widest">Hard</span>
               </div>
+              <div className="prose prose-slate max-w-none text-slate-600 space-y-4 text-lg leading-relaxed">
+                <p>
+                  Given <code>n</code> non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 flex flex-col gap-6">
+                  <div className="flex items-end justify-center h-48 w-full gap-1 border-b-2 border-slate-300 pb-1">
+                    {[0,1,0,2,1,0,1,3,2,1,2,1].map((h, i) => {
+                      const water = [0,0,1,0,1,2,1,0,0,1,0,0][i];
+                      return (
+                        <div key={i} className="flex-1 flex flex-col justify-end h-full">
+                          <div className="bg-blue-400/60 w-full" style={{ height: `${(water / 3) * 100}%` }}></div>
+                          <div className="bg-slate-700 w-full" style={{ height: `${(h / 3) * 100}%` }}></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="font-mono text-sm space-y-2">
+                    <p><span className="text-slate-400 font-bold uppercase">Input:</span> height = [0,1,0,2,1,0,1,3,2,1,2,1]</p>
+                    <p><span className="text-slate-400 font-bold uppercase">Output:</span> 6</p>
+                    <p className="text-slate-500 italic text-xs leading-relaxed">
+                      Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 font-mono text-sm space-y-2">
+                  <p><span className="text-slate-400 font-bold uppercase">Input:</span> height = [4,2,0,3,2,5]</p>
+                  <p><span className="text-slate-400 font-bold uppercase">Output:</span> 9</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-slate-100">
+              <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+                <AlertCircle size={14} /> Constraints:
+              </h3>
+              <ul className="list-disc list-inside space-y-2 text-sm font-mono text-slate-600 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+                <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">n == height.length</code></li>
+                <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">1 &lt;= n &lt;= 2 * 10<sup>4</sup></code></li>
+                <li><code className="bg-slate-100 px-1.5 rounded text-slate-800">0 &lt;= height[i] &lt;= 10<sup>5</sup></code></li>
+              </ul>
             </div>
           </div>
         )}
@@ -235,58 +317,99 @@ const TrappingRainWaterVisualizer = () => {
                   </button>
                 ))}
               </div>
-              <div className="bg-[#0f172a] rounded-2xl h-[450px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
-                <div className="bg-[#1e293b] px-4 py-2 border-b border-slate-700 text-xs text-slate-400 font-mono flex justify-between items-center">
-                  <span className="font-bold uppercase tracking-tight">TrappingRainWater.java</span>
+              <div className="bg-[#0f172a] rounded-2xl h-[480px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
+                <div className="bg-[#1e293b] px-4 py-3 border-b border-slate-700 text-xs text-slate-400 font-mono flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <Code2 size={14} className="text-blue-400" />
+                    <span className="font-bold uppercase tracking-tight">TrappingRainWater.java</span>
+                  </div>
                   <button onClick={() => { navigator.clipboard.writeText(APPROACHES[selectedApproach].code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
                     {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
                   </button>
                 </div>
-                <div className="p-6 font-mono text-[13px] overflow-auto relative">
+                <div className="p-6 font-mono text-[13px] leading-relaxed overflow-auto relative scrollbar-thin scrollbar-thumb-slate-700">
                     <div className="absolute left-0 right-0 bg-blue-500/15 border-l-4 border-blue-500 transition-all duration-300 pointer-events-none z-0" style={{ top: `${(currentState.line * 20.8) + 24 - 20.8}px`, height: '20.8px' }} />
                     {APPROACHES[selectedApproach].code.split('\n').map((line, idx) => (
                       <CodeLineRenderer key={idx} num={idx + 1} code={line} active={currentState.line === idx + 1} />
                     ))}
                 </div>
               </div>
+              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+                <div className="flex items-center gap-2 text-blue-600">
+                    <Info size={18} />
+                    <h4 className="text-sm font-black uppercase tracking-widest">Strategy Note</h4>
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed italic">{APPROACHES[selectedApproach].explanation}</p>
+              </div>
             </div>
 
             <div className="space-y-6">
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-blue-600 uppercase block pl-1 tracking-widest">Terrain Heights</label>
-                  <input value={heightsInput} onChange={(e) => { setHeightsInput(e.target.value); setCurrentStep(0); }} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-inner" />
-                </div>
-                <div className="flex gap-2">
-                  <button onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))} disabled={currentStep === 0} className="flex-1 py-3 bg-slate-100 rounded-xl font-bold disabled:opacity-30 hover:bg-slate-200 transition-colors">Prev</button>
-                  <button onClick={() => setCurrentStep(prev => Math.min(trace.length - 1, prev + 1))} disabled={currentStep === trace.length - 1} className="flex-[2] py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-30 shadow-lg hover:bg-blue-700 transition-colors">Next Action</button>
-                </div>
-              </div>
-
-              <div className="bg-slate-800 text-white rounded-2xl p-6 shadow-xl border border-slate-700 min-h-[140px]">
-                <span className="text-[10px] font-black uppercase text-slate-400 block mb-2 tracking-widest">{currentState.phase}</span>
-                <p className="text-sm leading-relaxed text-slate-300">{currentState.description}</p>
-              </div>
-
-              <div className="bg-white rounded-3xl border border-slate-200 p-8 h-[380px] relative flex flex-col justify-end overflow-hidden shadow-inner">
-                <div className="absolute top-4 right-6 text-center animate-in fade-in">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Water</span>
-                  <div className="text-3xl font-black text-blue-600 flex items-center justify-center gap-2">
-                    <Droplet size={20} className="fill-blue-500 text-blue-500" /> <span className="tabular-nums">{totalWater ?? 0}</span>
+                  <label className="text-[10px] font-black text-blue-600 uppercase block pl-1 tracking-widest">Terrain Heights (csv)</label>
+                  <div className="flex gap-4">
+                    <input value={heightsInput} onChange={(e) => { setHeightsInput(e.target.value); setCurrentStep(0); }} className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-inner" />
+                    <button onClick={() => setCurrentStep(0)} className="p-3 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors" title="Reset Simulation"><RotateCcw size={18}/></button>
                   </div>
                 </div>
+                <div className="flex gap-3">
+                  <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 py-4 bg-slate-100 rounded-2xl font-black text-xs uppercase tracking-widest disabled:opacity-30 hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+                    <ChevronLeft size={16}/> Prev
+                  </button>
+                  <button onClick={handleNext} disabled={currentStep === trace.length - 1} className="flex-[2] py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest disabled:opacity-30 shadow-xl shadow-blue-200 hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                    Next Action <ChevronRight size={16}/>
+                  </button>
+                </div>
+              </div>
 
-                {selectedApproach === 'dp' && leftMaxArr && (
-                    <div className="absolute top-4 left-6 space-y-1">
-                         <span className="text-[10px] font-black text-slate-400 uppercase block">DP State Precomputed</span>
-                         <div className="flex gap-2">
-                            <div className="px-2 py-1 bg-blue-50 border border-blue-200 rounded text-[10px] font-bold text-blue-600">LeftMax Array</div>
-                            <div className="px-2 py-1 bg-purple-50 border border-purple-200 rounded text-[10px] font-bold text-purple-600">RightMax Array</div>
-                         </div>
-                    </div>
-                )}
+              <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-2xl border border-slate-800 min-h-[160px] relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                    <Database size={100}/>
+                </div>
+                <div className="flex items-center gap-2 mb-3">
+                   <Target size={14} className="text-blue-400"/>
+                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Execution State</span>
+                </div>
+                <div className="text-lg font-black tracking-tight mb-2 flex items-center gap-3">
+                    {trappedUnits > 0 && <span className="px-2 py-0.5 bg-blue-500 text-[10px] rounded-full animate-pulse">TRAP!</span>}
+                    {peakUpdate && <span className="px-2 py-0.5 bg-amber-500 text-[10px] rounded-full animate-pulse">NEW PEAK</span>}
+                    {currentState.phase}
+                </div>
+                <p className="text-sm leading-relaxed text-slate-400 border-t border-slate-800/50 pt-3">{currentState.description}</p>
+              </div>
 
-                <div className="flex items-end justify-center h-[200px] w-full gap-1 border-b-4 border-slate-900 pb-1 relative">
+              <div className="bg-white rounded-3xl border border-slate-200 p-8 min-h-[420px] relative flex flex-col justify-end overflow-hidden shadow-inner">
+                {/* Stats Dashboard */}
+                <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-20">
+                   <div className="space-y-4">
+                      {selectedApproach === 'twoPointer' && !finished && (
+                        <div className="flex gap-4">
+                           <div className={`p-3 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center ${processing === 'left' ? 'bg-blue-50 border-blue-500 scale-110 shadow-lg' : 'bg-slate-50 border-slate-200 opacity-60'}`}>
+                              <span className="text-[8px] font-black text-slate-400 uppercase mb-1">Left Peak</span>
+                              <div className="text-xl font-black text-blue-700">{leftMax}</div>
+                           </div>
+                           <div className={`p-3 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center ${processing === 'right' ? 'bg-blue-50 border-blue-500 scale-110 shadow-lg' : 'bg-slate-50 border-slate-200 opacity-60'}`}>
+                              <span className="text-[8px] font-black text-slate-400 uppercase mb-1">Right Peak</span>
+                              <div className="text-xl font-black text-blue-700">{rightMax}</div>
+                           </div>
+                        </div>
+                      )}
+                      {selectedApproach === 'dp' && !finished && (
+                        <div className="flex gap-3">
+                           <div className="px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-xl text-[10px] font-black text-blue-600 shadow-sm flex items-center gap-2"><ArrowRight size={10}/> Prefix Scan</div>
+                           <div className="px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-xl text-[10px] font-black text-purple-600 shadow-sm flex items-center gap-2"><ArrowRight className="rotate-180" size={10}/> Suffix Scan</div>
+                        </div>
+                      )}
+                   </div>
+                   <div className="bg-blue-600 p-6 rounded-3xl text-white shadow-2xl shadow-blue-200 transform hover:scale-105 transition-transform">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80 block mb-1">Trapped Volume</span>
+                      <div className="text-4xl font-black flex items-center gap-2 tabular-nums">
+                        <Droplet size={24} className="fill-blue-300 text-blue-300 animate-pulse" /> {totalWater ?? 0}
+                      </div>
+                   </div>
+                </div>
+
+                <div className="flex items-end justify-center h-[220px] w-full gap-1 border-b-4 border-slate-900 pb-1 relative z-10">
                   {heights.map((h, idx) => {
                     const barH = (h / globalMaxHeight) * 100;
                     const waterH = ((waterArr?.[idx] || 0) / globalMaxHeight) * 100;
@@ -294,20 +417,74 @@ const TrappingRainWaterVisualizer = () => {
                     const isRight = right === idx;
                     const isFocused = activeIdx === idx;
                     const isActive = isLeft || isRight || isFocused;
+                    const isBottleneck = (isLeft || isRight) && !finished;
 
                     return (
-                      <div key={idx} className="flex-1 h-full flex flex-col justify-end relative">
-                        {isActive && !finished && (
-                          <div className={`absolute -top-12 left-1/2 -translate-x-1/2 animate-bounce ${isLeft ? 'text-blue-500' : isRight ? 'text-indigo-500' : 'text-orange-500'}`}>
-                            <ArrowDown size={14} />
+                      <div key={idx} className="flex-1 h-full flex flex-col justify-end relative group">
+                        {/* High-fidelity Pointer Arrows */}
+                        {isBottleneck && (
+                          <div className={`absolute -top-14 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce z-30`}>
+                             <div className={`px-2 py-0.5 rounded-full text-[9px] font-black text-white shadow-lg mb-1 uppercase tracking-tighter ${isLeft ? 'bg-blue-500' : 'bg-indigo-600'}`}>
+                                {isLeft ? 'PTR L' : 'PTR R'}
+                             </div>
+                             <ArrowDown size={18} className={isLeft ? 'text-blue-500' : 'text-indigo-600'} strokeWidth={3}/>
                           </div>
                         )}
-                        <div className="bg-blue-400/80 w-full transition-all duration-700 relative z-0" style={{ height: `${waterH}%` }}></div>
-                        <div className={`w-full transition-all duration-300 rounded-t-sm z-10 ${isActive ? 'bg-orange-600 shadow-lg' : 'bg-slate-700'}`} style={{ height: `${barH}%` }}></div>
+                        
+                        {/* Peak Indicators for individual bars during calculation */}
+                        {isFocused && !finished && selectedApproach !== 'twoPointer' && (
+                           <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-orange-500 animate-pulse">
+                              <Target size={16} strokeWidth={3}/>
+                           </div>
+                        )}
+
+                        {/* Rainwater representation */}
+                        <div className="bg-blue-400/80 w-full transition-all duration-700 relative z-0 rounded-t-sm" style={{ height: `${waterH}%` }}>
+                           {waterH > 0 && !finished && (
+                             <div className="absolute inset-0 flex items-center justify-center">
+                                <Droplet size={10} className="text-white opacity-50 fill-white" />
+                             </div>
+                           )}
+                        </div>
+
+                        {/* Terrain representation */}
+                        <div 
+                          className={`w-full transition-all duration-500 rounded-t-[2px] z-10 relative 
+                            ${isActive ? 'bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.4)] scale-x-105' : 'bg-slate-700'}
+                            ${finished ? 'opacity-90' : ''}
+                          `} 
+                          style={{ height: `${barH}%` }}
+                        >
+                           {/* Height label on hover or if active */}
+                           <div className={`absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-bold font-mono transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                              {h}
+                           </div>
+                        </div>
+
+                        {/* Coordinate labels */}
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] font-mono font-black text-slate-300">
+                           {idx}
+                        </span>
                       </div>
                     );
                   })}
                 </div>
+
+                {/* Final Completion UI */}
+                {finished && (
+                   <div className="absolute inset-0 z-50 flex items-center justify-center bg-blue-600/5 backdrop-blur-[2px] animate-in fade-in duration-700">
+                      <div className="bg-white border-2 border-blue-200 px-12 py-10 rounded-[3rem] shadow-2xl flex flex-col items-center gap-4 transform -rotate-1">
+                         <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center shadow-lg mb-2">
+                             <Check size={40} strokeWidth={3}/>
+                         </div>
+                         <div className="text-center">
+                            <span className="text-xs font-black uppercase text-slate-400 tracking-widest block mb-1">Final Result</span>
+                            <div className="text-5xl font-black text-slate-900 tracking-tighter tabular-nums">{totalWater} <span className="text-lg text-blue-500 uppercase">Units</span></div>
+                         </div>
+                         <p className="text-xs text-slate-500 font-medium max-w-[200px] text-center leading-relaxed">Terrain scan finished. All possible water pockets identified.</p>
+                      </div>
+                   </div>
+                )}
               </div>
             </div>
           </div>
@@ -440,7 +617,9 @@ const TrappingRainWaterVisualizer = () => {
 };
 
 const TabButton = ({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string }) => (
-  <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-black transition-all ${active ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>{icon} {label}</button>
+  <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-black transition-all duration-300 ${active ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+    {icon} {label}
+  </button>
 );
 
 const CodeLineRenderer: React.FC<{ num: number; code: string; active?: boolean }> = ({ num, code, active }) => {

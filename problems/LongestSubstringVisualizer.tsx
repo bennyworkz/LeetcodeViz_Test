@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Maximize, MousePointer2, Calculator, Search, FileText } from 'lucide-react';
+import { RotateCcw, ChevronRight, ChevronLeft, Activity, BookOpen, Code2, Check, Copy, AlignLeft, Zap, Trophy, MessageSquare, Target, AlertCircle, Cpu, Maximize, MousePointer2, Calculator, Search, FileText, ArrowRight } from 'lucide-react';
 
 const APPROACHES = {
   optimal: {
@@ -12,7 +12,7 @@ const APPROACHES = {
     code: `class Solution {
     public int lengthOfLongestSubstring(String s) {
         int n = s.length(), ans = 0;
-        Map<Character, Integer> map = new HashMap<>(); // character -> next index
+        Map<Character, Integer> map = new HashMap<>(); 
         for (int j = 0, i = 0; j < n; j++) {
             if (map.containsKey(s.charAt(j))) {
                 i = Math.max(map.get(s.charAt(j)), i);
@@ -23,7 +23,7 @@ const APPROACHES = {
         return ans;
     }
 }`,
-    explanation: "This is the most efficient sliding window technique. As we scan with pointer 'j', we store each character's position in a Map. If we see a repeat, we instantly 'jump' the left pointer 'i' to the position after the previous occurrence."
+    explanation: "This is the most efficient sliding window technique. As we scan with pointer 'j', we store each character's next available index in a Map. If we see a repeat, we instantly 'jump' the left pointer 'i' to the safe position, skipping redundant checks."
   },
   sliding: {
     id: 'sliding',
@@ -47,7 +47,7 @@ const APPROACHES = {
         return ans;
     }
 }`,
-    explanation: "A more common Sliding Window implementation. We expand the window from the right. If we hit a duplicate, we shrink from the left character-by-character until the window is valid again."
+    explanation: "A standard 'Two-Pointer' approach. We expand the window from the right. If we hit a duplicate, we shrink from the left character-by-character until the window contains only unique items again."
   },
   brute: {
     id: 'brute',
@@ -69,68 +69,128 @@ const APPROACHES = {
         return res;
     }
 }`,
-    explanation: "Checks every possible substring in the string to see if it contains unique characters. This is extremely slow for long inputs."
+    explanation: "Checks every possible substring in the string to see if it contains unique characters. This is extremely slow as it performs O(N²) scans with an O(N) uniqueness check."
   }
 };
 
 const LongestSubstringVisualizer = () => {
   const [activeTab, setActiveTab] = useState<'problem' | 'visualizer' | 'learn' | 'interview'>('visualizer');
   const [selectedApproach, setSelectedApproach] = useState<keyof typeof APPROACHES>('optimal');
-  const [inputS, setInputS] = useState("abcabcbb");
+  const [inputS, setInputS] = useState("pwwkew");
   const [currentStep, setCurrentStep] = useState(0);
   const [copied, setCopied] = useState(false);
 
   const trace = useMemo(() => {
     const steps: any[] = [];
     const n = inputS.length;
-    let finalAns = 0;
-
-    const addStep = (phase: string, desc: string, line: number, state: any) => {
-        steps.push({ phase, description: desc, line, state });
-    };
     
     if (selectedApproach === 'optimal') {
-      addStep("Strategy Selection", "To find the longest unique sequence, we could check all O(N²) substrings, but that's slow. We'll use a 'Sliding Window' with a HashMap. A Map allows us to 'teleport' the window when a duplicate hits, avoiding redundant checks.", 3, { i: 0, j: -1, ans: 0, map: {} });
-
-      addStep("Understanding the Window", "Window starts at i=0. The HashMap will store the LAST SEEN position of characters. If we see a character again, we move 'i' past its previous location immediately.", 5, { i: 0, j: -1, ans: 0, map: {} });
-
       let ans = 0;
       let i = 0;
-      const map: Record<number, number> = {};
+      const map: Record<string, number> = {};
+      
+      steps.push({ 
+        phase: "Initialization", 
+        description: "Set up the sliding window. Left pointer 'i' and Right pointer 'j' both start at index 0. The HashMap will track the last position of each character.", 
+        line: 3, 
+        state: { i: 0, j: -1, ans: 0, map: {} } 
+      });
+
       for (let j = 0; j < n; j++) {
         const char = inputS[j];
+        
+        steps.push({ 
+          phase: "Scan Character", 
+          description: `Scanning '${char}' at right index j=${j}. Checking if it's already in our unique window...`, 
+          line: 5, 
+          state: { i, j, ans, map: { ...map } } 
+        });
+
         if (map[char] !== undefined) {
-          i = Math.max(map[char], i);
-          addStep("Instant Jump", `Repeated character '${char}' detected. Jumping left boundary 'i' to ${i}.`, 6, { i, j, ans, map: { ...map } });
+          const prevPos = map[char];
+          const newI = Math.max(prevPos, i);
+          const didJump = newI > i;
+          
+          steps.push({ 
+            phase: "Duplicate Found!", 
+            description: `Conflict! '${char}' was previously seen (stored position ${prevPos}). ${didJump ? `Jumping left pointer 'i' forward to index ${newI} to maintain uniqueness.` : `Character is behind the current window start, no jump needed.`}`, 
+            line: 6, 
+            state: { i, j, ans, map: { ...map }, conflictIdx: prevPos - 1, jumpTo: newI } 
+          });
+          i = newI;
         }
-        ans = Math.max(ans, j - i + 1);
+
+        const currentLen = j - i + 1;
+        const prevAns = ans;
+        ans = Math.max(ans, currentLen);
+        
+        steps.push({ 
+          phase: "Update Window", 
+          description: `Current unique window is "${inputS.substring(i, j + 1)}". Length: ${currentLen}. ${ans > prevAns ? `New maximum found: ${ans}` : `Global maximum remains ${ans}`}.`, 
+          line: 9, 
+          state: { i, j, ans, map: { ...map }, highlightWindow: true } 
+        });
+
         map[char] = j + 1;
-        addStep("Expand Window", `Right pointer 'j' at index ${j} ('${char}'). Substring [${i}...${j}] is valid. Length: ${j-i+1}. Peak: ${ans}.`, 8, { i, j, ans, map: { ...map } });
+        steps.push({ 
+          phase: "Update Map", 
+          description: `Update Map: last seen '${char}' is effectively at index ${j}, so the next potential window must start after it (index ${j+1}).`, 
+          line: 10, 
+          state: { i, j, ans, map: { ...map } } 
+        });
       }
-      finalAns = ans;
     } else if (selectedApproach === 'sliding') {
         let i = 0, j = 0, ans = 0;
         const set = new Set<string>();
-        addStep("Init", "Initialize pointers i, j at the start.", 4, { i, j, ans, set: new Set() });
+        
+        steps.push({ 
+          phase: "Initialization", 
+          description: "Initialize pointers i, j at the start. We use a HashSet to track uniqueness in the current window.", 
+          line: 4, 
+          state: { i, j, ans, set: new Set() } 
+        });
+
         while (j < n) {
             const char = inputS[j];
             if (!set.has(char)) {
+                steps.push({ 
+                  phase: "Expand Right", 
+                  description: `'${char}' is unique to this window. Adding it to the set and expanding right pointer 'j'.`, 
+                  line: 7, 
+                  state: { i, j, ans, set: new Set(set) } 
+                });
                 set.add(char);
                 j++;
-                ans = Math.max(ans, j - i);
-                addStep("Add", `Added '${char}'. Window is valid. Expanding right.`, 8, { i, j, ans, set: new Set(set) });
+                const currentLen = j - i;
+                ans = Math.max(ans, currentLen);
+                steps.push({ 
+                  phase: "Valid Window", 
+                  description: `Window is "${inputS.substring(i, j)}". Length: ${currentLen}. Max: ${ans}.`, 
+                  line: 9, 
+                  state: { i, j: j - 1, ans, set: new Set(set), highlightWindow: true } 
+                });
             } else {
+                steps.push({ 
+                  phase: "Conflict Detected", 
+                  description: `Found duplicate '${char}' at index ${j}. Window is invalid! Must shrink from the left.`, 
+                  line: 10, 
+                  state: { i, j, ans, set: new Set(set), conflictIdx: j } 
+                });
                 const removedChar = inputS[i];
                 set.delete(removedChar);
                 i++;
-                addStep("Shrink", `Duplicate found. Shrinking left boundary. Removed '${removedChar}'.`, 11, { i, j, ans, set: new Set(set) });
+                steps.push({ 
+                  phase: "Shrink Left", 
+                  description: `Removed '${removedChar}' from set. Incrementing left pointer 'i' to index ${i}.`, 
+                  line: 11, 
+                  state: { i, j, ans, set: new Set(set) } 
+                });
             }
         }
-        finalAns = ans;
     } else {
         // Brute Force
         let ans = 0;
-        addStep("Start Brute Force", "We will check every possible substring (i, j) for uniqueness.", 3, { i: -1, j: -1, ans: 0 });
+        steps.push({ phase: "Start Brute Force", description: "Beginning O(N³) scan: checking every possible start (i) and end (j).", line: 3, state: { i: -1, j: -1, ans: 0 } });
         for (let i = 0; i < n; i++) {
             for (let j = i; j < n; j++) {
                 const sub = inputS.substring(i, j + 1);
@@ -138,18 +198,17 @@ const LongestSubstringVisualizer = () => {
                 if (unique) {
                     ans = Math.max(ans, j - i + 1);
                 }
-                addStep("Check Substring", `Checking "${sub}" [${i}...${j}]. Unique: ${unique}. Max so far: ${ans}`, 7, { i, j, ans });
+                steps.push({ phase: "Check Substring", description: `Checking substring [${i}...${j}]: "${sub}". Unique: ${unique ? 'YES' : 'NO'}.`, line: 7, state: { i, j, ans, unique } });
             }
         }
-        finalAns = ans;
     }
 
-    addStep("Finish", `Scan complete. Maximum unique length found is ${finalAns}.`, 11, { ...steps[steps.length-1]?.state, finished: true });
+    steps.push({ phase: "Finished", description: `Simulation complete. The longest substring without repeating characters is ${steps[steps.length-1]?.state.ans ?? 0}.`, line: 13, state: { ...steps[steps.length-1]?.state, finished: true } });
     return steps;
   }, [inputS, selectedApproach]);
 
   const currentState = trace[currentStep] || trace[0];
-  const { i: left, j: right, ans, map: currentMap, set: currentSet, finished } = currentState.state;
+  const { i: left, j: right, ans, map: currentMap, set: currentSet, finished, highlightWindow, conflictIdx, jumpTo, unique: bruteUnique } = currentState.state;
 
   return (
     <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-full">
@@ -202,9 +261,9 @@ const LongestSubstringVisualizer = () => {
                   </button>
                 ))}
               </div>
-              <div className="bg-[#0f172a] rounded-2xl h-[400px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
-                <div className="bg-[#1e293b] px-4 py-2 border-b border-slate-700 flex justify-between items-center text-xs text-slate-400 font-mono">
-                  <span className="font-bold uppercase tracking-tight">LongestSubstring.java</span>
+              <div className="bg-[#0f172a] rounded-2xl h-[450px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
+                <div className="bg-[#1e293b] px-4 py-2 border-b border-slate-700 flex justify-between items-center text-xs text-slate-400 font-mono font-bold">
+                  <span className="uppercase tracking-tight">LongestSubstring.java</span>
                   <button onClick={() => { navigator.clipboard.writeText(APPROACHES[selectedApproach].code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
                     {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
                   </button>
@@ -226,52 +285,78 @@ const LongestSubstringVisualizer = () => {
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))} disabled={currentStep === 0} className="flex-1 py-3 bg-slate-100 rounded-xl font-bold disabled:opacity-30 hover:bg-slate-200 transition-colors">Prev</button>
-                  <button onClick={() => setCurrentStep(prev => Math.min(trace.length - 1, prev + 1))} disabled={currentStep === trace.length - 1} className="flex-[2] py-3 bg-orange-600 text-white rounded-xl font-bold disabled:opacity-30 shadow-lg hover:bg-orange-700 transition-colors">Next Action</button>
+                  <button onClick={() => setCurrentStep(prev => Math.min(trace.length - 1, prev + 1))} disabled={currentStep === trace.length - 1} className="flex-[2] py-3 bg-orange-600 text-white rounded-xl font-bold disabled:opacity-30 shadow-lg hover:bg-orange-700 transition-colors font-black uppercase tracking-tight">Next Action</button>
                 </div>
               </div>
 
-              <div className="bg-slate-800 text-white rounded-2xl p-6 shadow-xl border border-slate-700 min-h-[120px]">
-                <span className="text-[10px] font-black uppercase text-slate-400 block mb-2 tracking-widest">{currentState.phase}</span>
-                <p className="text-sm text-slate-200 leading-relaxed">{currentState.description}</p>
+              <div className="bg-slate-800 text-white rounded-2xl p-6 shadow-xl border border-slate-700 min-h-[120px] relative">
+                <div className="absolute -top-3 left-4 bg-orange-600 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-sm">{currentState.phase}</div>
+                <p className="text-sm text-slate-200 leading-relaxed mt-2">{currentState.description}</p>
               </div>
 
-              <div className="bg-white rounded-2xl border border-slate-200 p-10 min-h-[350px] flex flex-col justify-center items-center gap-10 relative overflow-hidden">
+              <div className="bg-white rounded-2xl border border-slate-200 p-8 min-h-[350px] flex flex-col justify-center items-center gap-10 relative overflow-hidden shadow-inner">
                 <div className="w-full grid grid-cols-2 gap-4">
                     <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col items-center">
-                        <span className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-tighter">Current Width</span>
-                        <div className="text-2xl font-black text-slate-800 tabular-nums">{(right >= left ? right - left + 1 : 0)}</div>
+                        <span className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-tighter">Window Width</span>
+                        <div className="text-3xl font-black text-slate-800 tabular-nums">{(right >= left ? right - left + 1 : 0)}</div>
                     </div>
                     <div className="bg-orange-50 rounded-2xl p-4 border border-orange-100 flex flex-col items-center">
                         <span className="text-[10px] font-black text-orange-400 uppercase mb-1 tracking-tighter">Peak Length</span>
-                        <div className="text-2xl font-black text-orange-600 tabular-nums">{ans}</div>
+                        <div className="text-3xl font-black text-orange-600 tabular-nums">{ans}</div>
                     </div>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2 relative p-10 bg-slate-50/50 rounded-3xl border border-slate-100 border-dashed">
                   {inputS.split('').map((char, idx) => {
                     const isInWindow = idx >= left && idx <= right;
                     const isRight = right === idx;
+                    const isConflict = conflictIdx === idx;
+                    const isLeft = left === idx;
+
                     return (
-                      <div key={idx} className="flex flex-col items-center">
-                        <div className={`w-10 h-12 border-2 rounded-lg flex items-center justify-center font-mono text-lg transition-all duration-300 relative ${isRight ? 'bg-orange-600 border-orange-700 text-white scale-110 shadow-lg' : isInWindow ? 'bg-orange-50 border-orange-300 text-orange-700' : 'bg-white border-slate-100 text-slate-200'}`}>
+                      <div key={idx} className="flex flex-col items-center relative">
+                        <div className={`w-12 h-14 border-2 rounded-xl flex items-center justify-center font-mono text-xl transition-all duration-300 relative ${isRight && !finished ? 'bg-orange-600 border-orange-700 text-white scale-110 shadow-lg' : isConflict ? 'bg-rose-500 border-rose-600 text-white scale-125 z-20 animate-pulse' : highlightWindow && isInWindow ? 'bg-orange-100 border-orange-400 text-orange-800' : isInWindow ? 'bg-blue-50 border-blue-200 text-blue-700 shadow-sm' : 'bg-white border-slate-100 text-slate-300'}`}>
                           {char}
-                          {idx === left && right >= left && !finished && <div className="absolute -top-5 text-indigo-500 font-black text-[8px] tracking-tighter uppercase">Left</div>}
+                          {isLeft && !finished && (
+                             <div className="absolute -top-7 text-blue-600 font-black text-[10px] tracking-tight uppercase flex flex-col items-center animate-bounce">
+                                L
+                                <div className="w-0.5 h-2 bg-blue-600"/>
+                             </div>
+                          )}
+                          {isRight && !finished && (
+                             <div className="absolute -bottom-7 text-orange-600 font-black text-[10px] tracking-tight uppercase flex flex-col items-center animate-bounce">
+                                <div className="w-0.5 h-2 bg-orange-600"/>
+                                R
+                             </div>
+                          )}
                         </div>
-                        <span className="mt-1 text-[8px] font-mono text-slate-300">[{idx}]</span>
+                        <span className="mt-1 text-[8px] font-mono font-black text-slate-300 tracking-tighter">IDX:{idx}</span>
                       </div>
                     );
                   })}
+                  
+                  {/* Visual bounding box for the window */}
+                  {highlightWindow && right >= left && (
+                     <div className="absolute bg-orange-500/5 border-2 border-orange-500/20 rounded-3xl -z-10 transition-all duration-500"
+                        style={{
+                           left: `${(left / inputS.length) * 100}%`,
+                           width: `${((right - left + 1) / inputS.length) * 100}%`,
+                           height: '100%',
+                           top: '0'
+                        }}
+                     />
+                  )}
                 </div>
 
                 <div className="w-full flex flex-col items-center border-t border-slate-100 pt-6">
                     <div className="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest flex items-center gap-2">
-                      <Search size={12}/> Character Map / Set
+                      <Search size={12}/> {selectedApproach === 'sliding' ? 'Character Set' : 'Next Available Index Map'}
                     </div>
                     <div className="flex flex-wrap justify-center gap-2">
                         {selectedApproach === 'optimal' ? (
                             Object.entries(currentMap || {}).map(([k, v]) => (
-                                <div key={k} className="px-2 py-1 bg-slate-50 border rounded-lg text-[10px] font-mono animate-in fade-in shadow-sm">
-                                    <span className="font-bold text-orange-600">'{k}':</span> {v as number}
+                                <div key={k} className={`px-2 py-1 bg-white border rounded-lg text-[10px] font-mono animate-in fade-in shadow-sm ${inputS[right] === k && !finished ? 'border-orange-500 ring-2 ring-orange-100 text-orange-700 font-bold' : ''}`}>
+                                    <span className="font-bold text-slate-400">'{k}':</span> {v as number}
                                 </div>
                             ))
                         ) : (
@@ -281,6 +366,7 @@ const LongestSubstringVisualizer = () => {
                                 </div>
                             ))
                         )}
+                        {((selectedApproach === 'optimal' && Object.keys(currentMap || {}).length === 0) || (selectedApproach === 'sliding' && (currentSet?.size === 0))) && <span className="text-[10px] text-slate-300 italic">Empty Memory</span>}
                     </div>
                 </div>
               </div>
