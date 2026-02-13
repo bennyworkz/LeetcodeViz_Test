@@ -33,6 +33,7 @@ const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'
 const TwoSumVisualizer = lazy(() => import('./problems/TwoSumVisualizer'));
 const LongestSubstringVisualizer = lazy(() => import('./problems/LongestSubstringVisualizer'));
 const TrappingRainWaterVisualizer = lazy(() => import('./problems/TrappingRainWaterVisualizer'));
+const ThreeSumClosestVisualizer = lazy(() => import('./problems/ThreeSumClosestVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -42,6 +43,7 @@ export const modules: Module[] = [
     problems: [
       { id: '1-two-sum', number: 1, title: 'Two Sum', difficulty: 'Easy', component: TwoSumVisualizer },
       { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer },
+      { id: '16-3sum-closest', number: 16, title: '3Sum Closest', difficulty: 'Medium', component: ThreeSumClosestVisualizer },
       { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
     ]
   },
