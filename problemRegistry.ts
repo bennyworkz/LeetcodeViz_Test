@@ -84,6 +84,7 @@ const SqrtVisualizer = lazy(() => import('./problems/SqrtVisualizer.tsx'));
 const PlusOneVisualizer = lazy(() => import('./problems/PlusOneVisualizer.tsx'));
 const PermutationsVisualizer = lazy(() => import('./problems/PermutationsVisualizer.tsx'));
 const SearchInsertVisualizer = lazy(() => import('./problems/SearchInsertVisualizer.tsx'));
+const LongestValidParenthesesVisualizer = lazy(() => import('./problems/LongestValidParenthesesVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -210,6 +211,7 @@ export const modules: Module[] = [
         problems: [
           { id: '20-valid-parentheses', number: 20, title: 'Valid Parentheses', difficulty: 'Easy', component: ValidParenthesesVisualizer },
           { id: '84-longest-rectangle-in-histogram', number: 84, title: 'Largest Rectangle in Histogram', difficulty: 'Hard', component: LargestRectangleVisualizer},
+          { id: '32-longest-valid-parenthesis', number: 32, title: 'Longest Valid Parentheses', difficulty: 'Hard', component: LongestValidParenthesesVisualizer},
         ]
       },
       {
