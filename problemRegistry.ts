@@ -83,6 +83,7 @@ const IntegerToRomanVisualizer = lazy(() => import('./problems/IntegerToRomanVis
 const SqrtVisualizer = lazy(() => import('./problems/SqrtVisualizer.tsx'));
 const PlusOneVisualizer = lazy(() => import('./problems/PlusOneVisualizer.tsx'));
 const PermutationsVisualizer = lazy(() => import('./problems/PermutationsVisualizer.tsx'));
+const SearchInsertVisualizer = lazy(() => import('./problems/SearchInsertVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -164,6 +165,7 @@ export const modules: Module[] = [
           { id: '34-find-first-and-last-position-of-element-in-sorted-array', number: 34, title: 'Find First and Last Position of Element in Sorted Array', difficulty: 'Medium', component: SearchRangeVisualizer},
           { id: '74-search-a2d-matrix', number: 74, title: 'Search a 2D Matrix', difficulty: 'Medium', component: SearchMatrixVisualizer},
           { id: '69-sqrt(x)', number: 69, title: 'Sqrt(x)', difficulty: 'Easy', component: SqrtVisualizer},
+          { id: '35-search-insert-position', number: 35, title: 'Search Insert Position', difficulty: 'Easy', component: SearchInsertVisualizer},
         ]
       },
       {
