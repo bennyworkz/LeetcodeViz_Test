@@ -82,6 +82,7 @@ const StrStrVisualizer = lazy(() => import('./problems/StrStrVisualizer.tsx'));
 const IntegerToRomanVisualizer = lazy(() => import('./problems/IntegerToRomanVisualizer.tsx'));
 const SqrtVisualizer = lazy(() => import('./problems/SqrtVisualizer.tsx'));
 const PlusOneVisualizer = lazy(() => import('./problems/PlusOneVisualizer.tsx'));
+const PermutationsVisualizer = lazy(() => import('./problems/PermutationsVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -197,6 +198,7 @@ export const modules: Module[] = [
           { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer},
           { id: '51-N-queens', number: 51, title: 'N-Queens', difficulty: 'Hard', component: NQueensVisualizer},
           { id: '39-combination-sum', number: 39, title: 'Combination Sum', difficulty: 'Medium', component: CombinationSumVisualizer},
+          { id: '46-permutations', number: 46, title: 'Permutations', difficulty: 'Medium', component: PermutationsVisualizer},
         ]
       },
       {
