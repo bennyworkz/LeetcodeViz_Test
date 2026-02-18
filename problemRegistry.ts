@@ -81,6 +81,7 @@ const RemoveElementVisualizer = lazy(() => import('./problems/RemoveElementVisua
 const StrStrVisualizer = lazy(() => import('./problems/StrStrVisualizer.tsx'));
 const IntegerToRomanVisualizer = lazy(() => import('./problems/IntegerToRomanVisualizer.tsx'));
 const SqrtVisualizer = lazy(() => import('./problems/SqrtVisualizer.tsx'));
+const PlusOneVisualizer = lazy(() => import('./problems/PlusOneVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -248,6 +249,7 @@ export const modules: Module[] = [
         problems: [
           { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer},
           { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer},
+          { id: '66-plus-one', number: 66, title: 'Plus One', difficulty: 'Medium', component: PlusOneVisualizer},
         ]
       },
       {
