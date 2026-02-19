@@ -438,9 +438,9 @@ const MaximumSubarrayVisualizer = () => {
                     <div className="p-8 bg-amber-50 border border-amber-100 rounded-3xl space-y-4 shadow-sm">
                         <h3 className="font-black text-amber-900 flex items-center gap-2 uppercase tracking-tighter text-sm"><Calculator size={18}/> The Restart Condition</h3>
                         <p className="text-sm text-amber-700 leading-relaxed font-mono">
-                          Sum is extended if <code>sum + nums[i] > nums[i]</code>.
+                          Sum is extended if <code>sum + nums[i] &gt; nums[i]</code>.
                           <br/><br/>
-                          This simplifies to <code>sum > 0</code>.
+                          This simplifies to <code>sum &gt; 0</code>.
                           <br/><br/>
                           If we carry a negative total into a new element, we are objectively worse off than if we just started fresh with that element.
                         </p>
