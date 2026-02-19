@@ -1,9 +1,9 @@
 
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import React from "react";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
 interface Props {
-  children?: ReactNode;
+  children?: React.ReactNode;
 }
 
 interface State {
@@ -14,9 +14,9 @@ interface State {
 /**
  * ErrorBoundary class component to catch rendering errors in the visualization modules.
  */
-// Fix: Use direct Component import from react to resolve type recognition issues.
-export class ErrorBoundary extends Component<Props, State> {
-  // Fix: Use property initializer for state instead of constructor to ensure state property exists on the type.
+// Explicitly use React.Component to ensure TypeScript correctly resolves inherited properties like 'props' and 'setState'
+export class ErrorBoundary extends React.Component<Props, State> {
+  // Use a property initializer for state to clarify the type on the class instance.
   public state: State = {
     hasError: false,
     error: null,
@@ -27,12 +27,12 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  public render(): ReactNode {
-    // Fix: Access state from this.state as inherited from Component.
+  public render(): React.ReactNode {
+    // Access state from this.state inherited from React.Component.
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center bg-slate-50 rounded-xl border border-red-100">
@@ -48,7 +48,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </div>
           <button
             onClick={() => {
-                // Fix: Correctly access location from the component instance and reset state.
+                // Correctly access setState from the React.Component base class.
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
             }}
@@ -60,7 +60,7 @@ export class ErrorBoundary extends Component<Props, State> {
       );
     }
 
-    // Fix: Access children from this.props which is correctly inherited from Component.
+    // Access children from this.props which is inherited from React.Component.
     return this.props.children;
   }
 }
