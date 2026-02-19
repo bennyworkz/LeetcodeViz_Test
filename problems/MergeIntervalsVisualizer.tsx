@@ -534,7 +534,7 @@ const MergeIntervalsVisualizer = () => {
                         <h3 className="font-black text-amber-900 flex items-center gap-2 uppercase tracking-tighter text-sm font-mono"><ArrowRightLeft size={18}/> The Comparison Rule</h3>
                         <p className="text-sm text-amber-700 leading-relaxed font-mono">
                           Overlap exists IF:
-                          <br/><code>previous_end >= next_start</code>
+                          <br/><code>previous_end &gt;= next_start</code>
                           <br/><br/>
                           New merged boundary is:
                           <br/><code>[prev_start, max(prev_end, next_end)]</code>
