@@ -12,6 +12,7 @@ const ReverseWordsVisualizer = lazy(() => import('./problems/ReverseWordsVisuali
 const ProductExceptSelfVisualizer = lazy(() => import('./problems/ProductExceptSelfVisualizer'));
 const IncreasingTripletVisualizer = lazy(() => import('./problems/IncreasingTripletVisualizer'));
 const StringCompressionVisualizer = lazy(() => import('./problems/StringCompressionVisualizer'));
+const LongestCommonPrefixVisualizer = lazy(() => import('./problems/LongestCommonPrefixVisualizer'));
 
 // Two Pointers
 const MoveZeroesVisualizer = lazy(() => import('./problems/MoveZeroesVisualizer'));
@@ -33,11 +34,17 @@ const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'
 const TwoSumVisualizer = lazy(() => import('./problems/TwoSumVisualizer'));
 const AddTwoNumbersVisualizer = lazy(() => import('./problems/AddTwoNumbersVisualizer'));
 const LongestSubstringVisualizer = lazy(() => import('./problems/LongestSubstringVisualizer'));
+const LongestPalindromicSubstringVisualizer = lazy(() => import('./problems/LongestPalindromicSubstringVisualizer'));
+const MedianTwoSortedArraysVisualizer = lazy(() => import('./problems/MedianTwoSortedArraysVisualizer'));
+const ThreeSumVisualizer = lazy(() => import('./problems/ThreeSumVisualizer'));
 const ValidParenthesesVisualizer = lazy(() => import('./problems/ValidParenthesesVisualizer'));
 const TrappingRainWaterVisualizer = lazy(() => import('./problems/TrappingRainWaterVisualizer'));
 const ThreeSumClosestVisualizer = lazy(() => import('./problems/ThreeSumClosestVisualizer'));
 const MergeSortedArrayVisualizer = lazy(() => import('./problems/MergeSortedArrayVisualizer'));
 const GroupAnagramsVisualizer = lazy(() => import('./problems/GroupAnagramsVisualizer'));
+const MergeIntervalsVisualizer = lazy(() => import('./problems/MergeIntervalsVisualizer'));
+const MergeKSortedListsVisualizer = lazy(() => import('./problems/MergeKSortedListsVisualizer'));
+const MaximumSubarrayVisualizer = lazy(() => import('./problems/MaximumSubarrayVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -48,10 +55,18 @@ export const modules: Module[] = [
       { id: '1-two-sum', number: 1, title: 'Two Sum', difficulty: 'Easy', component: TwoSumVisualizer },
       { id: '2-add-two-numbers', number: 2, title: 'Add Two Numbers', difficulty: 'Medium', component: AddTwoNumbersVisualizer },
       { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer },
+      { id: '4-median-two-sorted-arrays', number: 4, title: 'Median of Two Sorted Arrays', difficulty: 'Hard', component: MedianTwoSortedArraysVisualizer },
+      { id: '5-longest-palindromic-substring', number: 5, title: 'Longest Palindromic Substring', difficulty: 'Medium', component: LongestPalindromicSubstringVisualizer },
+      { id: '11-container-with-most-water-amazon', number: 11, title: 'Container With Most Water', difficulty: 'Medium', component: ContainerWithMostWaterVisualizer },
+      { id: '14-longest-common-prefix-amazon', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
+      { id: '15-3sum', number: 15, title: '3Sum', difficulty: 'Medium', component: ThreeSumVisualizer },
       { id: '16-3sum-closest', number: 16, title: '3Sum Closest', difficulty: 'Medium', component: ThreeSumClosestVisualizer },
       { id: '20-valid-parentheses', number: 20, title: 'Valid Parentheses', difficulty: 'Easy', component: ValidParenthesesVisualizer },
+      { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer },
       { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
       { id: '49-group-anagrams', number: 49, title: 'Group Anagrams', difficulty: 'Medium', component: GroupAnagramsVisualizer },
+      { id: '53-maximum-subarray-amazon', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
+      { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer },
       { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
     ]
   },
@@ -69,6 +84,8 @@ export const modules: Module[] = [
       { id: '238-product-except-self', number: 238, title: 'Product of Array Except Self', difficulty: 'Medium', component: ProductExceptSelfVisualizer },
       { id: '334-increasing-triplet', number: 334, title: 'Increasing Triplet Subsequence', difficulty: 'Medium', component: IncreasingTripletVisualizer },
       { id: '443-string-compression', number: 443, title: 'String Compression', difficulty: 'Medium', component: StringCompressionVisualizer },
+      { id: '53-maximum-subarray', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
+      { id: '14-longest-common-prefix', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
     ]
   },
   {
