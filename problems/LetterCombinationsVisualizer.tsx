@@ -698,7 +698,7 @@ const LetterCombinationsVisualizer = () => {
                         <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-indigo-200 transition-colors">
                             <p className="text-sm font-black text-slate-800 mb-2 uppercase tracking-tighter font-black underline underline-offset-4 decoration-indigo-200 font-black">"How to handle the empty string case?"</p>
                             <p className="text-xs text-slate-600 leading-relaxed italic font-black">
-                                "In my solution, I use an early guard clause: <code>if (digits.isEmpty()) return new ArrayList<>()</code>. Without this, the seed string "" would be added to the result, returning [""] instead of an empty list, which would fail the test case."
+                                "In my solution, I use an early guard clause: <code>{"if (digits.isEmpty()) return new ArrayList<>()"}</code>. Without this, the seed string "" would be added to the result, returning [""] instead of an empty list, which would fail the test case."
                             </p>
                         </div>
                     </div>
