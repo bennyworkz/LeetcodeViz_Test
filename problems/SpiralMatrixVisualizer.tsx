@@ -496,7 +496,7 @@ const SpiralMatrixVisualizer = () => {
                         <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-indigo-200 transition-colors">
                             <p className="text-sm font-black text-slate-800 mb-2 uppercase tracking-tighter font-black underline underline-offset-4 decoration-emerald-200">"Why the inner checks?"</p>
                             <p className="text-xs text-slate-600 leading-relaxed italic">
-                                "In a rectangular matrix like 1x5, we finish the 'Right' traversal and `top++` makes top > bottom. Without checking `top <= bottom` again, we would attempt a 'Left' traversal on an already processed row."
+                                "In a rectangular matrix like 1x5, we finish the 'Right' traversal and `top++` makes top &gt; bottom. Without checking `top &lt;= bottom` again, we would attempt a 'Left' traversal on an already processed row."
                             </p>
                         </div>
                         <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-indigo-200 transition-colors">
