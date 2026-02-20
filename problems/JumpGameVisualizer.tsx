@@ -451,7 +451,7 @@ const JumpGameVisualizer = () => {
                           "Can I reach point B if I can reach point A?"
                         </p>
                         <p className="text-xs text-indigo-700 leading-relaxed">
-                          The problem has optimal substructure: to reach index <code>i</code>, we must have been able to reach some index <code>{'j < i '}</code> such that <code>j + nums[j] >= i</code>.
+                          The problem has optimal substructure: to reach index <code>i</code>, we must have been able to reach some index <code>{'j < i '}</code> such that <code>j + nums[j] &gt;= i</code>.
                         </p>
                     </div>
                     <div className="p-8 bg-amber-50 border border-amber-100 rounded-3xl space-y-4 shadow-sm">
