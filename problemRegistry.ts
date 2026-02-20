@@ -30,7 +30,7 @@ const LongestSubarrayOnesVisualizer = lazy(() => import('./problems/LongestSubar
 const HighestAltitudeVisualizer = lazy(() => import('./problems/HighestAltitudeVisualizer'));
 const PivotIndexVisualizer = lazy(() => import('./problems/PivotIndexVisualizer'));
 
-// Amazon Favorites (New)
+// Amazon Favorites
 const TwoSumVisualizer = lazy(() => import('./problems/TwoSumVisualizer'));
 const AddTwoNumbersVisualizer = lazy(() => import('./problems/AddTwoNumbersVisualizer'));
 const LongestSubstringVisualizer = lazy(() => import('./problems/LongestSubstringVisualizer'));
@@ -38,6 +38,7 @@ const LongestPalindromicSubstringVisualizer = lazy(() => import('./problems/Long
 const MedianTwoSortedArraysVisualizer = lazy(() => import('./problems/MedianTwoSortedArraysVisualizer'));
 const ThreeSumVisualizer = lazy(() => import('./problems/ThreeSumVisualizer'));
 const ValidParenthesesVisualizer = lazy(() => import('./problems/ValidParenthesesVisualizer'));
+const GenerateParenthesesVisualizer = lazy(() => import('./problems/GenerateParenthesesVisualizer'));
 const TrappingRainWaterVisualizer = lazy(() => import('./problems/TrappingRainWaterVisualizer'));
 const ThreeSumClosestVisualizer = lazy(() => import('./problems/ThreeSumClosestVisualizer'));
 const MergeSortedArrayVisualizer = lazy(() => import('./problems/MergeSortedArrayVisualizer'));
@@ -45,6 +46,11 @@ const GroupAnagramsVisualizer = lazy(() => import('./problems/GroupAnagramsVisua
 const MergeIntervalsVisualizer = lazy(() => import('./problems/MergeIntervalsVisualizer'));
 const MergeKSortedListsVisualizer = lazy(() => import('./problems/MergeKSortedListsVisualizer'));
 const MaximumSubarrayVisualizer = lazy(() => import('./problems/MaximumSubarrayVisualizer'));
+const LetterCombinationsVisualizer = lazy(() => import('./problems/LetterCombinationsVisualizer'));
+
+// Dynamic Programming / Greedy
+const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
+const JumpGameVisualizer = lazy(() => import('./problems/JumpGameVisualizer'));
 
 export const modules: Module[] = [
   {
@@ -61,13 +67,26 @@ export const modules: Module[] = [
       { id: '14-longest-common-prefix-amazon', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
       { id: '15-3sum', number: 15, title: '3Sum', difficulty: 'Medium', component: ThreeSumVisualizer },
       { id: '16-3sum-closest', number: 16, title: '3Sum Closest', difficulty: 'Medium', component: ThreeSumClosestVisualizer },
+      { id: '17-letter-combinations', number: 17, title: 'Letter Combinations of a Phone Number', difficulty: 'Medium', component: LetterCombinationsVisualizer },
       { id: '20-valid-parentheses', number: 20, title: 'Valid Parentheses', difficulty: 'Easy', component: ValidParenthesesVisualizer },
+      { id: '22-generate-parentheses', number: 22, title: 'Generate Parentheses', difficulty: 'Medium', component: GenerateParenthesesVisualizer },
       { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer },
       { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
       { id: '49-group-anagrams', number: 49, title: 'Group Anagrams', difficulty: 'Medium', component: GroupAnagramsVisualizer },
       { id: '53-maximum-subarray-amazon', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
+      { id: '55-jump-game-amazon', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
       { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer },
+      { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
       { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
+    ]
+  },
+  {
+    id: 'greedy-dp',
+    title: 'Greedy & DP',
+    description: 'Optimization problems solved by breaking them down into overlapping subproblems or making local optimal choices.',
+    problems: [
+      { id: '55-jump-game', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
+      { id: '70-climbing-stairs', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
     ]
   },
   {
