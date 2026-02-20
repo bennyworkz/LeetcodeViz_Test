@@ -13,6 +13,7 @@ const ProductExceptSelfVisualizer = lazy(() => import('./problems/ProductExceptS
 const IncreasingTripletVisualizer = lazy(() => import('./problems/IncreasingTripletVisualizer'));
 const StringCompressionVisualizer = lazy(() => import('./problems/StringCompressionVisualizer'));
 const LongestCommonPrefixVisualizer = lazy(() => import('./problems/LongestCommonPrefixVisualizer'));
+const SpiralMatrixVisualizer = lazy(() => import('./problems/SpiralMatrixVisualizer'));
 
 // Two Pointers
 const MoveZeroesVisualizer = lazy(() => import('./problems/MoveZeroesVisualizer'));
@@ -74,6 +75,7 @@ export const modules: Module[] = [
       { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
       { id: '49-group-anagrams', number: 49, title: 'Group Anagrams', difficulty: 'Medium', component: GroupAnagramsVisualizer },
       { id: '53-maximum-subarray-amazon', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
+      { id: '54-spiral-matrix', number: 54, title: 'Spiral Matrix', difficulty: 'Medium', component: SpiralMatrixVisualizer },
       { id: '55-jump-game-amazon', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
       { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer },
       { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
