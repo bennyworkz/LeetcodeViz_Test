@@ -53,6 +53,7 @@ const PalindromeVisualizer = lazy(() => import('./problems/PalindromeVisualizer'
 const RomanVisualizer =  lazy(() => import('./problems/RomanVisualizer'));
 const MergeListsVisualizer = lazy(() => import('./problems/MergeListsVisualizer'));
 const ReverseIntegerVisualizer = lazy(() => import('./problems/ReverseIntegerVisualizer'));
+const RotateImageVisualizer = lazy(() => import('./problems/RotateImageVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -90,6 +91,7 @@ export const modules: Module[] = [
       { id: '13-roman-to-integer', number: 13, title: 'Roman to Integer', difficulty: 'Easy', component: RomanVisualizer },
       { id: '21-merge-two-sorted-lists', number: 21, title: 'Merge Two Sorted Lists', difficulty: 'Easy', component: MergeListsVisualizer },
       { id: '7-reverse-integer', number: 7, title: 'Reverse Integer', difficulty: 'Medium', component: ReverseIntegerVisualizer },
+      { id: '48-rotate-image', number: 48, title: 'Rotate Image', difficulty: 'Medium', component: RotateImageVisualizer},
 
     ]
   },
