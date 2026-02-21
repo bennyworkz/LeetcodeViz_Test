@@ -48,6 +48,7 @@ const MergeIntervalsVisualizer = lazy(() => import('./problems/MergeIntervalsVis
 const MergeKSortedListsVisualizer = lazy(() => import('./problems/MergeKSortedListsVisualizer'));
 const MaximumSubarrayVisualizer = lazy(() => import('./problems/MaximumSubarrayVisualizer'));
 const LetterCombinationsVisualizer = lazy(() => import('./problems/LetterCombinationsVisualizer'));
+const SearchRotatedArrayVisualizer = lazy(() => import('./problems/SearchRotatedArrayVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -80,6 +81,7 @@ export const modules: Module[] = [
       { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer },
       { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
       { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
+      { id: '33-search-in-rotated-sorted-array', number: 33, title: 'Search in Rotated Sorted Array', difficulty: 'Medium', component: SearchRotatedArrayVisualizer },
     ]
   },
   {
@@ -107,7 +109,8 @@ export const modules: Module[] = [
       { id: '443-string-compression', number: 443, title: 'String Compression', difficulty: 'Medium', component: StringCompressionVisualizer },
       { id: '53-maximum-subarray', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
       { id: '14-longest-common-prefix', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
-    ]
+      
+    ],
   },
   {
     id: 'blind-75-two-pointers',
