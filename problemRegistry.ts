@@ -55,6 +55,8 @@ const MergeListsVisualizer = lazy(() => import('./problems/MergeListsVisualizer'
 const ReverseIntegerVisualizer = lazy(() => import('./problems/ReverseIntegerVisualizer'));
 const RotateImageVisualizer = lazy(() => import('./problems/RotateImageVisualizer'));
 const WordSearchVisualizer = lazy(() => import('./problems/WordSearchVisualizer'));
+const NextPermutationVisualizer = lazy(() => import('./problems/NextPermutationVisualizer'));
+const RemoveDuplicatesVisualizer = lazy(() => import('./problems/RemoveDuplicatesVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -94,6 +96,8 @@ export const modules: Module[] = [
       { id: '7-reverse-integer', number: 7, title: 'Reverse Integer', difficulty: 'Medium', component: ReverseIntegerVisualizer },
       { id: '48-rotate-image', number: 48, title: 'Rotate Image', difficulty: 'Medium', component: RotateImageVisualizer},
       { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer},
+      { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer},
+      { id: '26-remove-duplicates-from-sorted-array', number: 26, title: 'Remove Duplicates from Sorted Array', difficulty: 'Easy', component: RemoveDuplicatesVisualizer},
 
     ]
   },
