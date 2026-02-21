@@ -49,6 +49,8 @@ const MergeKSortedListsVisualizer = lazy(() => import('./problems/MergeKSortedLi
 const MaximumSubarrayVisualizer = lazy(() => import('./problems/MaximumSubarrayVisualizer'));
 const LetterCombinationsVisualizer = lazy(() => import('./problems/LetterCombinationsVisualizer'));
 const SearchRotatedArrayVisualizer = lazy(() => import('./problems/SearchRotatedArrayVisualizer'));
+const PalindromeVisualizer = lazy(() => import('./problems/PalindromeVisualizer'));
+const RomanVisualizer =  lazy(() => import('./problems/RomanVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -82,6 +84,8 @@ export const modules: Module[] = [
       { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
       { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
       { id: '33-search-in-rotated-sorted-array', number: 33, title: 'Search in Rotated Sorted Array', difficulty: 'Medium', component: SearchRotatedArrayVisualizer },
+      { id: '9-palindrome-number', number: 9, title: 'Palindrome Number', difficulty: 'Easy', component: PalindromeVisualizer },
+      { id: '13-roman-to-integer', number: 13, title: 'Roman to Integer', difficulty: 'Easy', component: RomanVisualizer },
     ]
   },
   {
