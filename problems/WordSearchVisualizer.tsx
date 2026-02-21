@@ -446,9 +446,11 @@ const WordSearchVisualizer = () => {
                       </div>
                       <span className="text-[10px] font-black text-slate-400 font-mono">Depth: {callStack?.length || 0}</span>
                     </div>
-                    <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 flex flex-col-reverse gap-2 pr-2">
-                        {callStack?.map((frame: any, i: number) => {
-                            const isTop = i === callStack.length - 1;
+                    {/* Rendered normally so newest items are natively at scrollTop 0 */}
+                    <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 flex flex-col gap-2 pr-2">
+                        {callStack?.slice().reverse().map((frame: any, i: number) => {
+                            const isTop = i === 0;
+                            const originalIndex = callStack.length - 1 - i;
                             
                             // Color code status
                             let statusColor = "text-slate-400";
@@ -461,7 +463,7 @@ const WordSearchVisualizer = () => {
                             }
 
                             return (
-                                <div key={i} className={`p-2.5 rounded-xl border flex justify-between items-center transition-all duration-300 ${isTop ? 'bg-fuchsia-50 border-fuchsia-300 shadow-sm' : 'bg-slate-50 border-slate-200 opacity-60'}`}>
+                                <div key={originalIndex} className={`p-2.5 rounded-xl border flex justify-between items-center transition-all duration-300 ${isTop ? 'bg-fuchsia-50 border-fuchsia-300 shadow-sm' : 'bg-slate-50 border-slate-200 opacity-60'}`}>
                                     <div className="flex flex-col">
                                         <span className={`text-[10px] font-mono font-bold ${isTop ? 'text-fuchsia-900' : 'text-slate-500'}`}>dfs({frame.r}, {frame.c}, idx:{frame.idx})</span>
                                         <span className={`text-[9px] uppercase tracking-widest font-bold mt-0.5 ${statusColor}`}>{frame.status}</span>
