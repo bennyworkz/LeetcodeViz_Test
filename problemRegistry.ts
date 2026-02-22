@@ -57,6 +57,8 @@ const RotateImageVisualizer = lazy(() => import('./problems/RotateImageVisualize
 const WordSearchVisualizer = lazy(() => import('./problems/WordSearchVisualizer'));
 const NextPermutationVisualizer = lazy(() => import('./problems/NextPermutationVisualizer'));
 const RemoveDuplicatesVisualizer = lazy(() => import('./problems/RemoveDuplicatesVisualizer'));
+const LargestRectangleVisualizer = lazy(() => import('./problems/LargestRectangleVisualizer'));
+const ValidSudokuVisualizer = lazy(() => import('./problems/ValidSudokuVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -98,7 +100,8 @@ export const modules: Module[] = [
       { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer},
       { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer},
       { id: '26-remove-duplicates-from-sorted-array', number: 26, title: 'Remove Duplicates from Sorted Array', difficulty: 'Easy', component: RemoveDuplicatesVisualizer},
-
+      { id: '84-longest-rectangle-in-histogram', number: 84, title: 'Largest Rectangle in Histogram', difficulty: 'Hard', component: LargestRectangleVisualizer},
+      { id: '36-valid-sudoku', number: 36, title: 'Valid Sudoku', difficulty: 'Medium', component: ValidSudokuVisualizer},
     ]
   },
   {
