@@ -59,6 +59,7 @@ const NextPermutationVisualizer = lazy(() => import('./problems/NextPermutationV
 const RemoveDuplicatesVisualizer = lazy(() => import('./problems/RemoveDuplicatesVisualizer'));
 const LargestRectangleVisualizer = lazy(() => import('./problems/LargestRectangleVisualizer'));
 const ValidSudokuVisualizer = lazy(() => import('./problems/ValidSudokuVisualizer'));
+const SearchRangeVisualizer = lazy(() => import('./problems/SearchRangeVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -102,6 +103,7 @@ export const modules: Module[] = [
       { id: '26-remove-duplicates-from-sorted-array', number: 26, title: 'Remove Duplicates from Sorted Array', difficulty: 'Easy', component: RemoveDuplicatesVisualizer},
       { id: '84-longest-rectangle-in-histogram', number: 84, title: 'Largest Rectangle in Histogram', difficulty: 'Hard', component: LargestRectangleVisualizer},
       { id: '36-valid-sudoku', number: 36, title: 'Valid Sudoku', difficulty: 'Medium', component: ValidSudokuVisualizer},
+      { id: '34-find-first-and-last-position-of-element-in-sorted-array', number: 34, title: 'Find First and Last Position of Element in Sorted Array', difficulty: 'Medium', component: SearchRangeVisualizer},
     ]
   },
   {
