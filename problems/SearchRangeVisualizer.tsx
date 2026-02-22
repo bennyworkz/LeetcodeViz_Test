@@ -3,7 +3,7 @@ import {
   ChevronRight, ChevronLeft, Activity, BookOpen, Code2, 
   Check, Copy, Trophy, Target, AlertCircle, Layers, FileText, ArrowRight, 
   ArrowDown, X, Timer, ShieldAlert, Database, 
-  Search, Crosshair, Split, Hash, Network, ArrowUp, FastForward, ScanSearch
+  Search, Crosshair, Split, Hash, Network, ArrowUp, FastForward, ScanSearch, ArrowLeft
 } from 'lucide-react';
 
 const APPROACHES = {
@@ -176,109 +176,111 @@ const SearchRangeVisualizer = () => {
     if (n === 0) {
         if (selectedApproachId === 'doubleBinarySearch') {
              addStep("Empty Array", `Input array is empty. binarySearch will fail immediately.`, 3, { ans: [-1, -1] });
-             addStep("Return", `Returning default [-1, -1]`, 8, { ans: [-1, -1], isSuccess: true });
+             addStep("Return", `Returning default [-1, -1]`, 13, { ans: [-1, -1], isSuccess: true, finalAns: [-1, -1] });
         } else {
              addStep("Empty Array", `Input array is empty. Loops bypassed.`, 3, { first: -1, last: -1 });
-             addStep("Return", `Returning [-1, -1]`, 10, { first: -1, last: -1, isSuccess: true, finalAns: [-1, -1] });
+             addStep("Return", `Returning [-1, -1]`, 14, { first: -1, last: -1, isSuccess: true, finalAns: [-1, -1] });
         }
         return steps;
     }
 
     if (selectedApproachId === 'doubleBinarySearch') {
         let ansArray = [-1, -1];
-        addStep("Initialization", `Allocate results array ans = [-1, -1].`, 3, { ansArray: [...ansArray], activePhase: 'main' });
+        addStep("Init Result Array", `Allocate results array ans = [-1, -1].`, 3, { ansArray: [...ansArray], activePhase: 'main' });
         
         // --- FIND FIRST ---
-        addStep("Trigger Find First", `Calling binarySearch(nums, target=${target}, findFirst=true)`, 4, { ansArray: [...ansArray], activePhase: 'findFirst' });
+        addStep("Call Helper (First)", `Calling binarySearch(nums, target=${target}, findFirst=true) to find the left boundary.`, 6, { ansArray: [...ansArray], activePhase: 'findFirst' });
         
         let left = 0;
         let right = n - 1;
         let helperAns = -1;
         
-        addStep("BS Init", `Initialize left=0, right=${n-1}, ans=-1.`, 16, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
+        addStep("Helper Init", `Initialize search bounds: left=0, right=${n-1}, helper ans=-1.`, 17, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
         
         while (true) {
-            addStep("Loop Condition", `Check if left (${left}) <= right (${right})`, 17, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
+            addStep("Loop Condition", `Evaluate if left (${left}) <= right (${right}).`, 19, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
             if (left > right) {
-                addStep("Loop End", `left > right. Search space exhausted.`, 17, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
+                addStep("Loop Terminates", `False! left (${left}) > right (${right}). The search space is exhausted. Breaking loop.`, 19, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
                 break;
             }
             
             let mid = Math.floor(left + (right - left) / 2);
-            addStep("Calculate Mid", `mid = left + (right - left) / 2 = ${left} + (${right} - ${left}) / 2 = ${mid}. Value is nums[${mid}] = ${nums[mid]}.`, 18, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst' });
+            addStep("Calculate Midpoint", `mid = left + (right - left) / 2 = ${left} + (${right} - ${left}) / 2 = ${mid}. Value at nums[${mid}] is ${nums[mid]}.`, 20, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst' });
             
-            addStep("Check Condition 1", `Is nums[mid] (${nums[mid]}) < target (${target})?`, 20, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst', checking: 'less' });
+            addStep("Compare Mid < Target", `Check if nums[mid] (${nums[mid]}) < target (${target}).`, 22, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst', checking: 'less' });
             if (nums[mid] < target) {
                 left = mid + 1;
-                addStep("Move Left Boundary", `Yes. Target must be to the right. Update left = mid + 1 = ${left}.`, 21, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst' });
+                addStep("Target is Right", `Evaluated True. The target must be in the right half. Update left = mid + 1 = ${left}.`, 23, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst' });
             } else {
-                addStep("Check Condition 2", `Is nums[mid] (${nums[mid]}) > target (${target})?`, 22, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst', checking: 'greater' });
+                addStep("Compare Mid > Target", `Evaluated False. Check if nums[mid] (${nums[mid]}) > target (${target}).`, 24, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst', checking: 'greater' });
                 if (nums[mid] > target) {
                     right = mid - 1;
-                    addStep("Move Right Boundary", `Yes. Target must be to the left. Update right = mid - 1 = ${right}.`, 23, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst' });
+                    addStep("Target is Left", `Evaluated True. The target must be in the left half. Update right = mid - 1 = ${right}.`, 25, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst' });
                 } else {
-                    addStep("Match Found!", `nums[mid] == target! This is a match. Record ans = ${mid}.`, 24, { ansArray: [...ansArray], left, right, mid, helperAns: mid, activePhase: 'findFirst', match: true });
+                    addStep("Target Found", `Both conditions False. nums[mid] exactly matches target! Record this potential boundary: ans = ${mid}.`, 27, { ansArray: [...ansArray], left, right, mid, helperAns: mid, activePhase: 'findFirst', match: true });
                     helperAns = mid;
                     
-                    addStep("Boundary Logic", `findFirst is TRUE. We want the EARLIEST occurrence. Force search left: right = mid - 1 = ${mid - 1}.`, 26, { ansArray: [...ansArray], left, right: mid - 1, mid, helperAns, activePhase: 'findFirst', match: true });
+                    addStep("Check findFirst Flag", `Are we looking for the first occurrence? (findFirst == true)`, 28, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findFirst', match: true });
+                    addStep("Force Left Search", `Evaluated True. We must check if there is an earlier occurrence. Discard right half by setting right = mid - 1 = ${mid - 1}.`, 29, { ansArray: [...ansArray], left, right: mid - 1, mid, helperAns, activePhase: 'findFirst', match: true });
                     right = mid - 1;
                 }
             }
         }
-        addStep("Return Helper", `binarySearch(findFirst=true) completed. Returning ${helperAns}.`, 32, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
+        addStep("Return Helper Result", `binarySearch(findFirst=true) finishes. Returning ${helperAns}.`, 35, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findFirst' });
         
         ansArray[0] = helperAns;
-        addStep("Update First Ans", `ans[0] updated to ${ansArray[0]}.`, 4, { ansArray: [...ansArray], activePhase: 'main' });
+        addStep("Assign First Index", `Store the returned value into ans[0]. Array is now [${ansArray.join(', ')}].`, 6, { ansArray: [...ansArray], activePhase: 'main' });
         
-        addStep("Check if Target Exists", `Did we find the target? ans[0] != -1 (${ansArray[0] != -1}).`, 7, { ansArray: [...ansArray], activePhase: 'main' });
+        addStep("Check Target Found", `Did we find the target at all? Check if ans[0] != -1. (${ansArray[0]} != -1)`, 9, { ansArray: [...ansArray], activePhase: 'main' });
         
         if (ansArray[0] !== -1) {
             // --- FIND LAST ---
-            addStep("Trigger Find Last", `Target exists. Calling binarySearch(nums, target=${target}, findFirst=false)`, 8, { ansArray: [...ansArray], activePhase: 'findLast' });
+            addStep("Call Helper (Last)", `Evaluated True. Target exists! Now find its right boundary: binarySearch(nums, target=${target}, findFirst=false).`, 10, { ansArray: [...ansArray], activePhase: 'findLast' });
             
             left = 0;
             right = n - 1;
             helperAns = -1;
             
-            addStep("BS Init", `Initialize left=0, right=${n-1}, ans=-1.`, 16, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
+            addStep("Helper Init", `Initialize search bounds: left=0, right=${n-1}, helper ans=-1.`, 17, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
             
             while (true) {
-                addStep("Loop Condition", `Check if left (${left}) <= right (${right})`, 17, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
+                addStep("Loop Condition", `Evaluate if left (${left}) <= right (${right}).`, 19, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
                 if (left > right) {
-                    addStep("Loop End", `left > right. Search space exhausted.`, 17, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
+                    addStep("Loop Terminates", `False! left (${left}) > right (${right}). The search space is exhausted. Breaking loop.`, 19, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
                     break;
                 }
                 
                 let mid = Math.floor(left + (right - left) / 2);
-                addStep("Calculate Mid", `mid = left + (right - left) / 2 = ${left} + (${right} - ${left}) / 2 = ${mid}. Value is nums[${mid}] = ${nums[mid]}.`, 18, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast' });
+                addStep("Calculate Midpoint", `mid = left + (right - left) / 2 = ${left} + (${right} - ${left}) / 2 = ${mid}. Value at nums[${mid}] is ${nums[mid]}.`, 20, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast' });
                 
-                addStep("Check Condition 1", `Is nums[mid] (${nums[mid]}) < target (${target})?`, 20, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast', checking: 'less' });
+                addStep("Compare Mid < Target", `Check if nums[mid] (${nums[mid]}) < target (${target}).`, 22, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast', checking: 'less' });
                 if (nums[mid] < target) {
                     left = mid + 1;
-                    addStep("Move Left Boundary", `Yes. Target must be to the right. Update left = mid + 1 = ${left}.`, 21, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast' });
+                    addStep("Target is Right", `Evaluated True. The target must be in the right half. Update left = mid + 1 = ${left}.`, 23, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast' });
                 } else {
-                    addStep("Check Condition 2", `Is nums[mid] (${nums[mid]}) > target (${target})?`, 22, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast', checking: 'greater' });
+                    addStep("Compare Mid > Target", `Evaluated False. Check if nums[mid] (${nums[mid]}) > target (${target}).`, 24, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast', checking: 'greater' });
                     if (nums[mid] > target) {
                         right = mid - 1;
-                        addStep("Move Right Boundary", `Yes. Target must be to the left. Update right = mid - 1 = ${right}.`, 23, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast' });
+                        addStep("Target is Left", `Evaluated True. The target must be in the left half. Update right = mid - 1 = ${right}.`, 25, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast' });
                     } else {
-                        addStep("Match Found!", `nums[mid] == target! This is a match. Record ans = ${mid}.`, 24, { ansArray: [...ansArray], left, right, mid, helperAns: mid, activePhase: 'findLast', match: true });
+                        addStep("Target Found", `Both conditions False. nums[mid] exactly matches target! Record this potential boundary: ans = ${mid}.`, 27, { ansArray: [...ansArray], left, right, mid, helperAns: mid, activePhase: 'findLast', match: true });
                         helperAns = mid;
                         
-                        addStep("Boundary Logic", `findFirst is FALSE. We want the LATEST occurrence. Force search right: left = mid + 1 = ${mid + 1}.`, 28, { ansArray: [...ansArray], left: mid + 1, right, mid, helperAns, activePhase: 'findLast', match: true });
+                        addStep("Check findFirst Flag", `Are we looking for the first occurrence? (findFirst == false)`, 28, { ansArray: [...ansArray], left, right, mid, helperAns, activePhase: 'findLast', match: true });
+                        addStep("Force Right Search", `Evaluated False (we want the last). We must check if there is a later occurrence. Discard left half by setting left = mid + 1 = ${mid + 1}.`, 31, { ansArray: [...ansArray], left: mid + 1, right, mid, helperAns, activePhase: 'findLast', match: true });
                         left = mid + 1;
                     }
                 }
             }
-            addStep("Return Helper", `binarySearch(findFirst=false) completed. Returning ${helperAns}.`, 32, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
+            addStep("Return Helper Result", `binarySearch(findFirst=false) finishes. Returning ${helperAns}.`, 35, { ansArray: [...ansArray], left, right, helperAns, activePhase: 'findLast' });
             
             ansArray[1] = helperAns;
-            addStep("Update Last Ans", `ans[1] updated to ${ansArray[1]}.`, 8, { ansArray: [...ansArray], activePhase: 'main' });
+            addStep("Assign Last Index", `Store the returned value into ans[1]. Array is now [${ansArray.join(', ')}].`, 10, { ansArray: [...ansArray], activePhase: 'main' });
         } else {
-            addStep("Target Missing", `Target not found in first pass. Skip second pass.`, 7, { ansArray: [...ansArray], activePhase: 'main' });
+            addStep("Bypass Last Search", `Evaluated False. Target doesn't exist. We skip the second search block.`, 9, { ansArray: [...ansArray], activePhase: 'main' });
         }
         
-        addStep("Complete", `Algorithm finished. Returning final bounds.`, 11, { ansArray: [...ansArray], isSuccess: true, finalAns: ansArray, activePhase: 'main' });
+        addStep("Return Final Answer", `Algorithm finished. Returning final boundaries [${ansArray.join(', ')}].`, 13, { ansArray: [...ansArray], isSuccess: true, finalAns: ansArray, activePhase: 'main' });
         
     } 
     else if (selectedApproachId === 'linearScan') {
@@ -287,27 +289,29 @@ const SearchRangeVisualizer = () => {
         addStep("Initialization", `Initialize first = -1, last = -1.`, 3, { first, last, i: null });
 
         for (let i = 0; i < n; i++) {
-            addStep("Loop Condition", `Checking if i (${i}) < nums.length (${n}). Enter loop.`, 5, { first, last, i });
-            addStep("Check Match", `Is nums[${i}] (${nums[i]}) == target (${target})?`, 6, { first, last, i, checking: true });
+            addStep("Loop Condition", `Checking if i (${i}) < nums.length (${n}). Evaluated True, entering loop.`, 5, { first, last, i });
+            addStep("Check Match", `Evaluate if nums[${i}] (${nums[i]}) == target (${target}).`, 6, { first, last, i, checking: true });
             
             if (nums[i] === target) {
-                addStep("Match Found", `Yes! Target matched at index ${i}.`, 6, { first, last, i, match: true });
+                addStep("Match Detected", `Evaluated True. Target matches the element at index ${i}.`, 6, { first, last, i, match: true });
                 
-                addStep("Check First", `Is first still -1? (${first === -1})`, 7, { first, last, i, match: true });
+                addStep("Check First Seen", `Is 'first' still its default value -1? (${first === -1})`, 7, { first, last, i, match: true });
                 if (first === -1) {
                     first = i;
-                    addStep("Update First", `Yes, this is the very first time we see target. Set first = ${first}.`, 8, { first, last, i, match: true });
+                    addStep("Update First Boundary", `Evaluated True. This is the very first time we see the target. Set first = ${first}.`, 8, { first, last, i, match: true });
+                } else {
+                    addStep("Skip First Boundary", `Evaluated False. 'first' is already ${first}. We do not overwrite it.`, 7, { first, last, i, match: true });
                 }
                 
                 last = i;
-                addStep("Update Last", `Update last = ${i}. (Overwrites previous matches).`, 9, { first, last, i, match: true });
+                addStep("Update Last Boundary", `Continuously update last = ${i}. This will naturally hold the final end boundary when the block finishes.`, 10, { first, last, i, match: true });
             } else {
-                addStep("No Match", `No, ${nums[i]} != ${target}. Continue array traversal.`, 5, { first, last, i });
+                addStep("No Match", `Evaluated False (${nums[i]} != ${target}). Do nothing and continue traversal.`, 6, { first, last, i });
             }
         }
         
-        addStep("Loop Condition", `Checking if i (${n}) < nums.length (${n}). False. Exit loop.`, 5, { first, last, i: n });
-        addStep("Return Result", `Return [${first}, ${last}].`, 13, { first, last, i: n, isSuccess: true, finalAns: [first, last] });
+        addStep("Loop Terminates", `Checking if i (${n}) < nums.length (${n}). Evaluated False, exit loop.`, 5, { first, last, i: n });
+        addStep("Return Result", `Return newly created array [${first}, ${last}].`, 14, { first, last, i: n, isSuccess: true, finalAns: [first, last] });
     }
 
     if (steps.length === 0) {
