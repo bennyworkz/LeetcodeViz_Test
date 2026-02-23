@@ -72,6 +72,7 @@ const SortColorsVisualizer = lazy(() => import('./problems/SortColorsVisualizer'
 const SearchMatrixVisualizer = lazy(() => import('./problems/SearchMatrixVisualizer'));
 const RegexVisualizer = lazy(() => import('./problems/RegexVisualizer'));
 const MinWindowVisualizer = lazy(() => import('./problems/MinWindowVisualizer'));
+const RemoveNthVisualizer = lazy(() => import('./problems/RemoveNthVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -181,6 +182,7 @@ export const modules: Module[] = [
           { id: '21-merge-two-sorted-lists', number: 21, title: 'Merge Two Sorted Lists', difficulty: 'Easy', component: MergeListsVisualizer },
           { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer },
           { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer},
+          { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer},
         ]
       },
       {
