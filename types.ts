@@ -16,6 +16,7 @@ export interface Module {
   title: string;
   description?: string;
   problems: Problem[];
+  subModules?: Module[]; // Support for nested sub-modules
 }
 
 export interface CodeLineProps {

@@ -78,32 +78,70 @@ const Layout = () => {
 
                 {isExpanded && (
                   <nav className="space-y-0.5 px-3 py-2 animate-in slide-in-from-top-1 duration-200">
-                    {module.problems.map((problem) => (
-                      <NavLink
-                        key={problem.id}
-                        to={`/problem/${problem.id}`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={({ isActive }) => `
-                          group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
-                          ${isActive 
-                            ? 'bg-blue-600/10 text-blue-400 ring-1 ring-blue-500/20 shadow-sm' 
-                            : 'text-slate-400 hover:bg-slate-800/80 hover:text-white'}
-                        `}
-                      >
-                        <span className="truncate mr-2">
-                          <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>
-                          {problem.title}
-                        </span>
-                        <span className={`
-                          text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
-                          ${problem.difficulty === 'Easy' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
-                          ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
-                          ${problem.difficulty === 'Hard' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
-                        `}>
-                          {problem.difficulty}
-                        </span>
-                      </NavLink>
-                    ))}
+                    {module.subModules && module.subModules.length > 0 ? (
+                      // Render sub-modules
+                      module.subModules.map((subModule) => (
+                        <div key={subModule.id} className="mb-4">
+                          <div className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
+                            {subModule.title}
+                          </div>
+                          {subModule.problems.map((problem) => (
+                            <NavLink
+                              key={problem.id}
+                              to={`/problem/${problem.id}`}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={({ isActive }) => `
+                                group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
+                                ${isActive 
+                                  ? 'bg-blue-600/10 text-blue-400 ring-1 ring-blue-500/20 shadow-sm' 
+                                  : 'text-slate-400 hover:bg-slate-800/80 hover:text-white'}
+                              `}
+                            >
+                              <span className="truncate mr-2">
+                                <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>
+                                {problem.title}
+                              </span>
+                              <span className={`
+                                text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
+                                ${problem.difficulty === 'Easy' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
+                                ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
+                                ${problem.difficulty === 'Hard' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
+                              `}>
+                                {problem.difficulty}
+                              </span>
+                            </NavLink>
+                          ))}
+                        </div>
+                      ))
+                    ) : (
+                      // Render regular problems
+                      module.problems.map((problem) => (
+                        <NavLink
+                          key={problem.id}
+                          to={`/problem/${problem.id}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={({ isActive }) => `
+                            group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
+                            ${isActive 
+                              ? 'bg-blue-600/10 text-blue-400 ring-1 ring-blue-500/20 shadow-sm' 
+                              : 'text-slate-400 hover:bg-slate-800/80 hover:text-white'}
+                          `}
+                        >
+                          <span className="truncate mr-2">
+                            <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>
+                            {problem.title}
+                          </span>
+                          <span className={`
+                            text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
+                            ${problem.difficulty === 'Easy' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
+                            ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
+                            ${problem.difficulty === 'Hard' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
+                          `}>
+                            {problem.difficulty}
+                          </span>
+                        </NavLink>
+                      ))
+                    )}
                   </nav>
                 )}
               </div>
