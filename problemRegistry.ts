@@ -60,6 +60,8 @@ const RemoveDuplicatesVisualizer = lazy(() => import('./problems/RemoveDuplicate
 const LargestRectangleVisualizer = lazy(() => import('./problems/LargestRectangleVisualizer'));
 const ValidSudokuVisualizer = lazy(() => import('./problems/ValidSudokuVisualizer'));
 const SearchRangeVisualizer = lazy(() => import('./problems/SearchRangeVisualizer'));
+const FirstMissingPositiveVisualizer = lazy(() => import('./problems/FirstMissingPositiveVisualizer'));
+const JumpGameIIVisualizer = lazy(() => import('./problems/JumpGameIIVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -104,6 +106,8 @@ export const modules: Module[] = [
       { id: '84-longest-rectangle-in-histogram', number: 84, title: 'Largest Rectangle in Histogram', difficulty: 'Hard', component: LargestRectangleVisualizer},
       { id: '36-valid-sudoku', number: 36, title: 'Valid Sudoku', difficulty: 'Medium', component: ValidSudokuVisualizer},
       { id: '34-find-first-and-last-position-of-element-in-sorted-array', number: 34, title: 'Find First and Last Position of Element in Sorted Array', difficulty: 'Medium', component: SearchRangeVisualizer},
+      { id: '41-first-missing-positive', number: 41, title: 'First Missing Positive', difficulty: 'Hard', component: FirstMissingPositiveVisualizer},
+      { id: '45-jump-game-ii', number: 45, title: 'Jump Game II', difficulty: 'Medium', component: JumpGameIIVisualizer},
     ]
   },
   {
