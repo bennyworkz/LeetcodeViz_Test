@@ -67,6 +67,7 @@ const SetMatrixZeroesVisualizer = lazy(() => import('./problems/SetMatrixZeroesV
 const FourSumVisualizer = lazy(() => import('./problems/FourSumVisualizer'));
 const ReverseKGroupVisualizer = lazy(() => import('./problems/ReverseKGroupVisualizer'));
 const PowVisualizer = lazy(() => import('./problems/PowVisualizer'));
+const UniquePathsVisualizer = lazy(() => import('./problems/UniquePathsVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -118,6 +119,7 @@ export const modules: Module[] = [
       { id: '18-4sum', number: 18, title: '4Sum', difficulty: 'Medium', component: FourSumVisualizer},
       { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer},
       { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer},
+      { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer},
     ]
   },
   {
