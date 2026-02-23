@@ -57,6 +57,13 @@ const RotateImageVisualizer = lazy(() => import('./problems/RotateImageVisualize
 const WordSearchVisualizer = lazy(() => import('./problems/WordSearchVisualizer'));
 const NextPermutationVisualizer = lazy(() => import('./problems/NextPermutationVisualizer'));
 const RemoveDuplicatesVisualizer = lazy(() => import('./problems/RemoveDuplicatesVisualizer'));
+const LargestRectangleVisualizer = lazy(() => import('./problems/LargestRectangleVisualizer'));
+const ValidSudokuVisualizer = lazy(() => import('./problems/ValidSudokuVisualizer'));
+const SearchRangeVisualizer = lazy(() => import('./problems/SearchRangeVisualizer'));
+const FirstMissingPositiveVisualizer = lazy(() => import('./problems/FirstMissingPositiveVisualizer'));
+const JumpGameIIVisualizer = lazy(() => import('./problems/JumpGameIIVisualizer'));
+const SubsetsVisualizer = lazy(() => import('./problems/SubsetsVisualizer'));
+const SetMatrixZeroesVisualizer = lazy(() => import('./problems/SetMatrixZeroesVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -98,7 +105,13 @@ export const modules: Module[] = [
       { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer},
       { id: '31-next-permutation', number: 31, title: 'Next Permutation', difficulty: 'Medium', component: NextPermutationVisualizer},
       { id: '26-remove-duplicates-from-sorted-array', number: 26, title: 'Remove Duplicates from Sorted Array', difficulty: 'Easy', component: RemoveDuplicatesVisualizer},
-
+      { id: '84-longest-rectangle-in-histogram', number: 84, title: 'Largest Rectangle in Histogram', difficulty: 'Hard', component: LargestRectangleVisualizer},
+      { id: '36-valid-sudoku', number: 36, title: 'Valid Sudoku', difficulty: 'Medium', component: ValidSudokuVisualizer},
+      { id: '34-find-first-and-last-position-of-element-in-sorted-array', number: 34, title: 'Find First and Last Position of Element in Sorted Array', difficulty: 'Medium', component: SearchRangeVisualizer},
+      { id: '41-first-missing-positive', number: 41, title: 'First Missing Positive', difficulty: 'Hard', component: FirstMissingPositiveVisualizer},
+      { id: '45-jump-game-ii', number: 45, title: 'Jump Game II', difficulty: 'Medium', component: JumpGameIIVisualizer},
+      { id: '78-subsets', number: 78, title: 'Subsets', difficulty: 'Medium', component: SubsetsVisualizer},
+      { id: '73-set-matrix-zeroes', number: 73, title: 'Set Matrix Zeroes', difficulty: 'Medium', component: SetMatrixZeroesVisualizer},
     ]
   },
   {
