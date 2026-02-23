@@ -63,6 +63,8 @@ const SearchRangeVisualizer = lazy(() => import('./problems/SearchRangeVisualize
 const FirstMissingPositiveVisualizer = lazy(() => import('./problems/FirstMissingPositiveVisualizer'));
 const JumpGameIIVisualizer = lazy(() => import('./problems/JumpGameIIVisualizer'));
 const SubsetsVisualizer = lazy(() => import('./problems/SubsetsVisualizer'));
+const SetMatrixZeroesVisualizer = lazy(() => import('./problems/SetMatrixZeroesVisualizer'));
+
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
 const JumpGameVisualizer = lazy(() => import('./problems/JumpGameVisualizer'));
@@ -109,6 +111,7 @@ export const modules: Module[] = [
       { id: '41-first-missing-positive', number: 41, title: 'First Missing Positive', difficulty: 'Hard', component: FirstMissingPositiveVisualizer},
       { id: '45-jump-game-ii', number: 45, title: 'Jump Game II', difficulty: 'Medium', component: JumpGameIIVisualizer},
       { id: '78-subsets', number: 78, title: 'Subsets', difficulty: 'Medium', component: SubsetsVisualizer},
+      { id: '73-set-matrix-zeroes', number: 73, title: 'Set Matrix Zeroes', difficulty: 'Medium', component: SetMatrixZeroesVisualizer},
     ]
   },
   {
