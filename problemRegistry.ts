@@ -71,6 +71,7 @@ const UniquePathsVisualizer = lazy(() => import('./problems/UniquePathsVisualize
 const SortColorsVisualizer = lazy(() => import('./problems/SortColorsVisualizer'));
 const SearchMatrixVisualizer = lazy(() => import('./problems/SearchMatrixVisualizer'));
 const RegexVisualizer = lazy(() => import('./problems/RegexVisualizer'));
+const MinWindowVisualizer = lazy(() => import('./problems/MinWindowVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -117,6 +118,7 @@ export const modules: Module[] = [
         problems: [
           { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer },
           { id: '5-longest-palindromic-substring', number: 5, title: 'Longest Palindromic Substring', difficulty: 'Medium', component: LongestPalindromicSubstringVisualizer },
+          { id: '76-minimum-window-substring', number: 76, title: 'Minimum Window Substring', difficulty: 'Hard', component: MinWindowVisualizer },
         ]
       },
       {
