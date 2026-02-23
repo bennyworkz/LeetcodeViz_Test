@@ -69,7 +69,7 @@ const ReverseKGroupVisualizer = lazy(() => import('./problems/ReverseKGroupVisua
 const PowVisualizer = lazy(() => import('./problems/PowVisualizer'));
 const UniquePathsVisualizer = lazy(() => import('./problems/UniquePathsVisualizer'));
 const SortColorsVisualizer = lazy(() => import('./problems/SortColorsVisualizer'));
-
+const SearchMatrixVisualizer = lazy(() => import('./problems/SearchMatrixVisualizer'));
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
 const JumpGameVisualizer = lazy(() => import('./problems/JumpGameVisualizer'));
@@ -121,7 +121,8 @@ export const modules: Module[] = [
       { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer},
       { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer},
       { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer},
-      { id: '75-sort-colors', number: 75, title: 'Sort Colors', difficulty: 'Medium', component: UniquePathsVisualizer},
+      { id: '75-sort-colors', number: 75, title: 'Sort Colors', difficulty: 'Medium', component: SortColorsVisualizer},
+      { id: '74-search-a2d-matrix', number: 74, title: 'Search a 2D Matrix', difficulty: 'Medium', component: SearchMatrixVisualizer},
     ]
   },
   {
