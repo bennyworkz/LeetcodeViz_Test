@@ -62,7 +62,7 @@ const ValidSudokuVisualizer = lazy(() => import('./problems/ValidSudokuVisualize
 const SearchRangeVisualizer = lazy(() => import('./problems/SearchRangeVisualizer'));
 const FirstMissingPositiveVisualizer = lazy(() => import('./problems/FirstMissingPositiveVisualizer'));
 const JumpGameIIVisualizer = lazy(() => import('./problems/JumpGameIIVisualizer'));
-
+const SubsetsVisualizer = lazy(() => import('./problems/SubsetsVisualizer'));
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
 const JumpGameVisualizer = lazy(() => import('./problems/JumpGameVisualizer'));
@@ -108,6 +108,7 @@ export const modules: Module[] = [
       { id: '34-find-first-and-last-position-of-element-in-sorted-array', number: 34, title: 'Find First and Last Position of Element in Sorted Array', difficulty: 'Medium', component: SearchRangeVisualizer},
       { id: '41-first-missing-positive', number: 41, title: 'First Missing Positive', difficulty: 'Hard', component: FirstMissingPositiveVisualizer},
       { id: '45-jump-game-ii', number: 45, title: 'Jump Game II', difficulty: 'Medium', component: JumpGameIIVisualizer},
+      { id: '78-subsets', number: 78, title: 'Subsets', difficulty: 'Medium', component: SubsetsVisualizer},
     ]
   },
   {
