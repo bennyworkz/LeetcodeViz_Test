@@ -74,6 +74,9 @@ const RegexVisualizer = lazy(() => import('./problems/RegexVisualizer'));
 const MinWindowVisualizer = lazy(() => import('./problems/MinWindowVisualizer'));
 const RemoveNthVisualizer = lazy(() => import('./problems/RemoveNthVisualizer'));
 const ValidateBSTVisualizer = lazy(() => import('./problems/ValidateBSTVisualizer'));
+const NQueensVisualizer = lazy(() => import('./problems/NQueensVisualizer.tsx'));
+const ZigzagVisualizer = lazy(() => import('./problems/ZigzagVisualizer.tsx'));
+const CombinationSumVisualizer = lazy(() => import('./problems/CombinationSumVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -183,6 +186,8 @@ export const modules: Module[] = [
           { id: '22-generate-parentheses', number: 22, title: 'Generate Parentheses', difficulty: 'Medium', component: GenerateParenthesesVisualizer },
           { id: '78-subsets', number: 78, title: 'Subsets', difficulty: 'Medium', component: SubsetsVisualizer},
           { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer},
+          { id: '51-N-queens', number: 51, title: 'N-Queens', difficulty: 'Hard', component: NQueensVisualizer},
+          { id: '39-combination-sum', number: 39, title: 'Combination Sum', difficulty: 'Medium', component: CombinationSumVisualizer},
         ]
       },
       {
@@ -215,6 +220,7 @@ export const modules: Module[] = [
           { id: '54-spiral-matrix', number: 54, title: 'Spiral Matrix', difficulty: 'Medium', component: SpiralMatrixVisualizer },
           { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer },
           { id: '73-set-matrix-zeroes', number: 73, title: 'Set Matrix Zeroes', difficulty: 'Medium', component: SetMatrixZeroesVisualizer},
+          { id: '6-zigzag-conversion', number: 6, title: 'Zigzag Conversion', difficulty: 'Medium', component: ZigzagVisualizer},
         ]
       },
       {
