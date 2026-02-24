@@ -1,11 +1,50 @@
 
-import React, { useState } from 'react';
-import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, GraduationCap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { NavLink, Outlet, Link, useParams, useLocation } from 'react-router-dom';
+import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, GraduationCap, Grid3x3 } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+  
+  // Determine which module to show based on URL query parameter or current problem
+  const searchParams = new URLSearchParams(location.search);
+  const moduleFilter = searchParams.get('module');
+  
+  // Find which module the current problem belongs to
+  const [currentModuleId, setCurrentModuleId] = useState<string | null>(moduleFilter);
+  
+  useEffect(() => {
+    if (moduleFilter) {
+      setCurrentModuleId(moduleFilter);
+    } else if (id) {
+      // Find which module contains this problem
+      for (const module of modules) {
+        const problemInModule = module.problems.find(p => p.id === id);
+        if (problemInModule) {
+          setCurrentModuleId(module.id);
+          break;
+        }
+        if (module.subModules) {
+          for (const subModule of module.subModules) {
+            const problemInSubModule = subModule.problems.find(p => p.id === id);
+            if (problemInSubModule) {
+              setCurrentModuleId(module.id);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }, [id, moduleFilter]);
+  
+  // Filter modules based on currentModuleId
+  const filteredModules = currentModuleId === 'all' 
+    ? modules 
+    : modules.filter(m => m.id === currentModuleId);
+  
   // Track which modules are expanded
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
     'amazon-favorites': true,
@@ -45,6 +84,16 @@ const Layout = () => {
               Back to Dashboard
            </Link>
            
+           {currentModuleId && currentModuleId !== 'all' && (
+             <Link 
+               to={`/problem/${id}?module=all`} 
+               className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors mb-4 px-2 py-1.5 rounded-lg hover:bg-slate-800"
+             >
+               <Grid3x3 size={14} />
+               Explore All Modules
+             </Link>
+           )}
+           
            <div className="flex items-center gap-3 px-2">
             <div className="bg-blue-600 p-2 rounded-lg text-white">
               <Code2 size={24} />
@@ -58,7 +107,7 @@ const Layout = () => {
 
         {/* Scrollable Problem List */}
         <div className="flex-1 overflow-y-auto py-2 scrollbar-thin scrollbar-thumb-slate-700">
-          {modules.map((module) => {
+          {filteredModules.map((module) => {
             const isExpanded = expandedModules[module.id];
             const isAmazon = module.id === 'amazon-favorites';
             const isJava = module.id === 'java-fundamentals';

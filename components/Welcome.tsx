@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap } from 'lucide-react';
+import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3 } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 // Added React.FC type to fix key prop validation error and explicitly handle component props
@@ -16,7 +16,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
 
     return (
         <Link 
-            to={`/problem/${firstProblemId}`}
+            to={`/problem/${firstProblemId}?module=${module.id}`}
             className={`group relative bg-white rounded-3xl p-8 border-2 transition-all duration-300 hover:scale-[1.02] overflow-hidden ${
                 module.id === 'amazon-favorites'
                     ? 'border-orange-200 hover:border-orange-400 hover:shadow-[0_20px_60px_rgba(251,146,60,0.25)]'
@@ -242,6 +242,18 @@ const Welcome = () => {
                 {javaModule && <ModuleCard module={javaModule} />}
                 {amazonModule && <ModuleCard module={amazonModule} />}
                 {otherModules[0] && <ModuleCard module={otherModules[0]} />}
+            </div>
+            
+            {/* Explore All Button */}
+            <div className="flex justify-center mt-12">
+                <Link 
+                    to={`/problem/${modules[0]?.problems[0]?.id || modules[0]?.subModules?.[0]?.problems[0]?.id}?module=all`}
+                    className="group flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+                >
+                    <Grid3x3 size={20} />
+                    Explore All Modules
+                    <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
             </div>
         </div>
 
