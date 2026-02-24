@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2 } from 'lucide-react';
+import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, GraduationCap } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 const Layout = () => {
@@ -9,7 +9,8 @@ const Layout = () => {
   // Track which modules are expanded
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
     'amazon-favorites': true,
-    'blind-75-array': true
+    'blind-75': true,
+    'java-fundamentals': true
   });
 
   const toggleModule = (id: string) => {
@@ -60,15 +61,26 @@ const Layout = () => {
           {modules.map((module) => {
             const isExpanded = expandedModules[module.id];
             const isAmazon = module.id === 'amazon-favorites';
+            const isJava = module.id === 'java-fundamentals';
 
             return (
               <div key={module.id} className="mb-1">
                 <button 
                   onClick={() => toggleModule(module.id)}
-                  className={`w-full flex items-center justify-between px-6 py-4 hover:bg-slate-800/50 transition-colors border-l-4 ${isExpanded ? (isAmazon ? 'border-orange-500 bg-slate-800/30' : 'border-blue-500 bg-slate-800/30') : 'border-transparent'}`}
+                  className={`w-full flex items-center justify-between px-6 py-4 hover:bg-slate-800/50 transition-colors border-l-4 ${
+                    isExpanded 
+                      ? (isAmazon ? 'border-orange-500 bg-slate-800/30' : isJava ? 'border-red-500 bg-slate-800/30' : 'border-blue-500 bg-slate-800/30') 
+                      : 'border-transparent'
+                  }`}
                 >
                   <div className="flex items-center gap-3">
-                    {isAmazon ? <Building2 size={14} className="text-orange-400" /> : <Folder size={14} className="text-blue-400" />}
+                    {isAmazon ? (
+                      <Building2 size={14} className="text-orange-400" />
+                    ) : isJava ? (
+                      <GraduationCap size={14} className="text-red-400" />
+                    ) : (
+                      <Folder size={14} className="text-blue-400" />
+                    )}
                     <span className={`text-[11px] font-black uppercase tracking-wider ${isExpanded ? 'text-white' : 'text-slate-500'}`}>
                       {module.title}
                     </span>

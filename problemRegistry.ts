@@ -73,10 +73,31 @@ const SearchMatrixVisualizer = lazy(() => import('./problems/SearchMatrixVisuali
 const RegexVisualizer = lazy(() => import('./problems/RegexVisualizer'));
 const MinWindowVisualizer = lazy(() => import('./problems/MinWindowVisualizer'));
 const RemoveNthVisualizer = lazy(() => import('./problems/RemoveNthVisualizer'));
+const ValidateBSTVisualizer = lazy(() => import('./problems/ValidateBSTVisualizer'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
 const JumpGameVisualizer = lazy(() => import('./problems/JumpGameVisualizer'));
+
+// Java Programming Fundamentals
+const JavaVariablesVisualizer = lazy(() => import('./lessons/JavaVariablesVisualizer'));
+const JavaArraysVisualizer = lazy(() => import('./lessons/JavaArraysVisualizer'));
+const JVMVisualizer = lazy(() => import('./lessons/jvmvisualizer'));
+const LinkedListVisualizer = lazy(() => import('./lessons/LinkedListVisualizer'));
+const OperatorsAndFlowVisualizer = lazy(() => import('./lessons/OperatorsandFlowVisulaizer'));
+const PassByValueVisualizer = lazy(() => import('./lessons/PassbyvalueVizualizer'));
+const StringsAndImmutabilityVisualizer = lazy(() => import('./lessons/StringsandImmutabilityViz'));
+const ClassAndObjectVisualizer = lazy(() => import('./lessons/ClassandObjectViz'));
+const ControlFlowVisualizer = lazy(() => import('./lessons/ControlFlowViz'));
+const OperatorsAndLogicVisualizer = lazy(() => import('./lessons/OperatorsAndLogicViz'));
+const MathLogicVisualizer = lazy(() => import('./lessons/MathLogicViz'));
+const OneDArrayLogicVisualizer = lazy(() => import('./lessons/1darraylogicviz'));
+const SwappersAndPointersVisualizer = lazy(() => import('./lessons/SwapersandPointers'));
+const NestedLoopsVisualizer = lazy(() => import('./lessons/NestedLoopsViz'));
+const RightTriangleStarPatternVisualizer = lazy(() => import('./lessons/RightTriangleStarPatterns'));
+const LeftTriangleStarPatternVisualizer = lazy(() => import('./lessons/LeftTriangleStarPattern'));
+const NumberPyramidVisualizer = lazy(() => import('./lessons/NumberPiramid.tsx'));
+const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
 
 export const modules: Module[] = [
   {
@@ -215,6 +236,14 @@ export const modules: Module[] = [
           { id: '50-power', number: 50, title: 'Pow(x, n)', difficulty: 'Medium', component: PowVisualizer},
         ]
       },
+      {
+        id: 'amazon-trees',
+        title: 'Trees & Binary Search Trees',
+        description: 'Tree traversal and BST validation.',
+        problems: [
+          { id: '98-validate-bst', number: 98, title: 'Validate Binary Search Tree', difficulty: 'Medium', component: ValidateBSTVisualizer },
+        ]
+      },
     ]
   },
   {
@@ -279,6 +308,66 @@ export const modules: Module[] = [
         problems: [
           { id: '55-jump-game', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
           { id: '70-climbing-stairs', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'java-fundamentals',
+    title: 'Java Programming Fundamentals',
+    description: 'Learn Java and programming from scratch with interactive visualizations.',
+    problems: [],
+    subModules: [
+      {
+        id: 'java-basics',
+        title: 'Java Basics',
+        description: 'Core concepts: JVM, variables, data types, and memory.',
+        problems: [
+          { id: 'java-jvm', number: 101, title: 'How Java Works (JVM)', difficulty: 'Easy', component: JVMVisualizer },
+          { id: 'java-variables', number: 102, title: 'Variables & Data Types', difficulty: 'Easy', component: JavaVariablesVisualizer },
+          { id: 'java-pass-by-value', number: 103, title: 'Pass by Value', difficulty: 'Easy', component: PassByValueVisualizer },
+          { id: 'java-strings', number: 104, title: 'Strings & Immutability', difficulty: 'Easy', component: StringsAndImmutabilityVisualizer },
+          { id: 'java-classes', number: 105, title: 'Classes & Objects', difficulty: 'Easy', component: ClassAndObjectVisualizer },
+        ]
+      },
+      {
+        id: 'java-operators-control',
+        title: 'Operators & Control Flow',
+        description: 'Learn operators, conditionals, and flow control.',
+        problems: [
+          { id: 'java-operators-logic', number: 201, title: 'Operators & Logic', difficulty: 'Easy', component: OperatorsAndLogicVisualizer },
+          { id: 'java-control-flow', number: 202, title: 'Control Flow (if/else/switch)', difficulty: 'Easy', component: ControlFlowVisualizer },
+          { id: 'java-math-logic', number: 203, title: 'Math & Logic Operations', difficulty: 'Easy', component: MathLogicVisualizer },
+        ]
+      },
+      {
+        id: 'java-loops',
+        title: 'Loops & Iterations',
+        description: 'Master loops and nested iterations.',
+        problems: [
+          { id: 'java-nested-loops', number: 301, title: 'Nested Loops', difficulty: 'Easy', component: NestedLoopsVisualizer },
+        ]
+      },
+      {
+        id: 'java-arrays-pointers',
+        title: 'Arrays & Pointers',
+        description: 'Working with arrays, swapping, and pointer techniques.',
+        problems: [
+          { id: 'java-arrays', number: 401, title: 'Arrays & Collections', difficulty: 'Easy', component: JavaArraysVisualizer },
+          { id: 'java-1d-array-logic', number: 402, title: '1D Array Logic', difficulty: 'Easy', component: OneDArrayLogicVisualizer },
+          { id: 'java-swappers-pointers', number: 403, title: 'Swapping & Pointers', difficulty: 'Easy', component: SwappersAndPointersVisualizer },
+          { id: 'java-linkedlist', number: 404, title: 'Linked Lists', difficulty: 'Easy', component: LinkedListVisualizer },
+        ]
+      },
+      {
+        id: 'java-pattern-problems',
+        title: 'Pattern Problems',
+        description: 'Practice logic building with star patterns.',
+        problems: [
+          { id: 'java-right-triangle', number: 501, title: 'Right Triangle Star Pattern', difficulty: 'Easy', component: RightTriangleStarPatternVisualizer },
+          { id: 'java-left-triangle', number: 502, title: 'Left Triangle Star Pattern', difficulty: 'Easy', component: LeftTriangleStarPatternVisualizer },
+          { id: 'java-number-pyramid', number: 503, title: 'Number Pyramid Pattern', difficulty: 'Easy', component: NumberPyramidVisualizer },
+          { id: 'java-reverse-pyramid', number: 504, title: 'Reverse Pyramid Pattern', difficulty: 'Easy', component: ReversePyramidVisualizer },
         ]
       }
     ]

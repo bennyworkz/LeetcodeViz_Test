@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Code2, Eye, BookOpen, Zap, ArrowRight } from 'lucide-react';
+import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 // Added React.FC type to fix key prop validation error and explicitly handle component props
@@ -18,15 +18,19 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
         <Link 
             to={`/problem/${firstProblemId}`}
             className={`group relative bg-white rounded-3xl p-8 border-2 transition-all duration-300 hover:scale-[1.02] overflow-hidden ${
-                featured 
-                    ? 'border-orange-200 hover:border-orange-400 hover:shadow-[0_20px_60px_rgba(251,146,60,0.25)]' 
+                module.id === 'amazon-favorites'
+                    ? 'border-orange-200 hover:border-orange-400 hover:shadow-[0_20px_60px_rgba(251,146,60,0.25)]'
+                    : module.id === 'java-fundamentals'
+                    ? 'border-red-200 hover:border-red-400 hover:shadow-[0_20px_60px_rgba(239,68,68,0.25)]'
                     : 'border-blue-200 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.25)]'
             }`}
         >
             {/* Background gradient on hover */}
             <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                featured 
-                    ? 'bg-gradient-to-br from-orange-50/50 to-transparent' 
+                module.id === 'amazon-favorites'
+                    ? 'bg-gradient-to-br from-orange-50/50 to-transparent'
+                    : module.id === 'java-fundamentals'
+                    ? 'bg-gradient-to-br from-red-50/50 to-transparent'
                     : 'bg-gradient-to-br from-blue-50/50 to-transparent'
             }`}></div>
 
@@ -34,12 +38,16 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
             <div className="relative">
                 {/* Logo */}
                 <div className="flex justify-center mb-8">
-                    {featured ? (
+                    {module.id === 'amazon-favorites' ? (
                         <img 
                             src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" 
                             alt="Amazon" 
                             className="h-14 w-auto object-contain"
                         />
+                    ) : module.id === 'java-fundamentals' ? (
+                        <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <GraduationCap className="text-white" size={32} />
+                        </div>
                     ) : (
                         <img 
                             src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" 
@@ -50,7 +58,11 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                 </div>
 
                 {/* Title */}
-                <h3 className={`text-2xl font-black mb-3 text-center ${featured ? 'text-orange-900' : 'text-blue-900'}`}>
+                <h3 className={`text-2xl font-black mb-3 text-center ${
+                    module.id === 'amazon-favorites' ? 'text-orange-900' 
+                    : module.id === 'java-fundamentals' ? 'text-red-900'
+                    : 'text-blue-900'
+                }`}>
                     {module.title}
                 </h3>
 
@@ -62,14 +74,24 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                 {/* Stats */}
                 <div className="flex justify-center gap-12 mb-8">
                     <div className="text-center">
-                        <div className={`text-4xl font-black mb-1 ${featured ? 'text-orange-600' : 'text-blue-600'}`}>
+                        <div className={`text-4xl font-black mb-1 ${
+                            module.id === 'amazon-favorites' ? 'text-orange-600'
+                            : module.id === 'java-fundamentals' ? 'text-red-600'
+                            : 'text-blue-600'
+                        }`}>
                             {totalProblems}
                         </div>
-                        <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Problems</div>
+                        <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            {module.id === 'java-fundamentals' ? 'Lessons' : 'Problems'}
+                        </div>
                     </div>
                     {topicCount > 0 && (
                         <div className="text-center">
-                            <div className={`text-4xl font-black mb-1 ${featured ? 'text-orange-600' : 'text-blue-600'}`}>
+                            <div className={`text-4xl font-black mb-1 ${
+                                module.id === 'amazon-favorites' ? 'text-orange-600'
+                                : module.id === 'java-fundamentals' ? 'text-red-600'
+                                : 'text-blue-600'
+                            }`}>
                                 {topicCount}
                             </div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Topics</div>
@@ -79,11 +101,13 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
 
                 {/* CTA Button */}
                 <div className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all ${
-                    featured 
-                        ? 'bg-orange-600 hover:bg-orange-700 shadow-lg shadow-orange-200' 
+                    module.id === 'amazon-favorites'
+                        ? 'bg-orange-600 hover:bg-orange-700 shadow-lg shadow-orange-200'
+                        : module.id === 'java-fundamentals'
+                        ? 'bg-red-600 hover:bg-red-700 shadow-lg shadow-red-200'
                         : 'bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200'
                 }`}>
-                    Start Learning
+                    {module.id === 'java-fundamentals' ? 'Start Learning' : 'Start Practicing'}
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
@@ -93,7 +117,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
 
 const Welcome = () => {
   const amazonModule = modules.find(m => m.id === 'amazon-favorites');
-  const otherModules = modules.filter(m => m.id !== 'amazon-favorites');
+  const javaModule = modules.find(m => m.id === 'java-fundamentals');
+  const otherModules = modules.filter(m => m.id !== 'amazon-favorites' && m.id !== 'java-fundamentals');
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
@@ -152,7 +177,7 @@ const Welcome = () => {
                         <BookOpen className="text-blue-600" size={24} />
                     </div>
                     <div className="text-left">
-                        <div className="text-3xl font-black text-slate-900">68+</div>
+                        <div className="text-3xl font-black text-slate-900">72+</div>
                         <div className="text-sm text-slate-500 font-semibold">Problems</div>
                     </div>
                 </div>
@@ -161,7 +186,7 @@ const Welcome = () => {
                         <Code2 className="text-purple-600" size={24} />
                     </div>
                     <div className="text-left">
-                        <div className="text-3xl font-black text-slate-900">17+</div>
+                        <div className="text-3xl font-black text-slate-900">22+</div>
                         <div className="text-sm text-slate-500 font-semibold">Topics</div>
                     </div>
                 </div>
@@ -210,11 +235,12 @@ const Welcome = () => {
         <div className="mb-16">
             <div className="text-center mb-12">
                 <h2 className="text-4xl font-black text-slate-900 mb-4">Choose Your Path</h2>
-                <p className="text-slate-600 text-lg">Select a collection to start your interview preparation journey</p>
+                <p className="text-slate-600 text-lg">Select a collection to start your learning journey</p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
-                {amazonModule && <ModuleCard module={amazonModule} featured />}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                {javaModule && <ModuleCard module={javaModule} />}
+                {amazonModule && <ModuleCard module={amazonModule} />}
                 {otherModules[0] && <ModuleCard module={otherModules[0]} />}
             </div>
         </div>
