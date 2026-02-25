@@ -77,6 +77,9 @@ const ValidateBSTVisualizer = lazy(() => import('./problems/ValidateBSTVisualize
 const NQueensVisualizer = lazy(() => import('./problems/NQueensVisualizer.tsx'));
 const ZigzagVisualizer = lazy(() => import('./problems/ZigzagVisualizer.tsx'));
 const CombinationSumVisualizer = lazy(() => import('./problems/CombinationSumVisualizer.tsx'));
+const RemoveElementVisualizer = lazy(() => import('./problems/RemoveElementVisualizer.tsx'));
+const StrStrVisualizer = lazy(() => import('./problems/StrStrVisualizer.tsx'));
+const IntegerToRomanVisualizer = lazy(() => import('./problems/IntegerToRomanVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -134,6 +137,7 @@ export const modules: Module[] = [
           { id: '42-trapping-rain-water', number: 42, title: 'Trapping Rain Water', difficulty: 'Hard', component: TrappingRainWaterVisualizer },
           { id: '75-sort-colors', number: 75, title: 'Sort Colors', difficulty: 'Medium', component: SortColorsVisualizer},
           { id: '88-merge-sorted-array', number: 88, title: 'Merge Sorted Array', difficulty: 'Easy', component: MergeSortedArrayVisualizer },
+          { id: '27-remove-element', number: 27, title: 'Remove Element', difficulty: 'Easy', component: RemoveElementVisualizer },
         ]
       },
       {
@@ -144,6 +148,7 @@ export const modules: Module[] = [
           { id: '3-longest-substring', number: 3, title: 'Longest Substring Without Repeating Characters', difficulty: 'Medium', component: LongestSubstringVisualizer },
           { id: '5-longest-palindromic-substring', number: 5, title: 'Longest Palindromic Substring', difficulty: 'Medium', component: LongestPalindromicSubstringVisualizer },
           { id: '76-minimum-window-substring', number: 76, title: 'Minimum Window Substring', difficulty: 'Hard', component: MinWindowVisualizer },
+          { id: '28-find-the-index-of-first-occurence-in-a-string', number: 28, title: 'Find the Index of the First Occurrence in a String', difficulty: 'Easy', component: StrStrVisualizer },
         ]
       },
       {
@@ -175,6 +180,7 @@ export const modules: Module[] = [
         problems: [
           { id: '45-jump-game-ii', number: 45, title: 'Jump Game II', difficulty: 'Medium', component: JumpGameIIVisualizer},
           { id: '55-jump-game-amazon', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
+          { id: '12-integrer-to-roman', number: 12, title: 'Integer to Roman', difficulty: 'Medium', component: IntegerToRomanVisualizer },
         ]
       },
       {
