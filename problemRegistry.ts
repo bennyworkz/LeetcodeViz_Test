@@ -120,6 +120,13 @@ const RecoverBSTVisualizer = lazy(() => import('./problems/RecoverBSTVisualizer.
 const InterleavingStringVisualizer = lazy(() => import('./problems/InterleavingStringVisualizer.tsx'));
 const PermutationsIIVisualizer = lazy(() => import('./problems/PermutationsIIVisualizer.tsx'));
 const GrayCodeVisualizer = lazy(() => import('./problems/GrayCodeVisualizer.tsx'));
+const UniqueBSTVisualizeri = lazy(() => import('./problems/UniqueBSTVisualizeri.tsx'));
+const SpiralMatrixIIVisualizer = lazy(() => import('./problems/SpiralMatrixIIVisualizer.tsx'));
+const RestoreIpAddressVisualizer = lazy(() => import('./problems/RestoreIpAddressVisualizer.tsx'));
+const RemoveDuplicatesSortedListVisualizer = lazy(() => import('./problems/RemoveDuplicatesSortedListVisualizer.tsx'));
+const ValidNumberVisualizer = lazy(() => import('./problems/ValidNumberVisualizer.tsx'));
+const NQueensIIVisualizer = lazy(() => import('./problems/NQueensIIVisualizer.tsx'));
+const ScrambleStringVisualizer = lazy(() => import('./problems/ScrambleStringVisualizer.tsx'));
 
 // Dynamic Programming / Greedy
 const ClimbingStairsVisualizer = lazy(() => import('./problems/ClimbingStairsVisualizer'));
@@ -225,6 +232,7 @@ export const modules: Module[] = [
           { id: '63-unique-paths-ii', number: 63, title: 'Unique Paths II', difficulty: 'Medium', component: UniquePathsIIVisualizer },
           { id: '97-interleaving-string', number: 97, title: 'Interleaving String', difficulty: 'Medium', component: InterleavingStringVisualizer },
           { id: '89-gray-code', number: 89, title: 'Gray Code', difficulty: 'Medium', component: GrayCodeVisualizer },
+          { id: '87-scramble-string', number: 87, title: 'Scramble String', difficulty: 'Hard', component: ScrambleStringVisualizer },
         ]
       },
       {
@@ -247,7 +255,8 @@ export const modules: Module[] = [
           { id: '22-generate-parentheses', number: 22, title: 'Generate Parentheses', difficulty: 'Medium', component: GenerateParenthesesVisualizer },
           { id: '78-subsets', number: 78, title: 'Subsets', difficulty: 'Medium', component: SubsetsVisualizer},
           { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer},
-          { id: '51-N-queens', number: 51, title: 'N-Queens', difficulty: 'Hard', component: NQueensVisualizer},
+          { id: '51-N-queens', number: 51, title: 'N-Queens', difficulty: 'Hard', component: NQueensIIVisualizer},
+          { id: '52-N-queens-ii', number: 51, title: 'N-Queens II', difficulty: 'Hard', component: NQueensVisualizer},
           { id: '39-combination-sum', number: 39, title: 'Combination Sum', difficulty: 'Medium', component: CombinationSumVisualizer},
           { id: '46-permutations', number: 46, title: 'Permutations', difficulty: 'Medium', component: PermutationsVisualizer},
           { id: '90-subsets-11', number: 90, title: 'Subsets II', difficulty: 'Medium', component: SubsetsIIVisualizer},
@@ -255,6 +264,7 @@ export const modules: Module[] = [
           { id: '37-sudoku-solver', number: 37, title: 'Sudoku Solver', difficulty: 'Medium', component: SudokuVisualizer},
           { id: '77-Combinations', number: 77, title: 'Combinations', difficulty: 'Medium', component: CombinationsVisualizer},
           { id: '47-permutation-ii', number: 47, title: 'Permutations II', difficulty: 'Medium', component: PermutationsIIVisualizer},
+          { id: '93-restore-ip-addresses', number: 93, title: 'Restore IP Addresses', difficulty: 'Medium', component: RestoreIpAddressVisualizer},
         ]
       },
       {
@@ -283,6 +293,7 @@ export const modules: Module[] = [
           { id: '61-rotate-list', number: 61, title: 'Rotate List', difficulty: 'Medium', component: RotateListVisualizer},
           { id: '83-remove-duplicates-from-sorted-list', number: 83, title: 'Remove Duplicates from Sorted List', difficulty: 'Easy', component: RemoveDuplicatesListVisualizer},
           {id: '86-partition-list', number: 86, title: 'Partition List', difficulty: 'Medium', component: PartitionListVisualizer},
+          {id: '82-remove-duplicates-from-sorted-list-ii', number: 82, title: 'Remove Duplicates from Sorted List II', difficulty: 'Medium', component: RemoveDuplicatesSortedListVisualizer},
         ]
       },
       {
@@ -295,6 +306,7 @@ export const modules: Module[] = [
           { id: '56-merge-intervals', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer },
           { id: '73-set-matrix-zeroes', number: 73, title: 'Set Matrix Zeroes', difficulty: 'Medium', component: SetMatrixZeroesVisualizer},
           { id: '6-zigzag-conversion', number: 6, title: 'Zigzag Conversion', difficulty: 'Medium', component: ZigzagVisualizer},
+          { id: '59-spiral-matrix-ii', number: 59, title: 'Spiral Matrix II', difficulty: 'Medium', component: SpiralMatrixIIVisualizer},
         ]
       },
       {
@@ -308,7 +320,8 @@ export const modules: Module[] = [
           { id: '8-string-to-integer', number: 8, title: 'String to Integer (atoi)', difficulty: 'Medium', component: AtoiVisualizer },
           { id: '58-length-of-last-word', number: 58, title: 'Length of Last Word', difficulty: 'Easy', component: LengthOfLastWordVisualizer },
           { id: '38-count-and-say', number: 38, title: 'Count and Say', difficulty: 'Medium', component: CountAndSayVisualizer },
-          { id: '43-multiply-strings', number: 38, title: 'Multiply Strings', difficulty: 'Medium', component: MultiplyStringsVisualizer },
+          { id: '43-multiply-strings', number: 43, title: 'Multiply Strings', difficulty: 'Medium', component: MultiplyStringsVisualizer },
+          { id: '65-valid-number', number: 65, title: 'Valid Number', difficulty: 'Hard', component: ValidNumberVisualizer },
         ]
       },
       {
@@ -332,6 +345,7 @@ export const modules: Module[] = [
           { id: '98-validate-bst', number: 98, title: 'Validate Binary Search Tree', difficulty: 'Medium', component: ValidateBSTVisualizer },
           { id: '100-same-tree', number: 100, title: 'Same Tree', difficulty: 'Easy', component: SameTreeVisualizer },
           { id: '94-binary-tree-indorder-traversal', number: 94, title: 'Binary Tree Inorder Traversal', difficulty: 'Easy', component: InorderVisualizer },
+          { id: '96-unique-binary-search-trees-i', number: 96, title: 'Unique Binary Search Trees', difficulty: 'Medium', component: UniqueBSTVisualizeri },
           { id: '95-unique-binary-search-trees-ii', number: 95, title: 'Unique Binary Search Trees II', difficulty: 'Medium', component: UniqueBSTVisualizer },
           { id: '99-recover-bst', number: 99, title: 'Recover Binary Search Tree', difficulty: 'Medium', component: RecoverBSTVisualizer },
         ]
