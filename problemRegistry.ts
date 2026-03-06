@@ -49,9 +49,59 @@ const MergeKSortedListsVisualizer = lazy(() => import('./problems/MergeKSortedLi
 const MaximumSubarrayVisualizer = lazy(() => import('./problems/MaximumSubarrayVisualizer'));
 const LetterCombinationsVisualizer = lazy(() => import('./problems/LetterCombinationsVisualizer'));
 const SearchRotatedArrayVisualizer = lazy(() => import('./problems/SearchRotatedArrayVisualizer'));
+
+// Linked List Module
+const SinglyLinkedListTutorial = lazy(() => import('./linkedlist-tutorials/SinglyLinkedListTutorial'));
+const SinglyLinkedListTraversalVisualiser = lazy(() => import('./linkedlist-tutorials/SinglyLinkedListTraversalVisualiser'));
+const InsertAtPositionSinglyLinkedListViz = lazy(() => import('./linkedlist-tutorials/InsertAtPositionSinglyLinkedListViz'));
+const DeletionSinglyLinkedListViz = lazy(() => import('./linkedlist-tutorials/DeletionSinglyLinkedListViz'));
+const ReverseSinglyLinkedListViz = lazy(() => import('./linkedlist-tutorials/ReverseSinglyLinkedListViz'));
+const nthNodeInSinglyLinkedList = lazy(() => import('./linkedlist-tutorials/nthNodeInSinglyLinkedList'));
+const IdenticalLinkedListsViz = lazy(() => import('./linkedlist-tutorials/IdenticalLinkedListsViz'));
+const MiddleNodeInLinkedListViz = lazy(() => import('./linkedlist-tutorials/MiddleNodeInLinkedListViz'));
+const AddOneToLinkedListViz = lazy(() => import('./linkedlist-tutorials/AddOneToLinkedListViz'));
+const AddTwoNumbersViz = lazy(() => import('./linkedlist-tutorials/AddTwoNumbersViz'));
+const DeleteAlternateNodesViz = lazy(() => import('./linkedlist-tutorials/DeleteAlternateNodesViz'));
+const MakeMiddleHeadViz = lazy(() => import('./linkedlist-tutorials/MakeMiddleHeadViz'));
+const MoveLastToFrontViz = lazy(() => import('./linkedlist-tutorials/MoveLastToFrontViz'));
+const PairwiseSwapViz = lazy(() => import('./linkedlist-tutorials/PairwiseSwapViz'));
+const RemoveDuplicatesViz = lazy(() => import('./linkedlist-tutorials/RemoveDuplicatesViz'));
+const RemoveKthNodeViz = lazy(() => import('./linkedlist-tutorials/RemoveKthNodeViz'));
+const SubtractTwoNumbersViz = lazy(() => import('./linkedlist-tutorials/SubtractTwoNumbersViz'));
+const SumOfLastNNodesViz = lazy(() => import('./linkedlist-tutorials/SumOfLastNNodesViz'));
+const DetectCycleViz = lazy(() => import('./linkedlist-tutorials/DetectCycleViz'));
+const CycleLengthViz = lazy(() => import('./linkedlist-tutorials/CycleLengthViz'));
+const PalindromeListVisualizer = lazy(() => import('./linkedlist-tutorials/PalindromeListVisualizer'));
+const UnsortedDuplicateRemoverSinglyLinkedListViz = lazy(() => import('./linkedlist-tutorials/UnsortedDuplicateRemoverSinglyLinkedListViz'));
+const removeAllDuplicatesViz = lazy(() => import('./linkedlist-tutorials/removeAllDuplicatesViz'));
+const swapNodesViz = lazy(() => import('./linkedlist-tutorials/swapNodesViz'));
+const LinkedListIntersectionViz = lazy(() => import('./linkedlist-tutorials/LinkedListIntersectionViz'));
+const SegregationEvenOddLinkedListViz = lazy(() => import('./linkedlist-tutorials/SegregationEvenOddLinkedListViz'));
+const TwoPointerIterativereverseLinkedListViz = lazy(() => import('./linkedlist-tutorials/TwoPointerIterativereverseLinkedListViz'));
+const AlternateOddEvenLinkedListViz = lazy(() => import('./linkedlist-tutorials/AlternateOddEvenLinkedListViz'));
+const ZigZagReorderLLViz = lazy(() => import('./linkedlist-tutorials/ZigZagReorderLLViz'));
+const AddPolynomialsLLViz = lazy(() => import('./linkedlist-tutorials/AddPolynomialsLLViz'));
+const SetOperationsLLViz = lazy(() => import('./linkedlist-tutorials/SetOperationsLLViz'));
+const AbsoluteSortLLViz = lazy(() => import('./linkedlist-tutorials/AbsoluteSortLLViz'));
+const FlattenedLLViz = lazy(() => import('./linkedlist-tutorials/FlattenedLLViz'));
+const AltKGroupReverseViz = lazy(() => import('./linkedlist-tutorials/AltKGroupReverseViz'));
+const AlternatingSplitLLViz = lazy(() => import('./linkedlist-tutorials/AlternatingSplitLLViz'));
+const ReverseInKGroupViz = lazy(() => import('./linkedlist-tutorials/ReverseInKGroupViz'));
+const RemoveMiddlePointsLLViz = lazy(() => import('./linkedlist-tutorials/RemoveMiddlePointsLLViz'));
+const DeleteGreaterOnRightLLViz = lazy(() => import('./linkedlist-tutorials/DeleteGreaterOnRightLLViz'));
+const CloneLinkedListRandomPointerViz = lazy(() => import('./linkedlist-tutorials/CloneLinkedListRandomPointerViz'));
+const SelectRandomNodeLinkedListViz = lazy(() => import('./linkedlist-tutorials/SelectRandomNodeLinkedListViz'));
+const RearrageLinkedListViz = lazy(() => import('./linkedlist-tutorials/RearrageLinkedListViz'));
+const InPlaceMergeLinkedListViz = lazy(() => import('./linkedlist-tutorials/InPlaceMergeLinkedListViz'));
+const LongestPalindromeLinkedListViz = lazy(() => import('./linkedlist-tutorials/LongestPalindromeLinkedListViz'));
+const BlockRotateLinkedListViz = lazy(() => import('./linkedlist-tutorials/BlockRotateLinkedListViz'));
+const CountRotationsLinkedListViz = lazy(() => import('./linkedlist-tutorials/CountRotationsLinkedListViz'));
+
+// Alias for Amazon module compatibility
+// const MergeListsVisualizer = MergeListsVisualizerLL;
 const PalindromeVisualizer = lazy(() => import('./problems/PalindromeVisualizer'));
 const RomanVisualizer =  lazy(() => import('./problems/RomanVisualizer'));
-const MergeListsVisualizer = lazy(() => import('./problems/MergeListsVisualizer'));
+const MergeListsVisualizer = lazy(() => import('./problems/MergeKSortedListsVisualizer.tsx'));
 const ReverseIntegerVisualizer = lazy(() => import('./problems/ReverseIntegerVisualizer'));
 const RotateImageVisualizer = lazy(() => import('./problems/RotateImageVisualizer'));
 const WordSearchVisualizer = lazy(() => import('./problems/WordSearchVisualizer'));
@@ -286,6 +336,10 @@ export const modules: Module[] = [
           { id: '2-add-two-numbers', number: 2, title: 'Add Two Numbers', difficulty: 'Medium', component: AddTwoNumbersVisualizer, tags: ['Linked List', 'Math', 'Recursion'] },
           { id: '21-merge-two-sorted-lists', number: 21, title: 'Merge Two Sorted Lists', difficulty: 'Easy', component: MergeListsVisualizer, tags: ['Linked List', 'Recursion'] },
           { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer, tags: ['Linked List', 'Divide and Conquer', 'Heap (Priority Queue)', 'Merge Sort'] },
+          { id: 'flatten-linked-list', number: 1033, title: 'Flatten Linked List', difficulty: 'Hard', component: FlattenedLLViz, tags: ['Linked List', 'Recursion', 'Merge Sort'] },
+          { id: 'alt-k-group-reverse', number: 1034, title: 'Alternate K-Group Reverse', difficulty: 'Hard', component: AltKGroupReverseViz, tags: ['Linked List', 'Recursion', 'Two Pointers'] },
+          { id: 'alternating-split-ll', number: 1035, title: 'Alternating Split Linked List', difficulty: 'Hard', component: AlternatingSplitLLViz, tags: ['Linked List', 'Two Pointers'] },
+          { id: '25-reverse-nodes-in-k-group-hard', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Hard', component: ReverseKGroupVisualizer, tags: ['Linked List', 'Recursion']},
           { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer, tags: ['Linked List', 'Recursion']},
           { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer, tags: ['Linked List', 'Two Pointers']},
           { id: '92-reverse-linked-list-ii', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseLinkedListIIVisualizer, tags: ['Linked List']},
@@ -474,6 +528,85 @@ export const modules: Module[] = [
           { id: 'java-left-triangle', number: 502, title: 'Left Triangle Star Pattern', difficulty: 'Easy', component: LeftTriangleStarPatternVisualizer },
           { id: 'java-number-pyramid', number: 503, title: 'Number Pyramid Pattern', difficulty: 'Easy', component: NumberPyramidVisualizer },
           { id: 'java-reverse-pyramid', number: 504, title: 'Reverse Pyramid Pattern', difficulty: 'Easy', component: ReversePyramidVisualizer },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'linked-list-data-structures',
+    title: 'Linked List Data Structures',
+    description: 'Comprehensive learning module for Linked Lists in Java with tutorials and problems.',
+    problems: [],
+    subModules: [
+      {
+        id: 'linked-list-tutorials',
+        title: 'Interactive Tutorials',
+        description: 'Step-by-step tutorials covering linked list fundamentals.',
+        problems: [
+          { id: 'singly-linked-list-tutorial', number: 1001, title: 'Singly Linked List Fundamentals', difficulty: 'Easy', component: SinglyLinkedListTutorial, tags: ['Tutorial', 'Fundamentals', 'Memory Management'] },
+          { id: 'singly-linked-list-traversal', number: 1002, title: 'Linked List Traversal Methods', difficulty: 'Easy', component: SinglyLinkedListTraversalVisualiser, tags: ['Tutorial', 'Traversal', 'Iterative', 'Recursive'] },
+          { id: 'singly-linked-list-insert-at-any-position', number: 1003, title: 'Insert At Position', difficulty: 'Easy', component: InsertAtPositionSinglyLinkedListViz, tags: ['Tutorial', 'Insertion', 'Position'] },
+          { id: 'singly-linked-list-deletions', number: 1004, title: 'Linked List Deletions', difficulty: 'Easy', component: DeletionSinglyLinkedListViz, tags: ['Tutorial', 'Deletion', 'Memory Management'] },
+          { id: 'reverse-singly-linked-list', number: 1005, title: 'Reverse Singly Linked List', difficulty: 'Easy', component: ReverseSinglyLinkedListViz, tags: ['Tutorial', 'Reversal', 'Pointers'] },
+          { id: 'nth-node-singly-linked-list', number: 1006, title: 'Nth Node of Singly Linked List', difficulty: 'Easy', component: nthNodeInSinglyLinkedList, tags: ['Tutorial', 'Indexing', 'Access'] },
+          { id: 'identical-linked-lists', number: 1007, title: 'Identical Linked Lists Comparison', difficulty: 'Easy', component: IdenticalLinkedListsViz, tags: ['Tutorial', 'Comparison', 'Iterative', 'Recursive'] },
+          { id: 'middle-node-linked-list', number: 1008, title: 'Find Middle Node in Linked List', difficulty: 'Easy', component: MiddleNodeInLinkedListViz, tags: ['Tutorial', 'Two Pointers', 'Fast-Slow'] },
+          { id: 'add-one-to-linked-list', number: 1009, title: 'Add One to Linked List Number', difficulty: 'Easy', component: AddOneToLinkedListViz, tags: ['Tutorial', 'Math', 'Carry'] },
+          { id: 'add-two-numbers-linked-list', number: 1010, title: 'Add Two Numbers as Linked Lists', difficulty: 'Easy', component: AddTwoNumbersViz, tags: ['Tutorial', 'Math', 'Addition'] },
+          { id: 'delete-alternate-nodes', number: 1011, title: 'Delete Alternate Nodes', difficulty: 'Easy', component: DeleteAlternateNodesViz, tags: ['Tutorial', 'Deletion', 'Pattern'] },
+          { id: 'make-middle-head', number: 1012, title: 'Make Middle Node as Head', difficulty: 'Easy', component: MakeMiddleHeadViz, tags: ['Tutorial', 'Rearrangement', 'Middle'] },
+          { id: 'move-last-to-front', number: 1013, title: 'Move Last Node to Front', difficulty: 'Easy', component: MoveLastToFrontViz, tags: ['Tutorial', 'Rearrangement', 'Rotation'] },
+          { id: 'pairwise-swap-nodes', number: 1014, title: 'Pairwise Swap Adjacent Nodes', difficulty: 'Easy', component: PairwiseSwapViz, tags: ['Tutorial', 'Swapping', 'Pairs'] },
+          { id: 'remove-duplicates-linked-list', number: 1015, title: 'Remove Duplicates from Linked List', difficulty: 'Easy', component: RemoveDuplicatesViz, tags: ['Tutorial', 'Duplicates', 'Cleanup'] },
+          { id: 'remove-kth-node', number: 1016, title: 'Remove Kth Node from End', difficulty: 'Easy', component: RemoveKthNodeViz, tags: ['Tutorial', 'Removal', 'Position'] },
+          { id: 'subtract-two-numbers', number: 1017, title: 'Subtract Two Numbers as Linked Lists', difficulty: 'Easy', component: SubtractTwoNumbersViz, tags: ['Tutorial', 'Math', 'Subtraction'] },
+          { id: 'sum-of-last-n-nodes', number: 1018, title: 'Sum of Last N Nodes', difficulty: 'Easy', component: SumOfLastNNodesViz, tags: ['Tutorial', 'Sum', 'Last N'] },
+          { id: 'detect-cycle-linked-list', number: 1019, title: 'Detect Cycle in Linked List', difficulty: 'Medium', component: DetectCycleViz, tags: ['Tutorial', 'Cycle Detection', 'Floyd Algorithm'] },
+          { id: 'cycle-length-linked-list', number: 1020, title: 'Find Cycle Length in Linked List', difficulty: 'Medium', component: CycleLengthViz, tags: ['Tutorial', 'Cycle Length', 'Two Pointers'] },
+          { id: 'palindrome-linked-list', number: 1021, title: 'Palindrome Linked List Check', difficulty: 'Medium', component: PalindromeListVisualizer, tags: ['Tutorial', 'Palindrome', 'Reversal', 'Two Pointers'] },
+          { id: 'remove-unsorted-duplicates', number: 1022, title: 'Remove Duplicates from Unsorted List', difficulty: 'Medium', component: UnsortedDuplicateRemoverSinglyLinkedListViz, tags: ['Tutorial', 'Duplicates', 'HashSet', 'Two Pointers'] },
+          { id: 'remove-all-duplicates-sorted', number: 1023, title: 'Remove All Duplicates from Sorted List', difficulty: 'Medium', component: removeAllDuplicatesViz, tags: ['Tutorial', 'Duplicates', 'Sentinel Node', 'Two Pointers'] },
+          { id: 'swap-nodes-linked-list', number: 1024, title: 'Swap Nodes in Linked List', difficulty: 'Medium', component: swapNodesViz, tags: ['Tutorial', 'Pointer Manipulation', 'Node Swapping', 'Memory Management'] },
+          { id: 'linked-list-intersection', number: 1025, title: 'Linked List Intersection Detection', difficulty: 'Medium', component: LinkedListIntersectionViz, tags: ['Tutorial', 'Intersection', 'Two Pointers', 'HashSet'] },
+          { id: 'segregation-even-odd-linked-list', number: 1026, title: 'Segregate Even and Odd Nodes', difficulty: 'Medium', component: SegregationEvenOddLinkedListViz, tags: ['Tutorial', 'Segregation', 'Even-Odd', 'Rearrangement'] },
+          { id: 'two-pointer-iterative-reverse', number: 1027, title: 'Two Pointer Iterative Reverse', difficulty: 'Medium', component: TwoPointerIterativereverseLinkedListViz, tags: ['Tutorial', 'Reversal', 'Two Pointers', 'Iterative'] },
+          { id: 'alternate-odd-even-linked-list', number: 1028, title: 'Alternate Odd Even Nodes', difficulty: 'Medium', component: AlternateOddEvenLinkedListViz, tags: ['Tutorial', 'Alternating', 'Parity', 'Zipper Merge'] },
+          { id: 'zigzag-reorder-linked-list', number: 1029, title: 'Zig-Zag Reorder Linked List', difficulty: 'Medium', component: ZigZagReorderLLViz, tags: ['Tutorial', 'Reordering', 'Pattern', 'Alternating'] },
+          { id: 'add-polynomials-linked-list', number: 1030, title: 'Add Polynomials as Linked Lists', difficulty: 'Medium', component: AddPolynomialsLLViz, tags: ['Tutorial', 'Math', 'Polynomial', 'Two Pointers'] },
+          { id: 'set-operations-linked-list', number: 1031, title: 'Union and Intersection of Linked Lists', difficulty: 'Medium', component: SetOperationsLLViz, tags: ['Tutorial', 'Set Operations', 'HashSet', 'Union', 'Intersection'] },
+          { id: 'absolute-sort-linked-list', number: 1032, title: 'Sort Absolute Value Sorted Linked List', difficulty: 'Medium', component: AbsoluteSortLLViz, tags: ['Tutorial', 'Sorting', 'Absolute Value', 'Front Insertion'] },
+          { id: 'flatten-linked-list-2', number: 1036, title: 'Flatten Linked List', difficulty: 'Hard', component: FlattenedLLViz, tags: ['Linked List', 'Recursion', 'Merge Sort'] },
+          { id: 'alt-k-group-reverse-2', number: 1037, title: 'Alternate K-Group Reverse', difficulty: 'Hard', component: AltKGroupReverseViz, tags: ['Linked List', 'Recursion', 'Two Pointers'] },
+          { id: 'alternating-split-ll-2', number: 1038, title: 'Alternating Split Linked List', difficulty: 'Hard', component: AlternatingSplitLLViz, tags: ['Linked List', 'Two Pointers'] },
+          { id: '25-reverse-nodes-in-k-group-hard-2', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Hard', component: ReverseKGroupVisualizer, tags: ['Linked List', 'Recursion']},
+          { id: 'reverse-in-k-group-lessons', number: 1039, title: 'Reverse in K-Groups', difficulty: 'Hard', component: ReverseInKGroupViz, tags: ['Linked List', 'Recursion', 'Two Pointers'] },
+          { id: 'remove-middle-points-lessons', number: 1040, title: 'Remove Middle Points', difficulty: 'Hard', component: RemoveMiddlePointsLLViz, tags: ['Linked List', 'Geometry', 'Two Pointers'] },
+          { id: 'delete-greater-on-right-lessons', number: 1041, title: 'Delete Nodes with Greater Right', difficulty: 'Hard', component: DeleteGreaterOnRightLLViz, tags: ['Linked List', 'Stack', 'Recursion'] },
+          { id: 'clone-random-pointer-lessons', number: 1042, title: 'Clone List with Random Pointer', difficulty: 'Hard', component: CloneLinkedListRandomPointerViz, tags: ['Linked List', 'Hash Table', 'Deep Copy'] },
+          { id: 'select-random-node-lessons', number: 1043, title: 'Select Random Node from List', difficulty: 'Hard', component: SelectRandomNodeLinkedListViz, tags: ['Linked List', 'Reservoir Sampling', 'Random'] },
+          { id: 'rearrange-linked-list-lessons', number: 1044, title: 'Rearrange Linked List', difficulty: 'Hard', component: RearrageLinkedListViz, tags: ['Linked List', 'Two Pointers', 'Reverse'] },
+          { id: 'in-place-merge-lessons', number: 1045, title: 'In-Place Merge Two Sorted Lists', difficulty: 'Hard', component: InPlaceMergeLinkedListViz, tags: ['Linked List', 'Merge', 'In-Place'] },
+          { id: 'longest-palindrome-list-lessons', number: 1046, title: 'Longest Palindrome in Linked List', difficulty: 'Hard', component: LongestPalindromeLinkedListViz, tags: ['Linked List', 'Palindrome', 'Two Pointers'] },
+          { id: 'block-rotate-linked-list-lessons', number: 1047, title: 'Block Rotate Linked List', difficulty: 'Hard', component: BlockRotateLinkedListViz, tags: ['Linked List', 'Rotation', 'In-Place'] },
+          { id: 'count-rotations-linked-list-lessons', number: 1048, title: 'Count Rotations in Linked List', difficulty: 'Hard', component: CountRotationsLinkedListViz, tags: ['Linked List', 'Rotation', 'Traversal'] }
+        ]
+      },
+      {
+        id: 'linked-list-problems',
+        title: 'LeetCode Problems',
+        description: 'Practice with real interview problems.',
+        problems: [
+          { id: '2-add-two-numbers', number: 2, title: 'Add Two Numbers', difficulty: 'Medium', component: AddTwoNumbersVisualizer, tags: ['Linked List', 'Math', 'Recursion'] },
+          { id: '21-merge-two-sorted-lists', number: 21, title: 'Merge Two Sorted Lists', difficulty: 'Easy', component: MergeListsVisualizer, tags: ['Linked List', 'Recursion'] },
+          { id: '23-merge-k-sorted-lists', number: 23, title: 'Merge k Sorted Lists', difficulty: 'Hard', component: MergeKSortedListsVisualizer, tags: ['Linked List', 'Divide and Conquer', 'Heap (Priority Queue)', 'Merge Sort'] },
+          { id: '25-reverse-nodes-in-k-group', number: 25, title: 'Reverse Nodes in k-Group', difficulty: 'Medium', component: ReverseKGroupVisualizer, tags: ['Linked List', 'Recursion']},
+          { id: '19-remove-nth-node-from-end-of-list', number: 19, title: 'Remove Nth Node From End of List', difficulty: 'Medium', component: RemoveNthVisualizer, tags: ['Linked List', 'Two Pointers']},
+          { id: '92-reverse-linked-list-ii', number: 92, title: 'Reverse Linked List II', difficulty: 'Medium', component: ReverseLinkedListIIVisualizer, tags: ['Linked List']},
+          { id: '24-swap-nodes', number: 24, title: 'Swap Nodes in Pairs', difficulty: 'Medium', component: SwapNodesInPairsVisualizer, tags: ['Linked List', 'Recursion']},
+          { id: '61-rotate-list', number: 61, title: 'Rotate List', difficulty: 'Medium', component: RotateListVisualizer, tags: ['Linked List', 'Two Pointers']},
+          { id: '83-remove-duplicates-from-sorted-list', number: 83, title: 'Remove Duplicates from Sorted List', difficulty: 'Easy', component: RemoveDuplicatesListVisualizer, tags: ['Linked List']},
+          {id: '86-partition-list', number: 86, title: 'Partition List', difficulty: 'Medium', component: PartitionListVisualizer, tags: ['Linked List', 'Two Pointers']},
+          {id: '82-remove-duplicates-from-sorted-list-ii', number: 82, title: 'Remove Duplicates from Sorted List II', difficulty: 'Medium', component: RemoveDuplicatesSortedListVisualizer, tags: ['Linked List', 'Two Pointers']},
         ]
       }
     ]

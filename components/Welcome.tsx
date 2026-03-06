@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3 } from 'lucide-react';
+import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3, Link2 } from 'lucide-react';
 import { modules } from '../problemRegistry';
 
 // Added React.FC type to fix key prop validation error and explicitly handle component props
@@ -22,6 +22,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                     ? 'border-orange-200 hover:border-orange-400 hover:shadow-[0_20px_60px_rgba(251,146,60,0.25)]'
                     : module.id === 'java-fundamentals'
                     ? 'border-red-200 hover:border-red-400 hover:shadow-[0_20px_60px_rgba(239,68,68,0.25)]'
+                    : module.id === 'linked-list-data-structures'
+                    ? 'border-green-200 hover:border-green-400 hover:shadow-[0_20px_60px_rgba(34,197,94,0.25)]'
                     : 'border-blue-200 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.25)]'
             }`}
         >
@@ -31,6 +33,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                     ? 'bg-gradient-to-br from-orange-50/50 to-transparent'
                     : module.id === 'java-fundamentals'
                     ? 'bg-gradient-to-br from-red-50/50 to-transparent'
+                    : module.id === 'linked-list-data-structures'
+                    ? 'bg-gradient-to-br from-green-50/50 to-transparent'
                     : 'bg-gradient-to-br from-blue-50/50 to-transparent'
             }`}></div>
 
@@ -48,6 +52,10 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                         <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
                             <GraduationCap className="text-white" size={32} />
                         </div>
+                    ) : module.id === 'linked-list-data-structures' ? (
+                        <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <Link2 className="text-white" size={32} />
+                        </div>
                     ) : (
                         <img 
                             src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" 
@@ -61,6 +69,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                 <h3 className={`text-2xl font-black mb-3 text-center ${
                     module.id === 'amazon-favorites' ? 'text-orange-900' 
                     : module.id === 'java-fundamentals' ? 'text-red-900'
+                    : module.id === 'linked-list-data-structures' ? 'text-green-900'
                     : 'text-blue-900'
                 }`}>
                     {module.title}
@@ -77,12 +86,13 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                         <div className={`text-4xl font-black mb-1 ${
                             module.id === 'amazon-favorites' ? 'text-orange-600'
                             : module.id === 'java-fundamentals' ? 'text-red-600'
+                            : module.id === 'linked-list-data-structures' ? 'text-green-600'
                             : 'text-blue-600'
                         }`}>
                             {totalProblems}
                         </div>
                         <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                            {module.id === 'java-fundamentals' ? 'Lessons' : 'Problems'}
+                            {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' ? 'Lessons' : 'Problems'}
                         </div>
                     </div>
                     {topicCount > 0 && (
@@ -90,6 +100,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                             <div className={`text-4xl font-black mb-1 ${
                                 module.id === 'amazon-favorites' ? 'text-orange-600'
                                 : module.id === 'java-fundamentals' ? 'text-red-600'
+                                : module.id === 'linked-list-data-structures' ? 'text-green-600'
                                 : 'text-blue-600'
                             }`}>
                                 {topicCount}
@@ -105,9 +116,11 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                         ? 'bg-orange-600 hover:bg-orange-700 shadow-lg shadow-orange-200'
                         : module.id === 'java-fundamentals'
                         ? 'bg-red-600 hover:bg-red-700 shadow-lg shadow-red-200'
+                        : module.id === 'linked-list-data-structures'
+                        ? 'bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200'
                         : 'bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200'
                 }`}>
-                    {module.id === 'java-fundamentals' ? 'Start Learning' : 'Start Practicing'}
+                    {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' ? 'Start Learning' : 'Start Practicing'}
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
@@ -118,7 +131,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
 const Welcome = () => {
   const amazonModule = modules.find(m => m.id === 'amazon-favorites');
   const javaModule = modules.find(m => m.id === 'java-fundamentals');
-  const otherModules = modules.filter(m => m.id !== 'amazon-favorites' && m.id !== 'java-fundamentals');
+  const linkedListModule = modules.find(m => m.id === 'linked-list-data-structures');
+  const otherModules = modules.filter(m => m.id !== 'amazon-favorites' && m.id !== 'java-fundamentals' && m.id !== 'linked-list-data-structures');
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
@@ -177,7 +191,7 @@ const Welcome = () => {
                         <BookOpen className="text-blue-600" size={24} />
                     </div>
                     <div className="text-left">
-                        <div className="text-3xl font-black text-slate-900">72+</div>
+                        <div className="text-3xl font-black text-slate-900">164+</div>
                         <div className="text-sm text-slate-500 font-semibold">Problems</div>
                     </div>
                 </div>
@@ -186,7 +200,7 @@ const Welcome = () => {
                         <Code2 className="text-purple-600" size={24} />
                     </div>
                     <div className="text-left">
-                        <div className="text-3xl font-black text-slate-900">22+</div>
+                        <div className="text-3xl font-black text-slate-900">25+</div>
                         <div className="text-sm text-slate-500 font-semibold">Topics</div>
                     </div>
                 </div>
@@ -238,9 +252,10 @@ const Welcome = () => {
                 <p className="text-slate-600 text-lg">Select a collection to start your learning journey</p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
                 {javaModule && <ModuleCard module={javaModule} />}
                 {amazonModule && <ModuleCard module={amazonModule} />}
+                {linkedListModule && <ModuleCard module={linkedListModule} />}
                 {otherModules[0] && <ModuleCard module={otherModules[0]} />}
             </div>
             
