@@ -5,6 +5,7 @@ import Welcome from './components/Welcome';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Loading from './components/Loading';
 import { getProblemById } from './problemRegistry';
+import { getAptitudeNoteById } from './aptitudeRegistry';
 
 // Wrapper to render a problem based on ID with Suspense and Error Boundary
 const ProblemWrapper = () => {
@@ -26,6 +27,26 @@ const ProblemWrapper = () => {
   );
 };
 
+// Wrapper to render aptitude notes based on ID
+const AptitudeWrapper = () => {
+  const { id } = useParams<{ id: string }>();
+  const note = getAptitudeNoteById(id || '');
+
+  if (!note) {
+    return <Navigate to="/" replace />;
+  }
+
+  const Component = note.component;
+
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<Loading />}>
+        <Component />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <HashRouter>
@@ -36,6 +57,7 @@ const App: React.FC = () => {
         {/* Application Layout - Contains Sidebar */}
         <Route element={<Layout />}>
           <Route path="problem/:id" element={<ProblemWrapper />} />
+          <Route path="aptitude/:id" element={<AptitudeWrapper />} />
         </Route>
       </Routes>
     </HashRouter>
