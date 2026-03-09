@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, Link, useParams, useLocation } from 'react-router-dom';
-import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, GraduationCap, Grid3x3 } from 'lucide-react';
+import { Menu, Github, Code2, Folder, ChevronLeft, ChevronDown, ChevronRight, Building2, GraduationCap, Grid3x3, Calculator } from 'lucide-react';
 import { modules } from '../problemRegistry';
+import { aptitudeModules } from '../aptitudeRegistry';
 
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,12 +14,17 @@ const Layout = () => {
   const searchParams = new URLSearchParams(location.search);
   const moduleFilter = searchParams.get('module');
   
+  // Check if we're on an aptitude route
+  const isAptitudeRoute = location.pathname.startsWith('/aptitude/');
+  
   // Find which module the current problem belongs to
   const [currentModuleId, setCurrentModuleId] = useState<string | null>(moduleFilter);
   
   useEffect(() => {
     if (moduleFilter) {
       setCurrentModuleId(moduleFilter);
+    } else if (isAptitudeRoute) {
+      setCurrentModuleId('quantitative-aptitude');
     } else if (id) {
       // Find which module contains this problem
       for (const module of modules) {
@@ -38,18 +44,22 @@ const Layout = () => {
         }
       }
     }
-  }, [id, moduleFilter]);
+  }, [id, moduleFilter, isAptitudeRoute]);
+  
+  // Combine regular modules with aptitude modules for display
+  const allModules = [...modules, ...aptitudeModules];
   
   // Filter modules based on currentModuleId
   const filteredModules = currentModuleId === 'all' 
-    ? modules 
-    : modules.filter(m => m.id === currentModuleId);
+    ? allModules 
+    : allModules.filter(m => m.id === currentModuleId);
   
   // Track which modules are expanded
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
     'amazon-favorites': true,
     'blind-75': true,
-    'java-fundamentals': true
+    'java-fundamentals': true,
+    'quantitative-aptitude': true
   });
 
   const toggleModule = (id: string) => {
@@ -111,6 +121,8 @@ const Layout = () => {
             const isExpanded = expandedModules[module.id];
             const isAmazon = module.id === 'amazon-favorites';
             const isJava = module.id === 'java-fundamentals';
+            const isAptitude = module.id === 'quantitative-aptitude';
+            const isLinkedList = module.id === 'linked-list-data-structures';
 
             return (
               <div key={module.id} className="mb-1">
@@ -118,7 +130,11 @@ const Layout = () => {
                   onClick={() => toggleModule(module.id)}
                   className={`w-full flex items-center justify-between px-6 py-4 hover:bg-slate-800/50 transition-colors border-l-4 ${
                     isExpanded 
-                      ? (isAmazon ? 'border-orange-500 bg-slate-800/30' : isJava ? 'border-red-500 bg-slate-800/30' : 'border-blue-500 bg-slate-800/30') 
+                      ? (isAmazon ? 'border-orange-500 bg-slate-800/30' 
+                         : isJava ? 'border-red-500 bg-slate-800/30' 
+                         : isLinkedList ? 'border-green-500 bg-slate-800/30'
+                         : isAptitude ? 'border-purple-500 bg-slate-800/30'
+                         : 'border-blue-500 bg-slate-800/30') 
                       : 'border-transparent'
                   }`}
                 >
@@ -127,6 +143,10 @@ const Layout = () => {
                       <Building2 size={14} className="text-orange-400" />
                     ) : isJava ? (
                       <GraduationCap size={14} className="text-red-400" />
+                    ) : isLinkedList ? (
+                      <Folder size={14} className="text-green-400" />
+                    ) : isAptitude ? (
+                      <Calculator size={14} className="text-purple-400" />
                     ) : (
                       <Folder size={14} className="text-blue-400" />
                     )}
@@ -149,7 +169,7 @@ const Layout = () => {
                           {subModule.problems.map((problem) => (
                             <NavLink
                               key={problem.id}
-                              to={`/problem/${problem.id}`}
+                              to={isAptitude ? `/aptitude/${problem.id}` : `/problem/${problem.id}`}
                               onClick={() => setIsMobileMenuOpen(false)}
                               className={({ isActive }) => `
                                 group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
@@ -159,16 +179,16 @@ const Layout = () => {
                               `}
                             >
                               <span className="truncate mr-2">
-                                <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>
+                                {problem.number && <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>}
                                 {problem.title}
                               </span>
                               <span className={`
                                 text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
-                                ${problem.difficulty === 'Easy' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
-                                ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
-                                ${problem.difficulty === 'Hard' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
+                                ${problem.difficulty === 'Easy' || problem.difficulty === 'beginner' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
+                                ${problem.difficulty === 'Medium' || problem.difficulty === 'intermediate' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
+                                ${problem.difficulty === 'Hard' || problem.difficulty === 'advanced' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
                               `}>
-                                {problem.difficulty}
+                                {problem.difficulty === 'beginner' ? 'Easy' : problem.difficulty === 'intermediate' ? 'Medium' : problem.difficulty === 'advanced' ? 'Hard' : problem.difficulty}
                               </span>
                             </NavLink>
                           ))}
@@ -179,7 +199,7 @@ const Layout = () => {
                       module.problems.map((problem) => (
                         <NavLink
                           key={problem.id}
-                          to={`/problem/${problem.id}`}
+                          to={isAptitude ? `/aptitude/${problem.id}` : `/problem/${problem.id}`}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={({ isActive }) => `
                             group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
@@ -189,16 +209,16 @@ const Layout = () => {
                           `}
                         >
                           <span className="truncate mr-2">
-                            <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>
+                            {problem.number && <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>}
                             {problem.title}
                           </span>
                           <span className={`
                             text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
-                            ${problem.difficulty === 'Easy' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
-                            ${problem.difficulty === 'Medium' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
-                            ${problem.difficulty === 'Hard' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
+                            ${problem.difficulty === 'Easy' || problem.difficulty === 'beginner' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
+                            ${problem.difficulty === 'Medium' || problem.difficulty === 'intermediate' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
+                            ${problem.difficulty === 'Hard' || problem.difficulty === 'advanced' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
                           `}>
-                            {problem.difficulty}
+                            {problem.difficulty === 'beginner' ? 'Easy' : problem.difficulty === 'intermediate' ? 'Medium' : problem.difficulty === 'advanced' ? 'Hard' : problem.difficulty}
                           </span>
                         </NavLink>
                       ))
