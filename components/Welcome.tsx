@@ -1,10 +1,75 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3, Link2 } from 'lucide-react';
+import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3, Link2, Calculator } from 'lucide-react';
 import { modules } from '../problemRegistry';
+import { aptitudeModules } from '../aptitudeRegistry';
 
 // Added React.FC type to fix key prop validation error and explicitly handle component props
-const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, featured = false }) => {
+const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boolean }> = ({ module, featured = false, isAptitude = false }) => {
+    // Handle aptitude notes differently
+    if (isAptitude) {
+        const firstSubModule = aptitudeModules[0]?.subModules[0];
+        const firstNote = firstSubModule?.problems[0];
+        const totalNotes = aptitudeModules.reduce((total, mod) => 
+            total + mod.subModules.reduce((subTotal, subMod) => subTotal + subMod.problems.length, 0), 0
+        );
+        const totalTopics = aptitudeModules.reduce((total, mod) => total + mod.subModules.length, 0);
+        
+        return (
+            <Link 
+                to={`/aptitude/${firstNote?.id}`}
+                className="group relative bg-white rounded-3xl p-8 border-2 transition-all duration-300 hover:scale-[1.02] overflow-hidden border-purple-200 hover:border-purple-400 hover:shadow-[0_20px_60px_rgba(147,51,234,0.25)]"
+            >
+                {/* Background gradient on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-purple-50/50 to-transparent"></div>
+
+                {/* Content */}
+                <div className="relative">
+                    {/* Logo */}
+                    <div className="flex justify-center mb-8">
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <Calculator className="text-white" size={32} />
+                        </div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-2xl font-black mb-3 text-center text-purple-900">
+                        Quantitative Aptitude
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-slate-600 text-sm text-center mb-8 leading-relaxed min-h-[40px]">
+                        Complete quantitative aptitude preparation covering all essential topics for competitive exams and interviews.
+                    </p>
+
+                    {/* Stats */}
+                    <div className="flex justify-center gap-12 mb-8">
+                        <div className="text-center">
+                            <div className="text-4xl font-black mb-1 text-purple-600">
+                                {totalNotes}
+                            </div>
+                            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                Notes
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl font-black mb-1 text-purple-600">
+                                {totalTopics}
+                            </div>
+                            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Topics</div>
+                        </div>
+                    </div>
+
+                    {/* CTA Button */}
+                    <div className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200">
+                        Start Learning
+                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                </div>
+            </Link>
+        );
+    }
+    
     // Collect all problems from module and sub-modules
     const allProblems = module.subModules && module.subModules.length > 0
         ? module.subModules.flatMap((subModule: any) => subModule.problems)
@@ -24,6 +89,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                     ? 'border-red-200 hover:border-red-400 hover:shadow-[0_20px_60px_rgba(239,68,68,0.25)]'
                     : module.id === 'linked-list-data-structures'
                     ? 'border-green-200 hover:border-green-400 hover:shadow-[0_20px_60px_rgba(34,197,94,0.25)]'
+                    : module.id === 'quantitative-aptitude'
+                    ? 'border-purple-200 hover:border-purple-400 hover:shadow-[0_20px_60px_rgba(147,51,234,0.25)]'
                     : 'border-blue-200 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.25)]'
             }`}
         >
@@ -35,6 +102,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                     ? 'bg-gradient-to-br from-red-50/50 to-transparent'
                     : module.id === 'linked-list-data-structures'
                     ? 'bg-gradient-to-br from-green-50/50 to-transparent'
+                    : module.id === 'quantitative-aptitude'
+                    ? 'bg-gradient-to-br from-purple-50/50 to-transparent'
                     : 'bg-gradient-to-br from-blue-50/50 to-transparent'
             }`}></div>
 
@@ -56,6 +125,10 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                         <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
                             <Link2 className="text-white" size={32} />
                         </div>
+                    ) : module.id === 'quantitative-aptitude' ? (
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <Calculator className="text-white" size={32} />
+                        </div>
                     ) : (
                         <img 
                             src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" 
@@ -70,6 +143,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                     module.id === 'amazon-favorites' ? 'text-orange-900' 
                     : module.id === 'java-fundamentals' ? 'text-red-900'
                     : module.id === 'linked-list-data-structures' ? 'text-green-900'
+                    : module.id === 'quantitative-aptitude' ? 'text-purple-900'
                     : 'text-blue-900'
                 }`}>
                     {module.title}
@@ -87,6 +161,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                             module.id === 'amazon-favorites' ? 'text-orange-600'
                             : module.id === 'java-fundamentals' ? 'text-red-600'
                             : module.id === 'linked-list-data-structures' ? 'text-green-600'
+                            : module.id === 'quantitative-aptitude' ? 'text-purple-600'
                             : 'text-blue-600'
                         }`}>
                             {totalProblems}
@@ -101,6 +176,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                                 module.id === 'amazon-favorites' ? 'text-orange-600'
                                 : module.id === 'java-fundamentals' ? 'text-red-600'
                                 : module.id === 'linked-list-data-structures' ? 'text-green-600'
+                                : module.id === 'quantitative-aptitude' ? 'text-purple-600'
                                 : 'text-blue-600'
                             }`}>
                                 {topicCount}
@@ -118,9 +194,11 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean }> = ({ module, fea
                         ? 'bg-red-600 hover:bg-red-700 shadow-lg shadow-red-200'
                         : module.id === 'linked-list-data-structures'
                         ? 'bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200'
+                        : module.id === 'quantitative-aptitude'
+                        ? 'bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200'
                         : 'bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200'
                 }`}>
-                    {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' ? 'Start Learning' : 'Start Practicing'}
+                    {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' || module.id === 'quantitative-aptitude' ? 'Start Learning' : 'Start Practicing'}
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
@@ -132,7 +210,20 @@ const Welcome = () => {
   const amazonModule = modules.find(m => m.id === 'amazon-favorites');
   const javaModule = modules.find(m => m.id === 'java-fundamentals');
   const linkedListModule = modules.find(m => m.id === 'linked-list-data-structures');
-  const otherModules = modules.filter(m => m.id !== 'amazon-favorites' && m.id !== 'java-fundamentals' && m.id !== 'linked-list-data-structures');
+  const blind75Module = modules.find(m => m.id === 'blind-75');
+  const otherModules = modules.filter(m => 
+    m.id !== 'amazon-favorites' && 
+    m.id !== 'java-fundamentals' && 
+    m.id !== 'linked-list-data-structures' && 
+    m.id !== 'blind-75'
+  );
+  
+  // Create a mock aptitude module for display
+  const aptitudeModule = {
+    id: 'quantitative-aptitude',
+    title: 'Quantitative Aptitude',
+    description: 'Complete quantitative aptitude preparation covering all essential topics for competitive exams and interviews.'
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
@@ -191,7 +282,7 @@ const Welcome = () => {
                         <BookOpen className="text-blue-600" size={24} />
                     </div>
                     <div className="text-left">
-                        <div className="text-3xl font-black text-slate-900">164+</div>
+                        <div className="text-3xl font-black text-slate-900">166+</div>
                         <div className="text-sm text-slate-500 font-semibold">Problems</div>
                     </div>
                 </div>
@@ -256,7 +347,8 @@ const Welcome = () => {
                 {javaModule && <ModuleCard module={javaModule} />}
                 {amazonModule && <ModuleCard module={amazonModule} />}
                 {linkedListModule && <ModuleCard module={linkedListModule} />}
-                {otherModules[0] && <ModuleCard module={otherModules[0]} />}
+                {blind75Module && <ModuleCard module={blind75Module} />}
+                <ModuleCard module={aptitudeModule} isAptitude={true} />
             </div>
             
             {/* Explore All Button */}
