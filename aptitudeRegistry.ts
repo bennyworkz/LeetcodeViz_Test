@@ -7,6 +7,10 @@ const DecimalAndFractionNotes = lazy(() => import('./Apti_Notes/DecimalAndFracti
 const SurdsAndIndicesNotes = lazy(() => import('./Apti_Notes/SurdsAndIndicesNotes.tsx'));
 const DivisibilityNotes = lazy(() => import('./Apti_Notes/DivisibilityNotes.tsx'));
 const AgesMasterNotes = lazy(() => import('./Apti_Notes/AgesMasterNotes.tsx'));
+const InverseNotes = lazy(() => import('./Apti_Notes/InverseNotes.tsx'));
+const SpeedTimeDistanceNotes =  lazy(() => import('./Apti_Notes/SpeedTimeDistanceNotes.tsx'));
+const TimeAndWorkNotes = lazy(() => import('./Apti_Notes/TimeAndWorkNotes.tsx'));
+const BoatsAndStreamsNotes = lazy(() => import('./Apti_Notes/BoatsAndStreamsNotes.tsx'));
 
 export interface AptitudeNote {
   id: string;
@@ -84,6 +88,34 @@ export const aptitudeModules: AptitudeModule[] = [
             title: 'Ages',
             difficulty: 'beginner',
             component: AgesMasterNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'inverse',
+            title: 'Inverse',
+            difficulty: 'beginner',
+            component: InverseNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'speed-time-distance',
+            title: 'Speed and Distance',
+            difficulty: 'beginner',
+            component: SpeedTimeDistanceNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'Time and Work',
+            title: 'Time and Work',
+            difficulty: 'beginner',
+            component: TimeAndWorkNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'Boat and Streams',
+            title: 'Boat and Streams',
+            difficulty: 'beginner',
+            component: BoatsAndStreamsNotes,
             tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
           },
         ]
