@@ -64,9 +64,9 @@ const CompareVersionNumbersVisualizer = lazy(() => import('./problems/CompareVer
 const LongestMountainVisualizer = lazy(() => import('./problems/LongestMountainVisualizer'));
 const PalindromicSubstringsVisualizer = lazy(() => import('./problems/PalindromicSubstringsVisualizer'));
 const LongestRepeatingCharacterVisualizer = lazy(() => import('./problems/LongestRepeatingCharacterVisualizer'));
-const PermutationInStringVisualizer = lazy(() => import('./problems/PermutationInStringVisualizer'));
-const MaxPointsCardsVisualizer = lazy(() => import('./problems/MaxPointsCardsVisualizer'));
-const MinSizeSubarraySumVisualizer = lazy(() => import('./problems/MinSizeSubarraySumVisualizer'));
+const PermutationInStringVisualizer = lazy(() => import('./problems/PermutationInStringVisualizer.tsx'));
+const MaxPointsCardsVisualizer = lazy(() => import('./problems/MaxPointsCardsVisualizer.tsx'));
+const MinSizeSubarraySumVisualizer = lazy(() => import('./problems/MinSizeSubarraySumVisualizer.tsx'));
 const SlidingWindowMaximumVisualizer = lazy(() => import('./problems/SlidingWindowMaximumVisualizer.tsx'));
 const FindMinimumRotatedVisualizer = lazy(() => import('./problems/FindMinimumRotatedVisualizer.tsx'));
 const BestTimeToBuySellVisualizer = lazy(() => import('./problems/BestTimeToBuySellVisualizer'));
@@ -572,7 +572,7 @@ export const modules: Module[] = [
         description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
         problems: [
           { id: '933', number: 933, title: 'Number of Recent Calls', difficulty: 'Easy', component: RecentCounterVisualizer },
-          { id: '649', number: 649, title: 'Dota2 Senate', difficulty: 'Medium', component: Dota2SenateVisualizer },
+          { id: '649', number: 649, title: 'Dota2 Senate', difficulty: 'Medium', component: Dota2SenateVisualizer  },
         ]
       },
       {
