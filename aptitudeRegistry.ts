@@ -1,19 +1,19 @@
 import React, { lazy } from 'react';
 
 // Lazy load components
-const NumberSystemNotes = lazy(() => import('./Apti_Notes/NumberSystemNotes.tsx'));
-const HCFandLCMNotes = lazy(() => import('./Apti_Notes/HCFandLCMNotes.tsx'));
-const DecimalAndFractionNotes = lazy(() => import('./Apti_Notes/DecimalAndFractionNotes.tsx'));
-const SurdsAndIndicesNotes = lazy(() => import('./Apti_Notes/SurdsAndIndicesNotes.tsx'));
-const DivisibilityNotes = lazy(() => import('./Apti_Notes/DivisibilityNotes.tsx'));
-const AgesMasterNotes = lazy(() => import('./Apti_Notes/AgesMasterNotes.tsx'));
-const InverseNotes = lazy(() => import('./Apti_Notes/InverseNotes.tsx'));
-const SpeedTimeDistanceNotes =  lazy(() => import('./Apti_Notes/SpeedTimeDistanceNotes.tsx'));
-const TimeAndWorkNotes = lazy(() => import('./Apti_Notes/TimeAndWorkNotes.tsx'));
-const BoatsAndStreamsNotes = lazy(() => import('./Apti_Notes/BoatsAndStreamsNotes.tsx'));
-const PipesAndCisternsNotes = lazy(() => import('./Apti_Notes/PipesAndCisternsNotes.tsx'));
-const AveragesNotes = lazy(() => import('./Apti_Notes/AveragesNotes.tsx'));
-const MixturesNotes = lazy(() => import('./Apti_Notes/MixturesNotes.tsx'));
+const NumberSystemNotes = lazy(() => import('./Apti_Notes/NumberSystemNotes'));
+const HCFandLCMNotes = lazy(() => import('./Apti_Notes/HCFandLCMNotes'));
+const DecimalAndFractionNotes = lazy(() => import('./Apti_Notes/DecimalAndFractionNotes'));
+const SurdsAndIndicesNotes = lazy(() => import('./Apti_Notes/SurdsAndIndicesNotes'));
+const DivisibilityNotes = lazy(() => import('./Apti_Notes/DivisibilityNotes'));
+const AgesMasterNotes = lazy(() => import('./Apti_Notes/AgesMasterNotes'));
+const InverseNotes = lazy(() => import('./Apti_Notes/InverseNotes'));
+const SpeedTimeDistanceNotes =  lazy(() => import('./Apti_Notes/SpeedTimeDistanceNotes'));
+const TimeAndWorkNotes = lazy(() => import('./Apti_Notes/TimeAndWorkNotes'));
+const BoatsAndStreamsNotes = lazy(() => import('./Apti_Notes/BoatsAndStreamsNotes'));
+const PipesAndCisternsNotes = lazy(() => import('./Apti_Notes/PipesAndCisternsNotes'));
+const AveragesNotes = lazy(() => import('./Apti_Notes/AveragesNotes'));
+const MixturesNotes = lazy(() => import('./Apti_Notes/MixturesNotes'));
 
 export interface AptitudeNote {
   id: string;
@@ -133,6 +133,13 @@ export const aptitudeModules: AptitudeModule[] = [
             title: 'Averages',
             difficulty: 'beginner',
             component: AveragesNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'mixtures',
+            title: 'Mixtures and Alligation',
+            difficulty: 'beginner',
+            component: MixturesNotes,
             tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
           },
           {
