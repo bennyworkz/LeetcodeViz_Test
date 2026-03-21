@@ -282,12 +282,12 @@ const RightSideViewVisualizer = lazy(() => import('./problems/RightSideViewVisua
 const MaxLevelSumVisualizer = lazy(() => import('./problems/MaxLevelSumVisualizer'));
 const SearchBSTVisualizer = lazy(() => import('./problems/SearchBSTVisualizer'));
 const DeleteNodeBSTVisualizer = lazy(() => import('./problems/DeleteNodeBSTVisualizer'));
+
 const KeysAndRoomsVisualizer = lazy(() => import('./problems/KeysAndRoomsVisualizer'));
 const NumberOfProvincesVisualizer = lazy(() => import('./problems/NumberOfProvincesVisualizer'));
 const ReorderRoutesVisualizer = lazy(() => import('./problems/ReorderRoutesVisualizer'));
 const EvaluateDivisionVisualizer = lazy(() => import('./problems/EvaluateDivisionVisualizer'));
 const NearestExitVisualizer = lazy(() => import('./problems/NearestExitVisualizer'));
-const RottingOrangesVisualizer = lazy(() => import('./problems/RottingOrangesVisualizer'));
 const TrieVisualizer = lazy(() => import('./problems/TrieVisualizer'));
 const SearchSuggestionsVisualizer = lazy(() => import('./problems/SearchSuggestionsVisualizer'));
 const TribonacciVisualizer = lazy(() => import('./problems/TribonacciVisualizer'));
@@ -342,29 +342,60 @@ const CoinChangeVisualizerII = lazy(() => import('./problems/CoinChangeVisualize
 const MinInsertionsVisualizer = lazy(() => import('./problems/MinInsertionsVisualizer'));
 const StockIIIVisualizer = lazy(() => import('./problems/StockIIIVisualizer'));
 const StockIVVisualizer = lazy(() => import('./problems/StockIVVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
-// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
 
-
-
+// Graphs Module
+const BFSVisualizer = lazy(() => import('./problems/graphs/BFSVisualizer'));
+const DFSVisualizer = lazy(() => import('./problems/graphs/DFSVisualizer'));
+const ProvincesVisualizer = lazy(() => import('./problems/graphs/ProvincesVisualizer'));
+const IslandsVisualizer = lazy(() => import('./problems/graphs/IslandsVisualizer'));
+const FloodFillVisualizer = lazy(() => import('./problems/graphs/FloodFillVisualizer'));
+const RottingOrangesVisualizer = lazy(() => import('./problems/graphs/RottingOrangesVisualizer'));
+const CycleDetectionVisualizerBFS = lazy(() => import('./problems/graphs/CycleDetectionVisualizerBFS'));
+const DFSCycleDetectionVisualizer = lazy(() => import('./problems/graphs/DFSCycleDetectionVisualizer'));
+const NearestCellVisualizer = lazy(() => import('./problems/graphs/NearestCellVisualizer'));
+const SurroundedRegionsVisualizer = lazy(() => import('./problems/graphs/SurroundedRegionsVisualizer'));
+const NumberOfEnclavesVisualizer = lazy(() => import('./problems/graphs/NumberOfEnclavesVisualizer'));
+const DistinctIslandsVisualizer = lazy(() => import('./problems/graphs/DistinctIslandsVisualizer'));
+const BipartiteVisualizerBFS = lazy(() => import('./problems/graphs/BipartiteVisualizerBFS'));
+const BipartiteVisualizerDFS = lazy(() => import('./problems/graphs/BipartiteVisualizerDFS'));
+const DirectedCycleDFSVisualizer = lazy(() => import('./problems/graphs/DirectedCycleDFSVisualizer'));
+const EventualSafeStatesVisualizer = lazy(() => import('./problems/graphs/EventualSafeStatesVisualizer'));
+const TopoSortDFSVisualizer = lazy(()=> import('./problems/graphs/TopoSortDFSVisualizer'));
+const KahnsTopoSortVisualizer = lazy(()=> import('./problems/graphs/KahnsTopoSortVisualizer'))
+const KahnsCycleDetectionVisualizer = lazy(() => import('./problems/graphs/KahnsCycleDetectionVisualizer'));
+const CourseScheduleVisualizerI = lazy(() => import('./problems/graphs/CourseScheduleVisualizerI'))
+const CourseScheduleVisualizerII = lazy(() => import('./problems/graphs/CourseScheduleVisualizerII'));
+const EventualSafeStatesBFSVisualizer = lazy(() => import('./problems/graphs/EventualSafeStatesBFSVisualizer'))
+const AlienDictionaryVisualizer = lazy(() => import('./problems/graphs/AlienDictionaryVisualizer'))
+const ShortestPathDAGVisualizer = lazy(() => import('./problems/graphs/ShortestPathDAGVisualizer'));
+const ShortestPathUnitWeightVisualizer = lazy(() => import('./problems/graphs/ShortestPathUnitWeightVisualizer'))
+const WordLadderVisualizer = lazy(() => import('./problems/graphs/WordLadderVisualizer'))
+const WordLadderVisualizerII = lazy(() => import('./problems/graphs/WordLadderVisualizerII'))
+const WordLadderVisualizerIIOpt = lazy(() => import('./problems/graphs/WordLadderVisualizerIIOpt'))
+const DijkstraPQVisualizer = lazy(() => import('./problems/graphs/DijkstraPQVisualizer'))
+const DijkstraSetVisualizer = lazy(() => import('./problems/graphs/DijkstraSetVisualizer'))
+const PrintShortestPathVisualizer = lazy(() => import('./problems/graphs/PrintShortestPathVisualizer'))
+const BinaryMazeVisualizer = lazy(() => import('./problems/graphs/BinaryMazeVisualizer'))
+const MinimumEffortVisualizer = lazy(() => import('./problems/graphs/MinimumEffortVisualizer'))
+const CheapestFlightsVisualizer = lazy(()=>import('./problems/graphs/CheapestFlightsVisualizer'))
+const MinimumMultiplicationsVisualizer = lazy(() => import('./problems/graphs/MinimumMultiplicationsVisualizer'))
+const NumberOfWaysVisualizer = lazy(() => import('./problems/graphs/NumberOfWaysVisualizer'))
+const BellmanFordVisualizer = lazy(() => import('./problems/graphs/BellmanFordVisualizer'))
+const FloydWarshallVisualizer = lazy(() => import('./problems/graphs/FloydWarshallVisualizer'))
+const FindCityVisualizer = lazy(()=> import('./problems/graphs/FindCityVisualizer'))
+const PrimsVisualizer = lazy(() => import('./problems/graphs/PrimsVisualizer'))
+const DisjointSetVisualizer = lazy(() => import('./problems/graphs/DisjointSetVisualizer'))
+const KruskalsVisualizer = lazy(() => import('./problems/graphs/KruskalsVisualizer'))
+const NumberOfProvincesVisualizerDisjoint = lazy(()=> import('./problems/graphs/NumberOfProvincesVisualizer'))
+const NetworkConnectedVisualizer = lazy(() => import('./problems/graphs/NetworkConnectedVisualizer'))
+const AccountsMergeVisualizer = lazy(() => import('./problems/graphs/AccountsMergeVisualizer'))
+const NumberOfIslandsVisualizerDSU = lazy(()=> import('./problems/graphs/NumberOfIslandsVisualizer'))
+const MakeLargeIslandVisualizer = lazy(() => import('./problems/graphs/MakeLargeIslandVisualizer'))
+const MaxStonesRemovedVisualizer = lazy(() => import('./problems/graphs/MaxStonesRemovedVisualizer'))
+const WarehouseDispatchVisualizer = lazy(() => import('./problems/graphs/WarehouseDispatchVisualizer'))
+const KosarajuVisualizer = lazy(() => import('./problems/graphs/KosarajuVisualizer'))
+const TarjanBridgesVisualizer = lazy(() => import('./problems/graphs/TarjanBridgesVisualizer'))
+const ArticulationPointsVisualizer = lazy(() =>import('./problems/graphs/ArticulationPointsVisualizer'))
 
 export const modules: Module[] = [
   {
@@ -1094,6 +1125,94 @@ export const modules: Module[] = [
           
         ]
       },
+    ]
+  },
+  {
+    id: 'Graphs',
+    title: 'GRAPHS',
+    description: 'Graph algorithms and traversal techniques',
+    problems: [],
+    subModules: [
+      {
+        id: 'graph-bfs-dfs',
+        title: 'BFS and DFS Problems',
+        description: 'BFS, DFS, and other traversal algorithms',
+        problems: [
+          { id: 'bfs-graph', number: 1, title: 'Breadth-First Search (BFS)', difficulty: 'Medium', component: BFSVisualizer, tags: ['Graph', 'BFS', 'Queue'] },
+          { id: 'dfs-graph', number: 2, title: 'Depth-First Search (DFS)', difficulty: 'Medium', component: DFSVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'number-of-provonces-', number: 3, title: 'Number of Provinces', difficulty: 'Medium', component: ProvincesVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'number-of-islands', number: 4, title: 'Number of Islands', difficulty: 'Medium', component: IslandsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'flood-fill', number: 5, title: 'Flood Fill', difficulty: 'Medium', component: FloodFillVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'rotting-oranges', number: 994, title: 'Rotting Oranges', difficulty: 'Medium', component: RottingOrangesVisualizer, tags: ['Graph', 'BFS', 'Multi-Source BFS'] },
+          { id: 'cycle-detection-bfs', number: 6, title: 'Cycle Detection In Undirected Graph (BFS)', difficulty: 'Medium', component: CycleDetectionVisualizerBFS, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'cycle-detection-dfs', number: 7, title: 'Cycle Detection In Undirected Graph (DFS)', difficulty: 'Medium', component: DFSCycleDetectionVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'distance-of-nearest-1', number: 8, title: 'Distance of Nearest 1 (Multi-Source BFS)', difficulty: 'Medium', component: NearestCellVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'surrounded-regions', number: 130, title: 'Surrounded Regions', difficulty: 'Medium', component: SurroundedRegionsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: '1020-number-of-enclaves', number: 1020, title: 'Number of Enclaves', difficulty: 'Medium', component: NumberOfEnclavesVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: '9-number-of-distinct-islands', number: 9, title: 'Number of Distinct Islands', difficulty: 'Medium', component: DistinctIslandsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: '10-bipartite-graph-bfs', number: 10, title: 'Bipartite Graph (BFS)', difficulty: 'Medium', component: BipartiteVisualizerBFS, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: '11-bipartite-graph-dfs', number: 11, title: 'Bipartite Graph (DFS)', difficulty: 'Medium', component: BipartiteVisualizerDFS, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'cycle-detection-of-directed-graph', number: 12, title: 'Detect cycle in a directed graph using DFS', difficulty: 'Medium', component: DirectedCycleDFSVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          
+          
+        ]
+
+
+      },
+      {
+        id: 'graph-topo-sort',
+        title: 'Topo sort and problems',
+        description: 'BFS, DFS, and other traversal algorithms',
+        problems: [
+          { id: 'find-eventual-safe-states', number: 802, title: 'Find Eventual Safe States', difficulty: 'Medium', component: EventualSafeStatesVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'topological-sort-algorithm-dfs', number: 13, title: 'Topological Sort Algorithm (DFS)', difficulty: 'Medium', component: TopoSortDFSVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'topological-sort-algorithm-khans', number: 14, title: 'Kahns Algorithm | Topological Sort Algorithm | BFS', difficulty: 'Medium', component: KahnsTopoSortVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'detect-a-cycle-in-dag-kahns', number: 15, title: 'Detect a Cycle in Directed Graph | Topological Sort | Kahns Algorithm | BFS', difficulty: 'Medium', component: KahnsCycleDetectionVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'course-schedule-1', number: 207, title: 'Course Schedule I', difficulty: 'Medium', component: CourseScheduleVisualizerI, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'course-schedule-2', number: 210, title: 'Course Schedule II', difficulty: 'Medium', component: CourseScheduleVisualizerII, tags: ['Graph', 'BFS', 'Multi-Source BFS'] },
+          { id: 'find-eventual-safe-nodes-topo', number: 16, title: 'Find Eventual Safe States - BFS - Topological Sort', difficulty: 'Medium', component: EventualSafeStatesBFSVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'alien-dictionary-topo', number: 17, title: 'Alien Dictionary - Topological Sort', difficulty: 'Medium', component: AlienDictionaryVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+        ]
+      },
+      {
+        id: 'graph-shortest-pasth',
+        title: 'SHortest Path ALgorithms and Problems',
+        description: 'BFS, DFS, and other traversal algorithms',
+        problems: [
+          { id: 'shortest-path-in-dag-topo', number: 18, title: 'Shortest Path in DAG (Topo Sort)', difficulty: 'Medium', component: ShortestPathDAGVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'shortest-path-in-undirected-graph-with-unit-weights', number: 19, title: 'Shortest Path in Undirected Graph with Unit Weights', difficulty: 'Medium', component: ShortestPathUnitWeightVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'word-ladder-i', number: 20, title: 'Word Ladder - I | Shortest Paths', difficulty: 'Medium', component: WordLadderVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'word-ladder-ii', number: 22, title: 'Word Ladder - 2 | Shortest Paths', difficulty: 'Medium', component: WordLadderVisualizerII, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'word-ladder-ii-opt', number: 23, title: 'Word Ladder - 2 | Optimised', difficulty: 'Medium', component: WordLadderVisualizerIIOpt, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'Dijkstras-priority-queue', number: 24, title: 'Dijkstras Algorithm - Using Priority Queue ', difficulty: 'Medium', component: DijkstraPQVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'Dijkstras-priority-set', number: 25, title: 'Dijkstras Algorithm - Using Set', difficulty: 'Medium', component: DijkstraSetVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'print-shortest-path-undirected-graph', number: 26, title: 'Print SHortest Path', difficulty: 'Medium', component: PrintShortestPathVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'shortest-distance-in-a-binary-maze', number: 27, title: 'Shortest Distance in a Binary Maze', difficulty: 'Medium', component: BinaryMazeVisualizer, tags: ['Graph', 'BFS', 'Multi-Source BFS'] },
+          { id: 'path-with-minimum-effort', number: 28, title: 'Path With Minimum Effort', difficulty: 'Medium', component: MinimumEffortVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'cheapest-flights-within-k-steps', number: 29, title: 'Cheapest Flights Within K Stops', difficulty: 'Medium', component: CheapestFlightsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'minimum-multiplications-to-reach-end', number: 30, title: 'Minimum Multiplications to Reach End', difficulty: 'Medium', component: MinimumMultiplicationsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'number-of-ways-to-arrive-at-destination', number: 31, title: 'Number of Ways to Arrive at Destination', difficulty: 'Medium', component: NumberOfWaysVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'bellman-ford-visualizer', number: 32, title: 'Bellman Ford Algorithm', difficulty: 'Medium', component: BellmanFordVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'floyd-warshall-visualizer', number: 33, title: 'Floyd Warshall Algorithm', difficulty: 'Medium', component: FloydWarshallVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'find-the-city-wth-smallest-number-of-neighbours', number: 34, title: 'Find the City With the Smallest Number of Neighbours at a Threshold Distance', difficulty: 'Medium', component: FindCityVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'prims', number: 34, title: 'Prims', difficulty: 'Medium', component: PrimsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'disjoint-sets', number: 35, title: 'Disjoint Sets', difficulty: 'Medium', component: DisjointSetVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'kruskals', number: 36, title: 'Krushkals', difficulty: 'Medium', component: KruskalsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'number-of-provonces-disjoint', number: 37, title: 'Number of Provinces', difficulty: 'Medium', component: NumberOfProvincesVisualizerDisjoint, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'number-of-operations-to-make-graphs-connected', number: 38, title: 'Number of Operations to make graphs connected', difficulty: 'Medium', component: NetworkConnectedVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'accounts-merge-dsu', number: 39, title: 'Accounts Merge - DSU', difficulty: 'Medium', component: AccountsMergeVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'number-of-islands-2-dsu', number: 40, title: 'Number of Islands - 2 DSU', difficulty: 'Medium', component: NumberOfIslandsVisualizerDSU, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'making-a-large-island', number: 41, title: 'Making a Large Island ', difficulty: 'Medium', component: MakeLargeIslandVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'most-stones-removed-with-same-row-or-column', number: 42, title: 'Most Stones Removed With Same Row or Column', difficulty: 'Medium', component: MaxStonesRemovedVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'warehouse-truck-dispatch', number: 43, title: 'Warehouse Truck Dispatch', difficulty: 'Medium', component: WarehouseDispatchVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'strongly-connected-components', number: 44, title: 'Strongly Connected Components - Kosarajus Algorithm', difficulty: 'Medium', component: KosarajuVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'bridges-in-graphs', number: 45, title: 'Bridges in Graph ', difficulty: 'Medium', component: TarjanBridgesVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+          { id: 'articulation-points', number: 46, title: 'Articulation Points', difficulty: 'Medium', component: ArticulationPointsVisualizer, tags: ['Graph', 'DFS', 'Queue'] },
+        ]
+      }
+
+      
+          
     ]
   }
   
