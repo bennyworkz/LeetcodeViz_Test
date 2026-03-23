@@ -14,6 +14,7 @@ const BoatsAndStreamsNotes = lazy(() => import('./Apti_Notes/BoatsAndStreamsNote
 const PipesAndCisternsNotes = lazy(() => import('./Apti_Notes/PipesAndCisternsNotes'));
 const AveragesNotes = lazy(() => import('./Apti_Notes/AveragesNotes'));
 const MixturesNotes = lazy(() => import('./Apti_Notes/MixturesNotes'));
+const TCSNQTPracticeNotebook = lazy(() => import('./Apti_Notes/TCSNQTPracticeNotebook'));
 
 export interface AptitudeNote {
   id: string;
@@ -147,6 +148,13 @@ export const aptitudeModules: AptitudeModule[] = [
             title: 'Alligations and Mixture',
             difficulty: 'beginner',
             component: MixturesNotes,
+            tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
+          },
+          {
+            id: 'Conditional',
+            title: 'Conditional Problem Statements',
+            difficulty: 'beginner',
+            component: TCSNQTPracticeNotebook,
             tags: ['numbers', 'divisibility', 'formulas', 'speed-math', 'aptitude']
           },
           

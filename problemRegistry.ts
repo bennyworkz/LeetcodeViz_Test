@@ -250,6 +250,19 @@ const LeftTriangleStarPatternVisualizer = lazy(() => import('./lessons/LeftTrian
 const NumberPyramidVisualizer = lazy(() => import('./lessons/NumberPiramid.tsx'));
 const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
 
+
+
+const MaximumTwinSumVisualizer = lazy(() => import('./problems/MaximumTwinSumVisualizer'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+
 export const modules: Module[] = [
   {
     id: 'amazon-favorites',
@@ -565,6 +578,27 @@ export const modules: Module[] = [
         problems: [
           { id: '933', number: 933, title: 'Number of Recent Calls', difficulty: 'Easy', component: RecentCounterVisualizer },
           { id: '649', number: 649, title: 'Dota2 Senate', difficulty: 'Medium', component: Dota2SenateVisualizer  },
+        ]
+      },
+      {
+        id: 'blind-75-LinkedList',
+        title: 'Linked List',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: 'reverse-singly-linked-list--', number: 1005, title: 'Reverse Singly Linked List', difficulty: 'Easy', component: ReverseSinglyLinkedListViz, tags: ['Tutorial', 'Reversal', 'Pointers'] },
+          { id: 'middle-node-linked-list--', number: 1008, title: 'Find Middle Node in Linked List', difficulty: 'Easy', component: MiddleNodeInLinkedListViz, tags: ['Tutorial', 'Two Pointers', 'Fast-Slow'] },
+          { id: '328-odd-even-linked-list--', number: 328, title: 'Odd Even Linked List', difficulty: 'Medium', component: OddEvenListViz, tags: ['Linked List'] },
+          { id: '2130--', number: 2130, title: 'Maximum Twin Sum of a Linked List', difficulty: 'Medium', component: MaximumTwinSumVisualizer, tags: ['Linked List'] },
+        ]
+      },
+      {
+        id: 'blind-75-Bitmanipulation',
+        title: 'Bit Manipulation',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: 'reverse-singly-linked-list--', number: 1005, title: 'Reverse Singly Linked List', difficulty: 'Easy', component: ReverseSinglyLinkedListViz, tags: ['Tutorial', 'Reversal', 'Pointers'] },
+          { id: 'middle-node-linked-list--', number: 1008, title: 'Find Middle Node in Linked List', difficulty: 'Easy', component: MiddleNodeInLinkedListViz, tags: ['Tutorial', 'Two Pointers', 'Fast-Slow'] },
+          { id: '328-odd-even-linked-list--', number: 328, title: 'Odd Even Linked List', difficulty: 'Medium', component: OddEvenListViz, tags: ['Linked List'] },
         ]
       },
       {
