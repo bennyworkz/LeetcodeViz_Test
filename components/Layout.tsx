@@ -62,8 +62,18 @@ const Layout = () => {
     'quantitative-aptitude': true
   });
 
+  // Track which sub-modules are expanded
+  const [expandedSubModules, setExpandedSubModules] = useState<Record<string, boolean>>({});
+
   const toggleModule = (id: string) => {
     setExpandedModules(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  const toggleSubModule = (id: string) => {
+    setExpandedSubModules(prev => ({
       ...prev,
       [id]: !prev[id]
     }));
@@ -161,39 +171,55 @@ const Layout = () => {
                   <nav className="space-y-0.5 px-3 py-2 animate-in slide-in-from-top-1 duration-200">
                     {module.subModules && module.subModules.length > 0 ? (
                       // Render sub-modules
-                      module.subModules.map((subModule) => (
-                        <div key={subModule.id} className="mb-4">
-                          <div className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-600">
-                            {subModule.title}
-                          </div>
-                          {subModule.problems.map((problem) => (
-                            <NavLink
-                              key={problem.id}
-                              to={isAptitude ? `/aptitude/${problem.id}` : `/problem/${problem.id}`}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className={({ isActive }) => `
-                                group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all
-                                ${isActive 
-                                  ? 'bg-blue-600/10 text-blue-400 ring-1 ring-blue-500/20 shadow-sm' 
-                                  : 'text-slate-400 hover:bg-slate-800/80 hover:text-white'}
-                              `}
+                      module.subModules.map((subModule) => {
+                        const isSubModuleExpanded = expandedSubModules[subModule.id];
+                        
+                        return (
+                          <div key={subModule.id} className="mb-4">
+                            <button
+                              onClick={() => toggleSubModule(subModule.id)}
+                              className="w-full flex items-center justify-between px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-slate-400 transition-colors"
                             >
-                              <span className="truncate mr-2">
-                                {problem.number && <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>}
-                                {problem.title}
-                              </span>
-                              <span className={`
-                                text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
-                                ${problem.difficulty === 'Easy' || problem.difficulty === 'beginner' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
-                                ${problem.difficulty === 'Medium' || problem.difficulty === 'intermediate' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
-                                ${problem.difficulty === 'Hard' || problem.difficulty === 'advanced' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
-                              `}>
-                                {problem.difficulty === 'beginner' ? 'Easy' : problem.difficulty === 'intermediate' ? 'Medium' : problem.difficulty === 'advanced' ? 'Hard' : problem.difficulty}
-                              </span>
-                            </NavLink>
-                          ))}
-                        </div>
-                      ))
+                              <span className="ml-4">{subModule.title}</span>
+                              {isSubModuleExpanded ? 
+                                <ChevronDown size={12} className="text-slate-500" /> : 
+                                <ChevronRight size={12} className="text-slate-500" />
+                              }
+                            </button>
+                            
+                            {isSubModuleExpanded && (
+                              <div className="animate-in slide-in-from-top-1 duration-200">
+                                {subModule.problems.map((problem) => (
+                                  <NavLink
+                                    key={problem.id}
+                                    to={isAptitude ? `/aptitude/${problem.id}` : `/problem/${problem.id}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className={({ isActive }) => `
+                                      group flex items-center justify-between px-4 py-2 rounded-lg text-xs font-medium transition-all ml-4
+                                      ${isActive 
+                                        ? 'bg-blue-600/10 text-blue-400 ring-1 ring-blue-500/20 shadow-sm' 
+                                        : 'text-slate-400 hover:bg-slate-800/80 hover:text-white'}
+                                    `}
+                                  >
+                                    <span className="truncate mr-2 ml-8">
+                                      {problem.number && <span className="opacity-30 mr-2 font-mono">{problem.number}.</span>}
+                                      {problem.title}
+                                    </span>
+                                    <span className={`
+                                      text-[8px] px-1.5 py-0.5 rounded border font-black uppercase tracking-tighter
+                                      ${problem.difficulty === 'Easy' || problem.difficulty === 'beginner' ? 'border-emerald-900 text-emerald-500 bg-emerald-900/10' : ''}
+                                      ${problem.difficulty === 'Medium' || problem.difficulty === 'intermediate' ? 'border-amber-900 text-amber-500 bg-amber-900/10' : ''}
+                                      ${problem.difficulty === 'Hard' || problem.difficulty === 'advanced' ? 'border-rose-900 text-rose-500 bg-rose-900/10' : ''}
+                                    `}>
+                                      {problem.difficulty === 'beginner' ? 'Easy' : problem.difficulty === 'intermediate' ? 'Medium' : problem.difficulty === 'advanced' ? 'Hard' : problem.difficulty}
+                                    </span>
+                                  </NavLink>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
                     ) : (
                       // Render regular problems
                       module.problems.map((problem) => (

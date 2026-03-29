@@ -253,15 +253,97 @@ const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
 
 
 const MaximumTwinSumVisualizer = lazy(() => import('./problems/MaximumTwinSumVisualizer'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
-// const ReversePyramidVisualizer = lazy(() => import('./lessons/ReversePyramid'));
+const PalindromePartitioningVisualizer = lazy(() => import('./problems/PalindromePartitioningVisualizer'));
+const WordSearchIIVisualizer = lazy(() => import('./problems/WordSearchIIVisualizer'));
+const CountingBitsVisualizer = lazy(() => import('./problems/CountingBitsVisualizer'));
+const SingleNumberVisualizer = lazy(() => import('./problems/SingleNumberVisualizer'));
+const MinimumFlipsVisualizer = lazy(() => import('./problems/MinimumFlipsVisualizer'));
+const NonOverlappingIntervalsVisualizer = lazy(() => import('./problems/NonOverlappingIntervalsVisualizer'));
+const MinArrowsVisualizer = lazy(() => import('./problems/MinArrowsVisualizer'));
+const DailyTemperaturesVisualizer = lazy(() => import('./problems/DailyTemperaturesVisualizer'));
+const OnlineStockSpanVisualizer = lazy(() => import('./problems/OnlineStockSpanVisualizer'));
+
+const KthLargestVisualizer = lazy(() => import('./problems/KthLargestVisualizer'));
+const SmallestInfiniteSetVisualizer = lazy(() => import('./problems/SmallestInfiniteSetVisualizer'));
+const MaxSubsequenceScoreVisualizer = lazy(() => import('./problems/MaxSubsequenceScoreVisualizer'));
+const TotalCostToHireWorkersVisualizer = lazy(() => import('./problems/TotalCostToHireWorkersVisualizer'));
+const CombinationSum3Visualizer = lazy(() => import('./problems/CombinationSum3Visualizer'));
+const GuessNumberVisualizer = lazy(() => import('./problems/GuessNumberVisualizer'));
+const SpellsAndPotionsVisualizer = lazy(() => import('./problems/SpellsAndPotionsVisualizer'));
+const FindPeakElementVisualizer = lazy(() => import('./problems/FindPeakElementVisualizer'));
+const KokoEatingBananasVisualizer = lazy(() => import('./problems/KokoEatingBananasVisualizer'));
+const MaxDepthBinaryTreeVisualizer = lazy(() => import('./problems/MaxDepthBinaryTreeVisualizer'));
+const LeafSimilarTreesVisualizer = lazy(() => import('./problems/LeafSimilarTreesVisualizer'));
+const GoodNodesVisualizer = lazy(() => import('./problems/GoodNodesVisualizer'));
+const PathSumIIIVisualizer = lazy(() => import('./problems/PathSumIIIVisualizer'));
+const LongestZigZagVisualizer = lazy(() => import('./problems/LongestZigZagVisualizer'));
+const LowestCommonAncestorVisualizer = lazy(() => import('./problems/LowestCommonAncestorVisualizer'));
+const RightSideViewVisualizer = lazy(() => import('./problems/RightSideViewVisualizer'));
+const MaxLevelSumVisualizer = lazy(() => import('./problems/MaxLevelSumVisualizer'));
+const SearchBSTVisualizer = lazy(() => import('./problems/SearchBSTVisualizer'));
+const DeleteNodeBSTVisualizer = lazy(() => import('./problems/DeleteNodeBSTVisualizer'));
+const KeysAndRoomsVisualizer = lazy(() => import('./problems/KeysAndRoomsVisualizer'));
+const NumberOfProvincesVisualizer = lazy(() => import('./problems/NumberOfProvincesVisualizer'));
+const ReorderRoutesVisualizer = lazy(() => import('./problems/ReorderRoutesVisualizer'));
+const EvaluateDivisionVisualizer = lazy(() => import('./problems/EvaluateDivisionVisualizer'));
+const NearestExitVisualizer = lazy(() => import('./problems/NearestExitVisualizer'));
+const RottingOrangesVisualizer = lazy(() => import('./problems/RottingOrangesVisualizer'));
+const TrieVisualizer = lazy(() => import('./problems/TrieVisualizer'));
+const SearchSuggestionsVisualizer = lazy(() => import('./problems/SearchSuggestionsVisualizer'));
+const TribonacciVisualizer = lazy(() => import('./problems/TribonacciVisualizer'));
+const MinCostStairsVisualizer = lazy(() => import('./problems/MinCostStairsVisualizer'));
+const HouseRobberVisualizer = lazy(() => import('./problems/HouseRobberVisualizer'));
+const DominoTilingVisualizer = lazy(() => import('./problems/DominoTilingVisualizer'));
+const LongestCommonSubsequenceVisualizer = lazy(() => import('./problems/LongestCommonSubsequenceVisualizer'));
+const StockTransactionFeeVisualizer = lazy(() => import('./problems/StockTransactionFeeVisualizer'));
+const PreorderTraversalVisualizer = lazy(() => import('./problems/PreorderTraversalVisualizer'));
+const InorderTraversalVisualizer = lazy(() => import('./problems/InorderTraversalVisualizer'));
+const PostorderTraversalVisualizer = lazy(() => import('./problems/PostorderTraversalVisualizer'));
+const LevelOrderTraversalVisualizer = lazy(() => import('./problems/LevelOrderTraversalVisualizer'));
+const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+const DiameterVisualizer = lazy(() => import('./problems/DiameterVisualizer'));
+const MaxPathSumVisualizer = lazy(() => import('./problems/MaxPathSumVisualizer'));
+const ZigzagTraversalVisualizer = lazy(() => import('./problems/ZigzagTraversalVisualizer'));
+const BoundaryTreeVisualizer = lazy(() => import('./problems/BoundaryTreeVisualizer'));
+const VerticalTraversalVisualizer = lazy(() => import('./problems/VerticalTraversalVisualizer'));
+const SymmetricTreeVisualizer = lazy(() => import('./problems/SymmetricTreeVisualizer'));
+const TopViewVisualizer = lazy(() => import('./problems/TopViewVisualizer'));
+const BottomViewVisualizer = lazy(() => import('./problems/BottomViewVisualizer'));
+const LeftViewVisualizer = lazy(() => import('./problems/LeftViewVisualizer'));
+const RootToLeafPathsVisualizer = lazy(() => import('./problems/RootToLeafPathsVisualizer'));
+const AssignCookiesVisualizer = lazy(() => import('./problems/AssignCookiesVisualizer'));
+const CoinChangeVisualizer = lazy(() => import('./problems/CoinChangeVisualizer'));
+const LemonadeChangeVisualizer = lazy(() => import('./problems/LemonadeChangeVisualizer'));
+const ValidParenthesisStringVisualizer = lazy(() => import('./problems/ValidParenthesisStringVisualizer'));
+const CandyVisualizer = lazy(() => import('./problems/CandyVisualizer'));
+const SortedRotatedVisualizer = lazy(() => import('./problems/SortedRotatedVisualizer'));
+const RearrangeArrayVisualizer = lazy(() => import('./problems/RearrangeArrayVisualizer'));
+const PascalsTriangleVisualizer = lazy(() => import('./problems/PascalsTriangleVisualizer'));
+const ReversePairsVisualizer = lazy(() => import('./problems/ReversePairsVisualizer'));
+const SingleElementVisualizer = lazy(() => import('./problems/SingleElementVisualizer'));
+const MinimumBouquetsVisualizer = lazy(() => import('./problems/MinimumBouquetsVisualizer'));
+const SmallestDivisorVisualizer = lazy(() => import('./problems/SmallestDivisorVisualizer'));
+const ShipWithinDaysVisualizer = lazy(() => import('./problems/ShipWithinDaysVisualizer'));
+const KthMissingPositiveVisualizer = lazy(() => import('./problems/KthMissingPositiveVisualizer'));
+const SplitArrayVisualizer = lazy(() => import('./problems/SplitArrayVisualizer'));
+const MinimizeMaxGasDistVisualizer = lazy(() => import('./problems/MinimizeMaxGasDistVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+
+
+
 
 export const modules: Module[] = [
   {
@@ -292,6 +374,8 @@ export const modules: Module[] = [
           { id: '268-missing-number', number: 268, title: 'Missing Number', difficulty: 'Easy', component: MissingNumberVisualizer },
           { id: '189-rotate-array', number: 189, title: 'Rotate Array', difficulty: 'Easy', component: RotateArrayVisualizer },
           { id: '252-meeting-rooms-2', number: 252, title: 'Meeting Rooms I', difficulty: 'Medium', component: MeetingRoomsVisualizerI, tags: ['Array', 'Two Pointers', 'Greedy'] },
+          { id: '1752-check-if-array-is-sorted-and-rotated', number: 1752, title: 'Check if Array Is Sorted and Rotated', difficulty: 'Medium', component: SortedRotatedVisualizer },
+          { id: '493-reverse-pairs', number: 493, title: 'Reverse Pairs', difficulty: 'Hard', component: ReversePairsVisualizer },
         ]
       },
       {
@@ -319,6 +403,8 @@ export const modules: Module[] = [
           { id: '27-remove-element', number: 27, title: 'Remove Element', difficulty: 'Easy', component: RemoveElementVisualizer, tags: ['Array', 'Two Pointers'] },
           { id: '80-remove-duplicates-from-sorted-array-ii', number: 80, title: 'Remove Duplicates from Sorted Array II', difficulty: 'Medium', component: RemoveDuplicatesVisualizerii, tags: ['Array', 'Two Pointers'] },
           { id: '44-wild-card-matching', number: 44, title: 'Wildcard Matching', difficulty: 'Hard', component: WildcardVisualizer, tags: ['String', 'Dynamic Programming', 'Greedy', 'Recursion'] },
+          //
+          { id: '2149', number: 2149, title: 'Rearrange Array Elements by Sign', difficulty: 'Medium', component: RearrangeArrayVisualizer, tags: ['String', 'Dynamic Programming', 'Greedy', 'Recursion'] },
         ]
       },
       {
@@ -351,6 +437,15 @@ export const modules: Module[] = [
           { id: '69-sqrt(x)', number: 69, title: 'Sqrt(x)', difficulty: 'Easy', component: SqrtVisualizer, tags: ['Math', 'Binary Search']},
           { id: '35-search-insert-position', number: 35, title: 'Search Insert Position', difficulty: 'Easy', component: SearchInsertVisualizer, tags: ['Array', 'Binary Search']},
           { id: '81-search-in-rotated-sorted-array-ii', number: 81, title: 'Search in Rotated Sorted Array II', difficulty: 'Medium', component: SearchInRotatedSortedArrayIIVisualizer, tags: ['Array', 'Binary Search']},
+          { id: '540-single-element-in-a-sorted-array', number: 540, title: 'Single Element in a Sorted Array', difficulty: 'Medium', component: SingleElementVisualizer, tags: ['Array', 'Binary Search']},
+          { id: '162-find-peak-element--', number: 162, title: 'Find Peak Element', difficulty: 'Medium', component: FindPeakElementVisualizer, tags: ['Array', 'Binary Search']},
+          { id: '875-koko-eating-bananas-', number: 875, title: 'Koko Eating Bananas', difficulty: 'Medium', component: KokoEatingBananasVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1482-minimum-number-of-days-to-make-a-payment', number: 1482, title: 'Minimum Number of Days to Make m Bouquets', difficulty: 'Medium', component: MinimumBouquetsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1283-find-the-smallest-divisor-given-a-threshold', number: 1283, title: 'Find the Smallest Divisor Given a Threshold', difficulty: 'Medium', component: SmallestDivisorVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1011-capacity-to-ship-packages-within-d-days', number: 1011, title: 'Capacity To Ship Packages Within D Days', difficulty: 'Medium', component: ShipWithinDaysVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1539-kth-missing-positive-number', number: 1539, title: 'Kth Missing Positive Number', difficulty: 'Easy', component: KthMissingPositiveVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '410-split-array-largest-sum', number: 410, title: 'Split Array Largest Sum', difficulty: 'Easy', component: SplitArrayVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '774-minimize-max-distance-to-gas-station', number: 774, title: 'Minimize Max Distance to Gas Station', difficulty: 'Medium', component: MinimizeMaxGasDistVisualizer, tags: ['Math', 'Binary Search']},
         ]
       },
       {
@@ -372,6 +467,9 @@ export const modules: Module[] = [
           { id: '97-interleaving-string', number: 97, title: 'Interleaving String', difficulty: 'Medium', component: InterleavingStringVisualizer, tags: ['String', 'Dynamic Programming'] },
           { id: '89-gray-code', number: 89, title: 'Gray Code', difficulty: 'Medium', component: GrayCodeVisualizer, tags: ['Math', 'Backtracking', 'Bit Manipulation'] },
           { id: '87-scramble-string', number: 87, title: 'Scramble String', difficulty: 'Hard', component: ScrambleStringVisualizer, tags: ['String', 'Dynamic Programming'] },
+          // Striver Sheet Dynamic 
+          { id: '322-coin-change', number: 322, title: 'Coin Change', difficulty: 'Medium', component: CoinChangeVisualizer, tags: ['String', 'Dynamic Programming'] },
+          { id: '118-pascals-triangle', number: 118, title: 'Pascal\'s Triangle', difficulty: 'Easy', component: PascalsTriangleVisualizer, tags: ['String', 'Dynamic Programming'] },
         ]
       },
       {
@@ -385,6 +483,15 @@ export const modules: Module[] = [
           { id: '55-jump-game-amazon', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer, tags: ['Array', 'Dynamic Programming', 'Greedy'] },
           { id: '12-integrer-to-roman', number: 12, title: 'Integer to Roman', difficulty: 'Medium', component: IntegerToRomanVisualizer, tags: ['Hash Table', 'Math', 'String'] },
           { id: '68-text-justification', number: 68, title: 'Text Justification', difficulty: 'Hard', component: TextJustificationVisualizer, tags: ['Array', 'String', 'Simulation'] },
+          // striver sheet Greedy Starts Here
+          { id: '455-assign-cookies', number: 455, title: 'Assign Cookies', difficulty: 'Easy', component: AssignCookiesVisualizer, tags: ['Array', 'String', 'Simulation'] },
+          { id: '860', number: 860, title: 'Lemonade Change', difficulty: 'Easy', component: LemonadeChangeVisualizer, tags: ['Array', 'String', 'Simulation'] },
+          { id: '678-valid-parenthesis string', number: 678, title: 'Valid Parenthesis String', difficulty: 'Medium', component: ValidParenthesisStringVisualizer, tags: ['Array', 'String', 'Simulation'] },
+          { id: '135-candy', number: 135, title: 'Candy', difficulty: 'Hard', component: CandyVisualizer, tags: ['Array', 'String', 'Simulation'] },
+          { id: '56-merge-intervals-', number: 56, title: 'Merge Intervals', difficulty: 'Medium', component: MergeIntervalsVisualizer, tags: ['Array', 'Sorting'] },
+          { id: '57-insert-interval-', number: 57, title: 'Insert Interval', difficulty: 'Medium', component: InsertIntervalVisualizer, tags: ['Array']},
+          { id: '435-non-overlapping-intervals-', number: 435, title: 'Non-overlapping Intervals', difficulty: 'Medium', component: NonOverlappingIntervalsVisualizer },
+          
         ]
       },
       {
@@ -392,20 +499,22 @@ export const modules: Module[] = [
         title: 'Backtracking',
         description: 'Recursive exploration problems.',
         problems: [
-          { id: '17-letter-combinations', number: 17, title: 'Letter Combinations of a Phone Number', difficulty: 'Medium', component: LetterCombinationsVisualizer, tags: ['Hash Table', 'String', 'Backtracking'] },
-          { id: '22-generate-parentheses', number: 22, title: 'Generate Parentheses', difficulty: 'Medium', component: GenerateParenthesesVisualizer, tags: ['String', 'Dynamic Programming', 'Backtracking'] },
+          { id: '46-permutations', number: 46, title: 'Permutations', difficulty: 'Medium', component: PermutationsVisualizer, tags: ['Array', 'Backtracking']},
+          { id: '47-permutation-ii', number: 47, title: 'Permutations II', difficulty: 'Medium', component: PermutationsIIVisualizer, tags: ['Array', 'Backtracking', 'Sorting']},
           { id: '78-subsets', number: 78, title: 'Subsets', difficulty: 'Medium', component: SubsetsVisualizer, tags: ['Array', 'Backtracking', 'Bit Manipulation']},
+          { id: '90-subsets-11', number: 90, title: 'Subsets II', difficulty: 'Medium', component: SubsetsIIVisualizer, tags: ['Array', 'Backtracking', 'Bit Manipulation']},
+          { id: '39-combination-sum', number: 39, title: 'Combination Sum', difficulty: 'Medium', component: CombinationSumVisualizer, tags: ['Array', 'Backtracking']},
+          { id: '40-combination-sum-ii', number: 40, title: 'Combination Sum II', difficulty: 'Medium', component: CombinationSumIIVisualizer, tags: ['Array', 'Backtracking']},
+          { id: '22-generate-parentheses', number: 22, title: 'Generate Parentheses', difficulty: 'Medium', component: GenerateParenthesesVisualizer, tags: ['String', 'Dynamic Programming', 'Backtracking'] },
+          { id: '17-letter-combinations', number: 17, title: 'Letter Combinations of a Phone Number', difficulty: 'Medium', component: LetterCombinationsVisualizer, tags: ['Hash Table', 'String', 'Backtracking'] },
+          { id: '131-palindrome-partitioning', number: 131, title: 'Palindrome Partitioning', difficulty: 'Medium', component: PalindromePartitioningVisualizer, tags: ['Array', 'Backtracking']},
+          { id: '93-restore-ip-addresses', number: 93, title: 'Restore IP Addresses', difficulty: 'Medium', component: RestoreIpAddressVisualizer, tags: ['String', 'Backtracking']},
           { id: '79-word-search', number: 79, title: 'Word Search', difficulty: 'Medium', component: WordSearchVisualizer, tags: ['Array', 'String', 'Backtracking', 'Depth-First Search', 'Matrix']},
+          { id: '212-word-search-2', number: 212, title: 'Word Search II', difficulty: 'Hard', component: WordSearchIIVisualizer, tags: ['Array', 'Backtracking']},
           { id: '51-N-queens', number: 51, title: 'N-Queens', difficulty: 'Hard', component: NQueensIIVisualizer, tags: ['Array', 'Backtracking']},
           { id: '52-N-queens-ii', number: 52, title: 'N-Queens II', difficulty: 'Hard', component: NQueensVisualizer, tags: ['Backtracking']},
-          { id: '39-combination-sum', number: 39, title: 'Combination Sum', difficulty: 'Medium', component: CombinationSumVisualizer, tags: ['Array', 'Backtracking']},
-          { id: '46-permutations', number: 46, title: 'Permutations', difficulty: 'Medium', component: PermutationsVisualizer, tags: ['Array', 'Backtracking']},
-          { id: '90-subsets-11', number: 90, title: 'Subsets II', difficulty: 'Medium', component: SubsetsIIVisualizer, tags: ['Array', 'Backtracking', 'Bit Manipulation']},
-          { id: '40-combination-sum-ii', number: 40, title: 'Combination Sum II', difficulty: 'Medium', component: CombinationSumIIVisualizer, tags: ['Array', 'Backtracking']},
           { id: '37-sudoku-solver', number: 37, title: 'Sudoku Solver', difficulty: 'Medium', component: SudokuVisualizer, tags: ['Array', 'Hash Table', 'Backtracking', 'Matrix']},
           { id: '77-Combinations', number: 77, title: 'Combinations', difficulty: 'Medium', component: CombinationsVisualizer, tags: ['Backtracking']},
-          { id: '47-permutation-ii', number: 47, title: 'Permutations II', difficulty: 'Medium', component: PermutationsIIVisualizer, tags: ['Array', 'Backtracking', 'Sorting']},
-          { id: '93-restore-ip-addresses', number: 93, title: 'Restore IP Addresses', difficulty: 'Medium', component: RestoreIpAddressVisualizer, tags: ['String', 'Backtracking']},
         ]
       },
       {
@@ -499,7 +608,7 @@ export const modules: Module[] = [
   },
   {
     id: 'blind-75',
-    title: 'Blind 75 / LeetCode 75',
+    title: 'LeetCode 75',
     description: 'Essential coding interview problems organized by pattern and technique.',
     problems: [],
     subModules: [
@@ -510,8 +619,8 @@ export const modules: Module[] = [
         problems: [
           { id: '1071-gcd-strings', number: 1071, title: 'GCD of Strings', difficulty: 'Easy', component: GCDStringsVisualizer },
           { id: '1431-kids-candies', number: 1431, title: 'Kids With the Greatest Number of Candies', difficulty: 'Easy', component: KidsCandiesVisualizer },
-          { id: '53-maximum-subarray', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
-          { id: '14-longest-common-prefix', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
+          // { id: '53-maximum-subarray', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer },
+          // { id: '14-longest-common-prefix', number: 14, title: 'Longest Common Prefix', difficulty: 'Easy', component: LongestCommonPrefixVisualizer },
         ],
       },
       {
@@ -551,6 +660,50 @@ export const modules: Module[] = [
         ]
       },
       {
+        id: 'blind-75-greedy-dp',
+        title: 'Greedy',
+        description: 'Optimization problems solved by breaking them down into overlapping subproblems or making local optimal choices.',
+        problems: [
+          { id: '605-can-place-flowers', number: 605, title: 'Can Place Flowers', difficulty: 'Easy', component: CanPlaceFlowersVisualizer },
+          { id: '334-increasing-triplet', number: 334, title: 'Increasing Triplet Subsequence', difficulty: 'Medium', component: IncreasingTripletVisualizer },
+          // { id: '55-jump-game', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
+          { id: '435-non-overlapping-intervals', number: 435, title: 'Non-overlapping Intervals', difficulty: 'Medium', component: NonOverlappingIntervalsVisualizer },
+          { id: '452-minimum-number-of-arrows', number: 452, title: 'Minimum Number of Arrows to Burst Balloons', difficulty: 'Medium', component: MinArrowsVisualizer },
+          // { id: '70-climbing-stairs', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
+        ]
+      },
+      {
+        id: 'blind-75-Bitmanipulation',
+        title: 'Bit Manipulation',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: '338-counting-bits', number: 338, title: 'Counting Bits', difficulty: 'Easy', component: CountingBitsVisualizer, tags: ['Tutorial', 'Reversal', 'Pointers'] },
+          { id: '136-single-number', number: 136, title: 'Single Number', difficulty: 'Easy', component: SingleNumberVisualizer, tags: ['Tutorial', 'Two Pointers', 'Fast-Slow'] },
+          { id: '1318-minimum-flips-to-make-a-or-b-equal-to-c', number: 1318, title: 'Minimum Flips to Make a OR b Equal to c', difficulty: 'Medium', component: MinimumFlipsVisualizer, tags: ['Linked List'] },
+        ]
+      },
+      {
+        id: 'blind-75-stacks',
+        title: 'Stack',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: '2390', number: 2390, title: 'Removing Stars From a String', difficulty: 'Medium', component: RemovingStarsVisualizer },
+          { id: '735', number: 735, title: 'Asteroid Collision', difficulty: 'Medium', component: AsteroidCollisionVisualizer },
+          { id: '394', number: 394, title: 'Decode String', difficulty: 'Medium', component: DecodeStringVisualizer },
+          { id: '739-daily-temperatures', number: 739, title: 'Daily Temperatures', difficulty: 'Medium', component: DailyTemperaturesVisualizer },
+          { id: '901-online-stop-span', number: 901, title: 'Online Stock Span', difficulty: 'Medium', component: OnlineStockSpanVisualizer },
+        ]
+      },
+      {
+        id: 'blind-75-queue',
+        title: 'Queue',
+        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        problems: [
+          { id: '933', number: 933, title: 'Number of Recent Calls', difficulty: 'Easy', component: RecentCounterVisualizer },
+          { id: '649', number: 649, title: 'Dota2 Senate', difficulty: 'Medium', component: Dota2SenateVisualizer  },
+        ]
+      },
+      {
         id: 'blind-75-hashmaps-and-sets',
         title: 'Hash Map / Set',
         description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
@@ -562,22 +715,23 @@ export const modules: Module[] = [
         ]
       },
       {
-        id: 'blind-75-stacks',
-        title: 'Stack',
+        id: 'blind-75-heap-or-priority',
+        title: 'Heap / Priority Queue',
         description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
         problems: [
-          { id: '2390', number: 2390, title: 'Removing Stars From a String', difficulty: 'Medium', component: RemovingStarsVisualizer },
-          { id: '735', number: 735, title: 'Asteroid Collision', difficulty: 'Medium', component: AsteroidCollisionVisualizer },
-          { id: '394', number: 394, title: 'Decode String', difficulty: 'Medium', component: DecodeStringVisualizer },
+          { id: '215-fkth-largest-element-in-array', number: 215, title: 'Kth Largest Element in an Array', difficulty: 'Medium', component: KthLargestVisualizer },
+          { id: '2336-smallest-number-in-infinite-set', number: 2336, title: 'Smallest Number in Infinite Set', difficulty: 'Medium', component: SmallestInfiniteSetVisualizer },
+          { id: '2542-maximum-subsequence-score', number: 2542, title: 'Maximum Subsequence Score', difficulty: 'Medium', component: MaxSubsequenceScoreVisualizer },
+          { id: '2462-total-cost-to-hire-k-workers', number: 2462, title: 'Total Cost to Hire K Workers', difficulty: 'Medium', component: TotalCostToHireWorkersVisualizer },   
         ]
       },
       {
-        id: 'blind-75-queue',
-        title: 'Queue',
-        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        id: 'leetcode75-backtracking',
+        title: 'Backtracking',
+        description: 'Recursive exploration problems.',
         problems: [
-          { id: '933', number: 933, title: 'Number of Recent Calls', difficulty: 'Easy', component: RecentCounterVisualizer },
-          { id: '649', number: 649, title: 'Dota2 Senate', difficulty: 'Medium', component: Dota2SenateVisualizer  },
+          { id: '17-letter-combinations-1', number: 17, title: 'Letter Combinations of a Phone Number', difficulty: 'Medium', component: LetterCombinationsVisualizer, tags: ['Hash Table', 'String', 'Backtracking'] },
+          { id: '216-combination-sum-III', number: 216, title: 'Combination Sum III', difficulty: 'Medium', component: CombinationSum3Visualizer, tags: ['Array', 'Backtracking']},
         ]
       },
       {
@@ -592,26 +746,98 @@ export const modules: Module[] = [
         ]
       },
       {
-        id: 'blind-75-Bitmanipulation',
-        title: 'Bit Manipulation',
-        description: 'Creating cumulative totals to solve range queries and equilibrium problems in linear time.',
+        id: 'leetcode75-binary-search',
+        title: 'Binary Search',
+        description: 'Binary search on sorted arrays.',
         problems: [
-          { id: 'reverse-singly-linked-list--', number: 1005, title: 'Reverse Singly Linked List', difficulty: 'Easy', component: ReverseSinglyLinkedListViz, tags: ['Tutorial', 'Reversal', 'Pointers'] },
-          { id: 'middle-node-linked-list--', number: 1008, title: 'Find Middle Node in Linked List', difficulty: 'Easy', component: MiddleNodeInLinkedListViz, tags: ['Tutorial', 'Two Pointers', 'Fast-Slow'] },
-          { id: '328-odd-even-linked-list--', number: 328, title: 'Odd Even Linked List', difficulty: 'Medium', component: OddEvenListViz, tags: ['Linked List'] },
+          { id: '374-guess-number-higher-or-lower', number: 374, title: 'Guess Number Higher or Lower', difficulty: 'Medium', component: GuessNumberVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '2300-successful-pairs-of-spells-and-positions', number: 2300, title: 'Successful Pairs of Spells and Potions', difficulty: 'Medium', component: SpellsAndPotionsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '162-find-peak-element', number: 162, title: 'Find Peak Element', difficulty: 'Medium', component: FindPeakElementVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '875-koko-eating-bananas', number: 875, title: 'Koko Eating Bananas', difficulty: 'Medium', component: KokoEatingBananasVisualizer, tags: ['Math', 'Binary Search']},
         ]
       },
       {
-        id: 'blind-75-greedy-dp',
-        title: 'Greedy & DP',
-        description: 'Optimization problems solved by breaking them down into overlapping subproblems or making local optimal choices.',
+        id: 'leetcode75-binary-tree-dfs',
+        title: 'Binary Tree - DFS',
+        description: 'Binary search on sorted arrays.',
         problems: [
-          { id: '605-can-place-flowers', number: 605, title: 'Can Place Flowers', difficulty: 'Easy', component: CanPlaceFlowersVisualizer },
-          { id: '334-increasing-triplet', number: 334, title: 'Increasing Triplet Subsequence', difficulty: 'Medium', component: IncreasingTripletVisualizer },
-          { id: '55-jump-game', number: 55, title: 'Jump Game', difficulty: 'Medium', component: JumpGameVisualizer },
-          { id: '70-climbing-stairs', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer },
+          { id: '104-maximum-depth-of-binary-tree', number: 104, title: 'Maximum Depth of Binary Tree', difficulty: 'Easy', component: MaxDepthBinaryTreeVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '872-leaf-similar-trees', number: 872, title: 'Leaf-Similar Trees', difficulty: 'Easy', component: LeafSimilarTreesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1448-count-good-nodes-in-binary-tree', number: 1448, title: 'Count Good Nodes in Binary Tree', difficulty: 'Medium', component: GoodNodesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '437-path-sum-III', number: 437, title: 'Path Sum III', difficulty: 'Medium', component: PathSumIIIVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1372-longest-zigzag-path-in-binary-tree', number: 1372, title: 'Longest ZigZag Path in a Binary Tree', difficulty: 'Medium', component: LongestZigZagVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '236-lowesr-common-ancestor-of-a-binary-tree', number: 236, title: 'Lowest Common Ancestor of a Binary Tree', difficulty: 'Medium', component: LowestCommonAncestorVisualizer, tags: ['Math', 'Binary Search']},
         ]
-      }
+      },
+      {
+        id: 'leetcode75-binary-tree-bfs',
+        title: 'Binary Tree - BFS',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '199-right-side-view', number: 199, title: 'Binary Tree Right Side View', difficulty: 'Medium', component: RightSideViewVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1161-maximum-level-sum-of-binary-search-tree', number: 1161, title: 'Maximum Level Sum of a Binary Tree', difficulty: 'Medium', component: MaxLevelSumVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
+        id: 'leetcode75-binary-search-tree',
+        title: 'Binary Search Tree',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '700-search-in-abinary-search-tree', number: 700, title: 'Search in a Binary Search Tree', difficulty: 'Easy', component: SearchBSTVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '450-delete-node-in-a-bst', number: 450, title: 'Delete Node in a BST', difficulty: 'Medium', component: DeleteNodeBSTVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
+        id: 'leetcode75-graphs-dfs',
+        title: 'Graphs DFS',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '841-keys-and-rooms', number: 841, title: 'Keys and Rooms', difficulty: 'Medium', component: KeysAndRoomsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '547-number-of-provinces', number: 547, title: 'Number of Provinces', difficulty: 'Medium', component: NumberOfProvincesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1466-reorder-routes-to-make-all-paths-lead-to-the-city', number: 1466, title: 'Reorder Routes to Make All Paths Lead to the City Zero', difficulty: 'Medium', component: ReorderRoutesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '399-evaluate-division', number: 399, title: 'Evaluate Division', difficulty: 'Medium', component: EvaluateDivisionVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
+        id: 'leetcode75-graphs-bfs',
+        title: 'Graphs BFS',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '1926-nearest-exit-from-entrance-in-maze', number: 1926, title: 'Nearest Exit from Entrance in Maze', difficulty: 'Medium', component: NearestExitVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '994-rotting-oranges', number: 994, title: 'Rotting Oranges', difficulty: 'Medium', component: RottingOrangesVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
+        id: 'leetcode75-tries',
+        title: 'Tries',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '208-implement-trie', number: 208, title: 'Implement Trie (Prefix Tree)', difficulty: 'Medium', component: TrieVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1268-search-suggestions-system', number: 1268, title: 'Search Suggestions System', difficulty: 'Medium', component: SearchSuggestionsVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
+        id: 'leetcode75-dynamic-programming',
+        title: 'Dynamic Programming 1D',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '1137-nth-tribonacci-number', number: 1137, title: 'N-th Tribonacci Number', difficulty: 'Easy', component: TribonacciVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '746-min-cost-climbing-stairs', number: 746, title: 'Min Cost Climbing Stairs', difficulty: 'Easy', component: MinCostStairsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '198-house-robber', number: 198, title: 'House Robber', difficulty: 'Medium', component: HouseRobberVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '790-domino-and-tromino-tiling', number: 790, title: 'Domino and Tromino Tiling', difficulty: 'Medium', component: DominoTilingVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
+        id: 'leetcode75-dynamic-programming-multi',
+        title: 'Dynamic Programming Multi Dimentional',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '62-unique-pathss', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1143-longest-common-subsequence', number: 1143, title: 'Longest Common Subsequence', difficulty: 'Medium', component: LongestCommonSubsequenceVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '714-best-time-to-sell', number: 714, title: 'Best Time to Buy and Sell Stock with Transaction Fee', difficulty: 'Medium', component: StockTransactionFeeVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '72-edit-distance-le', number: 72, title: 'Edit Distance', difficulty: 'Medium', component: EditDistanceVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
     ]
   },
   {
@@ -755,7 +981,58 @@ export const modules: Module[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'Tree',
+    title: 'TREES & BST',
+    description: 'Frequently asked questions in Amazon technical interviews, organized by topic.',
+    problems: [],
+    subModules: [
+      {
+        id: 'tree-traversals',
+        title: 'Traversals',
+        description: 'Hash table and array manipulation problems.',
+        problems: [
+          { id: '144-binary-tree-preorder-traversal', number: 144, title: 'Binary Tree Preorder Traversal', difficulty: 'Easy', component: PreorderTraversalVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '94-binary-tree-inorder-traversal', number: 144, title: 'Binary Tree Inorder Traversal', difficulty: 'Easy', component: InorderTraversalVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '145-binary-tree-post-traversal', number: 145, title: 'Binary Tree Postorder Traversal', difficulty: 'Easy', component: PostorderTraversalVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '102-binary-tree-level-traversal', number: 102, title: 'Binary Tree Level Order Traversal', difficulty: 'Medium', component: LevelOrderTraversalVisualizer, tags: ['Array', 'Hash Table'] },
+         
+        ]
+      },
+      {
+        id: 'tree-medium-problems',
+        title: 'Tree Medium Problems',
+        description: 'Hash table and array manipulation problems.',
+        problems: [
+          { id: '104-maximum-depth-of-binary-tree-treemodule', number: 104, title: 'Maximum Depth of Binary Tree', difficulty: 'Easy', component: MaxDepthBinaryTreeVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '110-balanced-binary-tree', number: 110, title: 'Balanced Binary Tree', difficulty: 'Easy', component: BalancedTreeVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '543-diiameter-of-binary-tree', number: 543, title: 'Diameter of Binary Tree', difficulty: 'Easy', component: DiameterVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '124-binary-tree-maximum-path-sum', number: 124, title: 'Binary Tree Maximum Path Sum', difficulty: 'Hard', component: MaxPathSumVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '100-same-tree', number: 100, title: 'Same Tree', difficulty: 'Easy', component: SameTreeVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '103-binary-tree-zigzag-level-order-traversal', number: 103, title: 'Binary Tree Zigzag Level Order Traversal', difficulty: 'Medium', component: ZigzagTraversalVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '545-boundary-of-binary-tree', number:545 , title: 'Boundary of Binary tree', difficulty: 'Medium', component: BoundaryTreeVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '987-vertical-order-traversal-of-a-binary-tree', number:987 , title: 'Vertical Order Traversal of a Binary Tree', difficulty: 'Medium', component: VerticalTraversalVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '101-symmetric-tree', number: 101 , title: 'Symmetric Tree', difficulty: 'Easy', component: SymmetricTreeVisualizer, tags: ['Array', 'Hash Table'] },
+          { id: '199-right-side-vie-', number: 199, title: 'Binary Tree Right Side View', difficulty: 'Medium', component: RightSideViewVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '199-top-side-vie-', number: 199, title: 'Top View in Binary Tree', difficulty: 'Medium', component: TopViewVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '199-bottom-side-vie-', number: 199, title: 'Bottom View in Binary Tree', difficulty: 'Medium', component: BottomViewVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '199-left-side-vie-', number: 199, title: 'Left View in Binary Tree', difficulty: 'Medium', component: LeftViewVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '0-root-to-leaf-paths', number: 10, title: 'Root To Leaf Paths', difficulty: 'Medium', component: RootToLeafPathsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '236-lowesr-common-ancestor-of-a-binary-tree--', number: 236, title: 'Lowest Common Ancestor of a Binary Tree', difficulty: 'Medium', component: LowestCommonAncestorVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '872-leaf-similar-trees-', number: 872, title: 'Leaf-Similar Trees', difficulty: 'Easy', component: LeafSimilarTreesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1448-count-good-nodes-in-binary-tree-', number: 1448, title: 'Count Good Nodes in Binary Tree', difficulty: 'Medium', component: GoodNodesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '437-path-sum-III-', number: 437, title: 'Path Sum III', difficulty: 'Medium', component: PathSumIIIVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1372-longest-zigzag-path-in-binary-tree-', number: 1372, title: 'Longest ZigZag Path in a Binary Tree', difficulty: 'Medium', component: LongestZigZagVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1161-maximum-level-sum-of-binary-search-tree-', number: 1161, title: 'Maximum Level Sum of a Binary Tree', difficulty: 'Medium', component: MaxLevelSumVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '700-search-in-abinary-search-tree-', number: 700, title: 'Search in a Binary Search Tree', difficulty: 'Easy', component: SearchBSTVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '450-delete-node-in-a-bst-', number: 450, title: 'Delete Node in a BST', difficulty: 'Medium', component: DeleteNodeBSTVisualizer, tags: ['Math', 'Binary Search']},
+          
+        ]
+      },
+    ]
   }
+  
 ];
 
 export const getProblemById = (id: string): Problem | undefined => {

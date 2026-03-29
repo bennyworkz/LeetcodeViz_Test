@@ -1,643 +1,848 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
-  ChevronRight, ChevronLeft, Activity, BookOpen, Code2, 
-  Check, Copy, Trophy, Target, AlertCircle, Layers, FileText, 
-  ListOrdered, ArrowRight, XSquare, Hash, 
-  Crown, Grid, Maximize, RotateCcw, Timer
+  Activity, BookOpen, Code2, Check, Copy, Trophy,
+  FileText, ArrowRight, ArrowDown, ArrowUp, ArrowLeft,
+  ChevronLeft, ChevronRight, Network, Database, RotateCcw, 
+  ListOrdered, RefreshCw, Zap, Goal, Info, Layers, 
+  ZoomIn, ZoomOut, Maximize, Hash, Trash2, Search,
+  Scissors, ShieldAlert, Cpu, Lightbulb, PlayCircle,
+  MonitorPlay, PartyPopper, CheckCircle2, XCircle, X,
+  Filter, Terminal, Braces, Layout, Minimize, Repeat,
+  GitCommit, Split, GitMerge, Share2, MousePointer2, 
+  Binary, Layers as LayersIcon, CircleDashed, CheckSquare, PlusSquare, ArrowLeftToLine, AlignVerticalSpaceAround,
+  SkipForward, SplitSquareHorizontal, ShieldX, MapPin, Replace, Combine, Dices, BoxSelect, ArrowDownUp, Maximize2, Variable,
+  AlignEndHorizontal, ArrowLeftRight, ScissorsLineDashed, Repeat1, Shuffle, ListTree, GitFork, ArrowDownToLine, Workflow, Lock, Unlock, Zap as Lightning, Target, Brackets, Smartphone, Split as SplitIcon, Globe, Map, Grid, Crown
 } from 'lucide-react';
 
-const APPROACHES = {
-  backtracking: {
-    id: 'backtracking',
-    title: 'Backtracking w/ Sets',
-    subtitle: 'Optimal: O(N!) Time, O(N) Space.',
-    icon: <Crown size={16} />,
-    complexity: 'Time: O(N!) | Space: O(N)', 
-    code: `class Solution {
-    private int solutions = 0;
-    
-    public int totalNQueens(int n) {
-        boolean[] cols = new boolean[n];
-        boolean[] posDiag = new boolean[2 * n]; // row + col
-        boolean[] negDiag = new boolean[2 * n]; // row - col + n
-        backtrack(0, n, cols, posDiag, negDiag);
-        return solutions;
+// --- Algorithm Configuration ---
+
+const OPERATIONS = {
+  optimalBacktracking: {
+    id: 'optimalBacktracking',
+    title: '1. Standard Backtracking',
+    icon: <Grid size={16} />,
+    complexity: 'Time: O(N!) | Space: O(N^2)',
+    code: `public List<List<String>> solveNQueens(int n) {
+    char[][] board = new char[n][n];
+    for (int i = 0; i < n; i++) Arrays.fill(board[i], '.');
+    List<List<String>> res = new ArrayList<>();
+    dfs(board, 0, res);
+    return res;
+}
+
+private void dfs(char[][] board, int row, List<List<String>> res) {
+    if (row == board.length) {
+        res.add(construct(board));
+        return;
     }
-    
-    private void backtrack(int row, int n, boolean[] cols, boolean[] posDiag, boolean[] negDiag) {
-        if (row == n) {
-            solutions++;
-            return;
-        }
-        
-        for (int col = 0; col < n; col++) {
-            // Check if cell is under attack
-            if (cols[col] || posDiag[row + col] || negDiag[row - col + n]) {
-                continue;
-            }
-            
-            // Place Queen
-            cols[col] = true;
-            posDiag[row + col] = true;
-            negDiag[row - col + n] = true;
-            
-            // Recurse to next row
-            backtrack(row + 1, n, cols, posDiag, negDiag);
-            
-            // Backtrack: Remove Queen
-            cols[col] = false;
-            posDiag[row + col] = false;
-            negDiag[row - col + n] = false;
+    for (int col = 0; col < board.length; col++) {
+        if (isValid(board, row, col)) {
+            board[row][col] = 'Q';
+            dfs(board, row + 1, res);
+            board[row][col] = '.';
         }
     }
+}
+
+private boolean isValid(char[][] board, int r, int c) {
+    for (int i = 0; i < r; i++) if (board[i][c] == 'Q') return false;
+    for (int i=r-1, j=c-1; i>=0 && j>=0; i--, j--) if (board[i][j] == 'Q') return false;
+    for (int i=r-1, j=c+1; i>=0 && j<board.length; i--, j++) if (board[i][j] == 'Q') return false;
+    return true;
 }`,
-    explanation: "To find all valid arrangements of N queens on an NxN board, we use Backtracking. We place queens row by row. For a given row, we iterate through every column. To efficiently check if a cell is under attack by previously placed queens, we use tracking arrays (or Sets). A queen attacks its column, its positive diagonal (where row + col is constant), and its negative diagonal (where row - col is constant). If a cell is safe, we mark its column and diagonals as attacked, place the queen, and recurse to the next row. If we reach row `N`, we've successfully placed all queens and found one valid solution. We then backtrack by removing the queen and unmarking the attacked lines to explore other configurations."
+    desc: "The classic N-Queens Backtracking approach. We place one Queen per row, starting from row 0. For each row, we iterate through all columns to find a safe spot. A spot is safe if no other Queen shares its column, top-left diagonal, or top-right diagonal (we don't need to check rows since we enforce one per row). If a spot is safe, we place the Queen 'Q', recurse to the next row, and then remove the Queen '.' to backtrack and explore other configurations."
   }
 };
 
-const ProblemStatement = () => (
-  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 animate-in fade-in duration-500 min-h-[600px]">
-    <div className="max-w-3xl">
-      <h2 className="text-2xl font-black text-slate-900 mb-6">52. N-Queens II</h2>
-      <div className="prose prose-slate max-w-none text-slate-600 space-y-4">
-        <p className="text-lg leading-relaxed">
-          The <strong>n-queens</strong> puzzle is the problem of placing <code>n</code> queens on an <code>n x n</code> chessboard such that no two queens attack each other.
-        </p>
-        
-        <p className="text-md">
-          Given an integer <code>n</code>, return <em>the number of distinct solutions to the <strong>n-queens puzzle</strong></em>.
-        </p>
+// --- Helper UI Components ---
 
-        <div className="space-y-6 mt-8">
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 1:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-4">
-              <p><span className="text-slate-400 font-bold">Input:</span> n = 4</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> 2</p>
-              <p className="text-slate-500 leading-relaxed font-sans text-sm">
-                <span className="text-slate-400 font-bold font-mono">Explanation:</span> There are two distinct solutions to the 4-queens puzzle as shown below.
-              </p>
-              <div className="flex gap-8 mt-4">
-                  <pre className="text-xs bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-{`. Q . .
-. . . Q
-Q . . .
-. . Q .`}
-                  </pre>
-                  <pre className="text-xs bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-{`. . Q .
-Q . . .
-. . . Q
-. Q . .`}
-                  </pre>
-              </div>
-            </div>
-          </div>
-          
-          <div className="space-y-3">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Example 2:</h3>
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-sm space-y-2">
-              <p><span className="text-slate-400 font-bold">Input:</span> n = 1</p>
-              <p><span className="text-slate-400 font-bold">Output:</span> 1</p>
-            </div>
-          </div>
-        </div>
+interface TabButtonProps {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}
 
-        <div className="mt-8 space-y-4">
-          <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Constraints:</h3>
-          <ul className="list-disc pl-6 space-y-2 text-slate-700 font-mono text-sm bg-slate-50 p-4 rounded-xl border border-slate-200 w-max pr-12">
-              <li><code>1 &lt;= n &lt;= 9</code></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const NQueensIIVisualizer = () =>{
-  const [activeTab, setActiveTab] = useState('visualizer');
-  const [selectedApproachId, setSelectedApproachId] = useState('backtracking');
-  const [currentStep, setCurrentStep] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  // Default input N
-  const [nInput, setNInput] = useState('4');
-
-  const selectedApproach = APPROACHES[selectedApproachId];
-
-  const parsedData = useMemo(() => {
-    let n = parseInt(nInput);
-    if (isNaN(n) || n < 1) n = 1;
-    if (n > 6) n = 6; // Limit to 6 for browser performance and visualizer bounds
-    return { n };
-  }, [nInput]);
-
-  const trace = useMemo(() => {
-    const steps = [];
-    const { n } = parsedData;
-    
-    let solutions = 0;
-    let board = Array(n).fill(-1);
-    let cols = new Set();
-    let posDiag = new Set();
-    let negDiag = new Set();
-
-    const addStep = (phase, description, line, action, extra = {}) => {
-        if (steps.length > 2500) return; // safeguard
-        steps.push({
-            phase, 
-            description, 
-            line,
-            state: {
-                board: [...board],
-                cols: new Set(cols),
-                posDiag: new Set(posDiag),
-                negDiag: new Set(negDiag),
-                solutions,
-                action,
-                ...extra
-            }
-        });
-    };
-
-    addStep('Initialization', `Setting up an ${n}x${n} board.\nTracking arrays for columns and diagonals initialized.`, 5, 'init');
-
-    const backtrack = (row) => {
-        if (steps.length > 2500) return;
-
-        addStep('Check Base Case', `Evaluating row ${row}.\nAre we at the end of the board?`, 12, 'eval_row', { r: row, c: null });
-
-        if (row === n) {
-            solutions++;
-            addStep('Solution Found!', `Successfully placed ${n} queens.\nIncrementing solution count to ${solutions}.`, 13, 'match', { r: row, c: null });
-            return;
-        }
-
-        for (let col = 0; col < n; col++) {
-            if (steps.length > 2500) return;
-            
-            addStep('Evaluate Cell', `Checking if we can place a queen at (${row}, ${col}).`, 18, 'eval_cell', { r: row, c: col });
-
-            if (cols.has(col) || posDiag.has(row + col) || negDiag.has(row - col)) {
-                let reason = cols.has(col) ? "Column" : posDiag.has(row + col) ? "Positive Diagonal" : "Negative Diagonal";
-                addStep('Under Attack', `Cell (${row}, ${col}) is under attack by a queen on the same ${reason}.\nSkipping.`, 19, 'invalid', { r: row, c: col });
-                continue;
-            }
-
-            // Place queen
-            cols.add(col);
-            posDiag.add(row + col);
-            negDiag.add(row - col);
-            board[row] = col;
-            
-            addStep('Place Queen', `Cell (${row}, ${col}) is safe.\nPlacing Queen and marking column and diagonals as attacked.`, 24, 'place', { r: row, c: col });
-
-            backtrack(row + 1);
-
-            if (steps.length > 2500) return;
-
-            // Remove queen
-            cols.delete(col);
-            posDiag.delete(row + col);
-            negDiag.delete(row - col);
-            board[row] = -1;
-
-            addStep('Backtrack', `Returned from recursion at row ${row + 1}.\nRemoving queen from (${row}, ${col}) to explore other column placements.`, 31, 'backtrack', { r: row, c: col });
-        }
-    };
-
-    backtrack(0);
-    
-    addStep('Algorithm Complete', `Finished exploring the entire state space.\nTotal valid configurations found: ${solutions}.`, 8, 'complete');
-
-    return steps;
-  }, [parsedData]);
-
-  const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, trace.length - 1));
-  const handlePrev = () => setCurrentStep(prev => Math.max(0, prev - 1));
-  const handleCopy = () => { 
-    navigator.clipboard.writeText(selectedApproach.code); 
-    setCopied(true); 
-    setTimeout(() => setCopied(false), 2000); 
-  };
-
-  const cur = trace[currentStep] || trace[0] || { state: {} };
-  const sState = cur.state || {};
-  const N = parsedData.n;
-
-  return (
-    <div className="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-screen">
-      <div className="max-w-7xl w-full space-y-6">
-        
-        {/* Top Header Card */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-5">
-            <div className="bg-violet-600 p-4 rounded-2xl shadow-lg shadow-violet-100 flex items-center justify-center">
-                <Crown className="text-white" size={28} />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">N-Queens II</h1>
-              <div className="flex items-center gap-2 text-slate-500 text-xs mt-1.5 font-mono">
-                <span className="font-bold text-violet-600 bg-violet-50 px-2 py-0.5 rounded tracking-widest uppercase">LC 52</span>
-                <span className="opacity-60">•</span>
-                <span className="font-bold uppercase">Backtracking / Search</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner overflow-x-auto">
-            <TabButton active={activeTab === 'problem'} onClick={() => setActiveTab('problem')} icon={<FileText size={16}/>} label="Problem" />
-            <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<Activity size={16}/>} label="Visualizer" />
-            <TabButton active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} icon={<BookOpen size={16}/>} label="Theory" />
-            <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
-          </div>
-        </div>
-
-        {activeTab === 'problem' && <ProblemStatement />}
-
-        {activeTab === 'visualizer' && (
-          <div className="flex flex-col gap-6 animate-in fade-in duration-500">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Left Col: Code & Context (5/12) */}
-              <div className="lg:col-span-5 flex flex-col gap-4">
-                
-                {/* Approach Selector */}
-                <div className="grid grid-cols-1 gap-3">
-                    {Object.values(APPROACHES).map((app) => {
-                        const isSelected = selectedApproachId === app.id;
-                        const [time, space] = app.complexity.split(' | ');
-                        return (
-                            <button 
-                               key={app.id}
-                               onClick={() => { setSelectedApproachId(app.id); setCurrentStep(0); }}
-                               className={`px-3 py-4 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center justify-center gap-2 shadow-sm ${isSelected ? 'bg-violet-600 border-violet-600 text-white shadow-violet-200 scale-[1.02]' : 'bg-white border-slate-200 text-slate-500 hover:border-violet-300 hover:bg-slate-50'}`}
-                            >
-                                <div className="flex items-center justify-center w-full gap-2">
-                                  <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-violet-500 text-white' : 'bg-slate-100 text-slate-400'}`}>{app.icon}</div>
-                                  <span className="text-[11px] font-black uppercase tracking-tight leading-none truncate flex-1 text-left">
-                                      {app.title}
-                                  </span>
-                                </div>
-                                <div className={`flex w-full items-center justify-between px-1 text-[9px] font-mono leading-tight mt-1 opacity-90 ${isSelected ? 'text-violet-100' : 'text-slate-400'}`}>
-                                    <span>{time}</span>
-                                    <span>{space}</span>
-                                </div>
-                            </button>
-                        );
-                    })}
-                </div>
-
-                {/* Code Window */}
-                <div className="bg-[#0f172a] rounded-3xl h-[460px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
-                  <div className="bg-[#1e293b] px-5 py-3 border-b border-slate-700 text-xs text-slate-400 font-mono flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Code2 size={14} className="text-violet-400" />
-                      <span className="font-bold uppercase text-[10px] text-white">Solution.java</span>
-                    </div>
-                    <button onClick={handleCopy} className="hover:text-white transition-colors">
-                      {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                    </button>
-                  </div>
-                  <div className="p-6 font-mono text-[11px] leading-relaxed overflow-auto relative scrollbar-thin scrollbar-thumb-slate-700">
-                      {cur.line && (
-                        <div className={`absolute left-0 right-0 border-l-4 transition-all duration-300 z-0 ${sState.isSuccess || sState.action === 'match' ? 'bg-emerald-500/20 border-emerald-500' : (sState.action === 'invalid' ? 'bg-rose-500/20 border-rose-500' : (sState.action === 'place' ? 'bg-teal-500/20 border-teal-500' : (sState.action === 'backtrack' ? 'bg-amber-500/20 border-amber-500' : 'bg-violet-500/20 border-violet-500')))}`} style={{ top: `${((cur.line - 1) * 16.5) + 24}px`, height: '16.5px' }} />
-                      )}
-                      
-                      {selectedApproach.code.split('\n').map((line, idx) => (
-                        <React.Fragment key={idx}>
-                            <CodeLineRenderer num={idx + 1} code={line} active={cur.line === idx + 1} theme={sState.isSuccess || sState.action === 'match' ? 'emerald' : (sState.action === 'invalid' ? 'rose' : (sState.action === 'place' ? 'teal' : (sState.action === 'backtrack' ? 'amber' : 'violet')))} />
-                        </React.Fragment>
-                      ))}
-                  </div>
-                </div>
-
-                {/* Variables Panel */}
-                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-violet-600">
-                          <Layers size={18} />
-                          <h4 className="text-sm font-black uppercase tracking-widest font-mono">Iteration Variables</h4>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                        <VariableCard label="Row (Depth)" val={sState.r !== null && sState.r !== undefined ? sState.r : "-"} color="purple" active={sState.r !== null && sState.r !== undefined} />
-                        <VariableCard label="Col (Current)" val={sState.c !== null && sState.c !== undefined ? sState.c : "-"} color="sky" active={sState.c !== null && sState.c !== undefined} />
-                        <VariableCard label="Attacked Cols" val={sState.cols ? sState.cols.size : "-"} color="rose" active={sState.cols !== undefined && sState.cols.size > 0} />
-                        <VariableCard label="Solutions" val={sState.solutions !== undefined ? sState.solutions : "-"} color="emerald" active={sState.solutions > 0} />
-                    </div>
-                </div>
-              </div>
-
-              {/* Right Col: Arena & Controls (7/12) */}
-              <div className="lg:col-span-7 space-y-6 flex flex-col">
-                
-                {/* Controls */}
-                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-4 items-end shrink-0">
-                    <div className="flex-1 space-y-1.5 w-full">
-                        <label className="text-[10px] font-black text-violet-600 uppercase block pl-1 tracking-widest font-mono">Board Size (N)</label>
-                        <input type="number" min="1" max="6" value={nInput} onChange={(e) => { setNInput(e.target.value); setCurrentStep(0); }} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-mono text-sm shadow-inner tracking-widest font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-500" placeholder="4" />
-                        <p className="text-[9px] text-slate-400 pl-1 font-mono">Recommended N=4 for visualization. Max 6.</p>
-                    </div>
-
-                    <div className="flex gap-2 w-full sm:w-auto pb-5">
-                      <button onClick={handlePrev} disabled={currentStep === 0} className="flex-1 sm:flex-none sm:w-16 px-4 py-2.5 bg-slate-100 rounded-xl font-black text-xs uppercase tracking-widest disabled:opacity-30 hover:bg-slate-200 transition-colors flex items-center justify-center shadow-sm">
-                        <ChevronLeft size={16}/>
-                      </button>
-                      <button onClick={handleNext} disabled={currentStep === trace.length - 1} className="flex-[2] sm:flex-none sm:w-28 px-4 py-2.5 bg-violet-600 text-white rounded-xl font-black text-xs uppercase tracking-widest disabled:opacity-30 shadow-md shadow-violet-200 hover:bg-violet-700 transition-all flex items-center justify-center gap-1">
-                        Next <ChevronRight size={16}/>
-                      </button>
-                    </div>
-                </div>
-
-                {/* Execution Log */}
-                <div className={`rounded-3xl p-7 shadow-2xl border transition-all duration-300 min-h-[160px] relative overflow-hidden group shrink-0 ${sState.isSuccess || sState.action === 'match' ? 'bg-emerald-900 border-emerald-800' : (sState.action === 'invalid' ? 'bg-rose-900 border-rose-800' : (sState.action === 'place' ? 'bg-teal-900 border-teal-800' : (sState.action === 'backtrack' ? 'bg-amber-900 border-amber-800' : 'bg-slate-900 border-slate-800')))}`}>
-                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
-                      {sState.isSuccess || sState.action === 'match' ? <Check size={100}/> : (sState.action === 'invalid' ? <XSquare size={100}/> : (sState.action === 'place' ? <Target size={100}/> : (sState.action === 'backtrack' ? <RotateCcw size={100}/> : <Activity size={100}/>)))}
-                  </div>
-                  <div className="flex items-center justify-between mb-3 relative z-10">
-                     <div className="flex items-center gap-2">
-                        <Activity size={14} className={sState.isSuccess || sState.action === 'match' ? "text-emerald-400" : (sState.action === 'invalid' ? 'text-rose-400' : (sState.action === 'place' ? 'text-teal-400' : (sState.action === 'backtrack' ? 'text-amber-400' : 'text-slate-400')))}/>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 font-mono">Execution Log</span>
-                     </div>
-                     <div className="flex gap-2 items-center">
-                        <div className={`px-2 py-0.5 rounded text-[8px] font-black uppercase font-mono tracking-tighter ${sState.isSuccess || sState.action === 'match' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : (sState.action === 'invalid' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : (sState.action === 'place' ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30' : (sState.action === 'backtrack' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-violet-500/20 text-violet-300 border border-violet-500/30')))}`}>Line {cur.line}</div>
-                     </div>
-                  </div>
-                  <div className="text-xl font-black tracking-tight mb-3 uppercase font-mono text-white flex items-center gap-3 relative z-10">
-                      {cur.phase}
-                  </div>
-                  <div className="text-sm leading-relaxed text-slate-300 border-t border-slate-700/50 pt-3 font-mono whitespace-pre-line overflow-y-auto max-h-[100px] scrollbar-thin relative z-10">
-                      {cur.description}
-                  </div>
-                </div>
-
-                {/* Simulation Arena */}
-                <div className="bg-white rounded-[2.5rem] border border-slate-200 p-8 flex-1 relative flex flex-col overflow-hidden shadow-inner items-center justify-center min-h-[460px]">
-                   
-                   <div className="relative flex items-center justify-center w-full max-w-md aspect-square shadow-2xl rounded border-4 border-slate-800 bg-slate-800 overflow-hidden">
-                       
-                       <div 
-                         className="grid w-full h-full" 
-                         style={{ gridTemplateColumns: `repeat(${N}, 1fr)`, gridTemplateRows: `repeat(${N}, 1fr)` }}
-                       >
-                           {Array.from({ length: N }).map((_, rIdx) => 
-                               Array.from({ length: N }).map((_, cIdx) => {
-                                   const isDark = (rIdx + cIdx) % 2 === 1;
-                                   const hasQueen = sState.board && sState.board[rIdx] === cIdx;
-                                   const isCurrentCell = sState.r === rIdx && sState.c === cIdx;
-                                   const isRowEval = sState.r === rIdx && sState.c === null;
-                                   
-                                   // Check if cell is under attack from PLACED queens
-                                   // (using the actual state sets instead of calculating on the fly to perfectly match execution state)
-                                   let isAttacked = false;
-                                   if (sState.cols && sState.posDiag && sState.negDiag) {
-                                       isAttacked = sState.cols.has(cIdx) || sState.posDiag.has(rIdx + cIdx) || sState.negDiag.has(rIdx - cIdx);
-                                   }
-                                   
-                                   // It's only truly "attacked" in a visually disruptive way if it's below the current row,
-                                   // or if we are actively highlighting the attack on the current cell.
-                                   // Let's highlight attacked cells subtly if they are below the current row, 
-                                   // and strongly if it's the current evaluated cell.
-                                   
-                                   const isAttackedFuture = isAttacked && rIdx >= (sState.r !== null ? sState.r : N);
-                                   
-                                   let cellClass = "flex items-center justify-center relative transition-all duration-300 ";
-                                   
-                                   if (isDark) cellClass += "bg-slate-300 ";
-                                   else cellClass += "bg-slate-50 ";
-
-                                   // Overlays
-                                   if (isRowEval) {
-                                       cellClass += "after:absolute after:inset-0 after:bg-sky-400/20 ";
-                                   } else if (isCurrentCell) {
-                                       if (sState.action === 'invalid') {
-                                           cellClass += "ring-inset ring-4 ring-rose-500 after:absolute after:inset-0 after:bg-rose-500/40 z-10 ";
-                                       } else if (sState.action === 'place') {
-                                           cellClass += "ring-inset ring-4 ring-teal-500 after:absolute after:inset-0 after:bg-teal-500/40 z-10 animate-pulse ";
-                                       } else if (sState.action === 'backtrack') {
-                                           cellClass += "ring-inset ring-4 ring-amber-500 after:absolute after:inset-0 after:bg-amber-500/40 z-10 ";
-                                       } else {
-                                           cellClass += "ring-inset ring-4 ring-sky-400 after:absolute after:inset-0 after:bg-sky-400/30 z-10 ";
-                                       }
-                                   } else if (isAttackedFuture && !hasQueen) {
-                                       cellClass += "after:absolute after:inset-0 after:bg-rose-500/10 ";
-                                   } else if (sState.action === 'match' && hasQueen) {
-                                        cellClass += "after:absolute after:inset-0 after:bg-emerald-400/30 ";
-                                   }
-
-                                   return (
-                                       <div key={`${rIdx}-${cIdx}`} className={cellClass}>
-                                           {hasQueen && (
-                                               <Crown 
-                                                  size={Math.max(16, 320 / N)} 
-                                                  className={`drop-shadow-lg transition-all duration-300 ${sState.action === 'match' ? 'text-emerald-500 scale-110' : 'text-slate-800'}`} 
-                                                  strokeWidth={2.5} 
-                                                  fill={sState.action === 'match' ? '#10b981' : 'currentColor'}
-                                               />
-                                           )}
-                                           
-                                           {/* Visual indicator for current invalid eval */}
-                                           {isCurrentCell && sState.action === 'invalid' && (
-                                               <XSquare size={Math.max(16, 240 / N)} className="absolute text-rose-600 drop-shadow-md z-20" />
-                                           )}
-                                           
-                                           {/* Coordinate Label */}
-                                           {N <= 5 && (
-                                               <span className="absolute bottom-0.5 right-1 text-[8px] font-mono text-slate-500 opacity-50 font-bold pointer-events-none">
-                                                   {rIdx},{cIdx}
-                                               </span>
-                                           )}
-                                       </div>
-                                   );
-                               })
-                           )}
-                       </div>
-                   </div>
-
-                  {/* Final Overlays */}
-                  {sState.isSuccess && (
-                    <div className="absolute inset-0 z-40 flex items-center justify-center bg-slate-900/10 backdrop-blur-[2px] animate-in fade-in duration-500 pointer-events-none">
-                       <div className="bg-white border-2 border-slate-100 px-10 py-8 rounded-[3rem] shadow-2xl flex flex-col items-center gap-4 transform -rotate-1 pointer-events-auto">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg bg-emerald-100 text-emerald-600`}>
-                              <Check size={32} strokeWidth={3}/>
-                          </div>
-                          <div className="text-center flex flex-col items-center">
-                              <span className="text-2xl font-black text-slate-900 font-mono tracking-tighter block mb-1">SEARCH COMPLETE</span>
-                              <span className={`text-sm font-black uppercase tracking-widest font-mono mb-4 block text-emerald-600`}>
-                                  Found {sState.solutions} distinct solutions
-                              </span>
-                          </div>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Theory / Learn Tab */}
-        {activeTab === 'learn' && (
-          <div className="bg-white rounded-3xl p-10 border border-slate-200 shadow-sm min-h-[600px] animate-in fade-in space-y-10 font-mono">
-            <div className="max-w-4xl space-y-4">
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-                <Crown className="text-violet-600"/> Backtracking & State Space Tree
-              </h2>
-              <p className="text-slate-600 text-lg leading-relaxed border-l-4 border-violet-100 pl-6">
-                The N-Queens problem is the classic textbook example of Backtracking. We build a solution incrementally, row by row. As soon as we determine that placing a queen at a specific column violates the rules, we abandon that entire branch of the search tree.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                <div className="space-y-6">
-                    <div className="p-8 bg-sky-50 border border-sky-100 rounded-3xl space-y-4 shadow-sm h-full">
-                        <h3 className="font-black text-sky-900 flex items-center gap-2 uppercase tracking-tighter text-sm">
-                            <Grid size={18}/> The Diagonal Math Trick
-                        </h3>
-                        <p className="text-sm text-sky-800 leading-relaxed mb-4">
-                            How do we quickly check if a cell <code>(r, c)</code> is on the same diagonal as a placed queen?
-                        </p>
-                        <div className="text-xs text-sky-800 leading-relaxed font-bold bg-white p-4 rounded-xl border border-sky-200 shadow-inner space-y-3">
-                            <p><strong>Positive Diagonal (/):</strong> Every cell on a bottom-left to top-right diagonal shares the same sum of its coordinates. <code>posDiagId = row + col</code>.</p>
-                            <p><strong>Negative Diagonal (\):</strong> Every cell on a top-left to bottom-right diagonal shares the same difference. <code>negDiagId = row - col</code>.</p>
-                            <p>By hashing or indexing these values into a Set or Boolean Array, we get an O(1) safety check!</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div className="space-y-6">
-                    <div className="p-8 bg-rose-50 border border-rose-100 rounded-3xl space-y-4 shadow-sm h-full">
-                        <h3 className="font-black text-rose-900 flex items-center gap-2 uppercase tracking-tighter text-sm">
-                            <RotateCcw size={18}/> The Importance of Backtracking
-                        </h3>
-                        <p className="text-xs text-rose-800 leading-relaxed mb-4">
-                            After exploring a valid placement deeply, we MUST undo our choice to explore siblings.
-                        </p>
-                        <div className="text-xs text-rose-800 leading-relaxed font-bold bg-white p-4 rounded-xl border border-rose-200 shadow-inner space-y-2">
-                            <p>1. Place Queen at <code>(r, c)</code>.</p>
-                            <p>2. Mark <code>col</code>, <code>posDiag</code>, and <code>negDiag</code> as true.</p>
-                            <p>3. <code>backtrack(r + 1)</code></p>
-                            <p>4. <strong>CRITICAL:</strong> Mark them all back to false. Without this, the board remains permanently "attacked", and other valid permutations in different branches will be incorrectly blocked.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Interview Tab */}
-        {activeTab === 'interview' && (
-             <div className="bg-white rounded-3xl p-10 border border-slate-200 shadow-sm min-h-[600px] animate-in fade-in space-y-8 font-mono">
-                <div className="bg-slate-900 text-white rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden group border border-slate-800">
-                    <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
-                        <Trophy size={140} />
-                    </div>
-                    <h3 className="text-xl font-black flex items-center gap-3 mb-4 text-amber-400 relative z-10 uppercase tracking-tight">
-                        <Trophy size={24} /> Interview Defense
-                    </h3>
-                    <p className="text-sm text-slate-300 leading-relaxed italic relative z-10">
-                        "To count the distinct solutions to the N-Queens puzzle, I use backtracking. I define a recursive function that places queens row by row. To validate placements in O(1) time, I maintain three boolean arrays (or Sets): one for columns, one for positive diagonals identified by `row + col`, and one for negative diagonals identified by `row - col`. At each row, I iterate through all columns. If the cell is safe, I update the arrays, recurse to the next row, and then backtrack by reverting the arrays. If I successfully reach row N, I increment my solutions counter. The time complexity is bounded by O(N!), as we place 1 queen per row and eliminate branches early, and space is O(N) for the call stack and tracking arrays."
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                    <div className="border border-slate-200 rounded-3xl p-6 shadow-sm">
-                        <h4 className="font-black text-slate-800 uppercase tracking-widest text-xs mb-3 flex items-center gap-2">
-                           <AlertCircle size={14} className="text-violet-500"/> FAQ: Arrays vs HashSet
-                        </h4>
-                        <div className="space-y-3">
-                            <div className="text-xs text-slate-600 leading-relaxed">
-                                In Python or JS, using a `Set()` is common and readable. In Java or C++, using `boolean[]` is preferred for performance.
-                                <br/><br/>
-                                <strong>Note on Negative Diagonals in Arrays:</strong> `row - col` can be negative. To use it as an array index, you must offset it by `+ N` (or `+ N - 1`) to ensure the index is always positive (e.g., `negDiag[row - col + n]`).
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="border border-slate-200 rounded-3xl p-6 shadow-sm">
-                        <h4 className="font-black text-slate-800 uppercase tracking-widest text-xs mb-3 flex items-center gap-2">
-                           <Timer size={14} className="text-violet-500"/> Time & Space Complexity
-                        </h4>
-                        <div className="space-y-3">
-                            <div>
-                                <span className="text-[10px] font-black text-slate-400 block mb-1 uppercase">Time Complexity</span>
-                                <span className="text-sm font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded">O(N!)</span>
-                                <p className="text-[10px] text-slate-500 mt-1">In the worst case, the first row has N choices, the second has N-1, etc. However, pruning drastically reduces the actual number of states visited compared to N^N.</p>
-                            </div>
-                            <div>
-                                <span className="text-[10px] font-black text-slate-400 block mb-1 uppercase">Space Complexity</span>
-                                <span className="text-sm font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded">O(N)</span>
-                                <p className="text-[10px] text-slate-500 mt-1">The maximum depth of the recursive call stack is N. The three tracking arrays/sets also take O(N) auxiliary space.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-             </div>
-        )}
-
-      </div>
-    </div>
-  );
-};
-
-const VariableCard = ({ label, val, color, active }) => {
-    const bgMap = {
-        emerald: 'bg-emerald-50 border-emerald-200 text-emerald-700',
-        sky: 'bg-sky-50 border-sky-200 text-sky-700',
-        rose: 'bg-rose-50 border-rose-200 text-rose-700',
-        amber: 'bg-amber-50 border-amber-200 text-amber-700',
-        slate: 'bg-slate-100 border-slate-300 text-slate-700',
-        indigo: 'bg-indigo-50 border-indigo-200 text-indigo-700',
-        purple: 'bg-purple-50 border-purple-200 text-purple-700',
-        violet: 'bg-violet-50 border-violet-200 text-violet-700'
-    };
-    
-    const inactiveMap = 'bg-slate-50 border-slate-200 text-slate-300';
-
-    return (
-        <div className={`p-3 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden h-full ${active ? bgMap[color] : inactiveMap}`}>
-             <span className="text-[9px] font-black uppercase tracking-widest opacity-60 mb-1 truncate px-1">{label}</span>
-             <div className={`text-xl font-black font-mono leading-none truncate w-full text-center px-2`}>
-                 {val !== null && val !== undefined ? val : '-'}
-             </div>
-        </div>
-    );
-};
-
-const TabButton = ({ active, onClick, icon, label }) => (
-  <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-black transition-all duration-300 ${active ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500 hover:text-slate-800 shrink-0'}`}>
+const TabButton: React.FC<TabButtonProps> = ({ active, onClick, icon, label }) => (
+  <button onClick={onClick} className={`flex items-center gap-2 px-6 py-2 rounded-xl text-sm font-black transition-all duration-300 whitespace-nowrap ${active ? 'bg-indigo-600 text-white shadow-md scale-105 border border-white/10' : 'text-slate-400 hover:text-slate-800 hover:bg-slate-100'}`}>
     {icon} {label}
   </button>
 );
 
-const CodeLineRenderer = ({ num, code, active, theme = 'violet' }) => {
-  const parts = code.split(/(\/\/.*|\".*?\"|\'.*?\'|\b(?:public|private|class|return|if|else|while|int|long|double|void|String|boolean|new|this|for|break|continue|char|totalNQueens|backtrack|solutions|cols|posDiag|negDiag|row|col|n|true|false)\b|\b\d+(?:\.\d+)?\b)/g).filter(Boolean);
+interface CodeLineRendererProps {
+  num: number;
+  code: string;
+  active: boolean;
+  theme?: string;
+}
+
+const CodeLineRenderer: React.FC<CodeLineRendererProps> = ({ num, code, active, theme = 'indigo' }) => {
+  const parts = code.split(/(\/\/.*|#.*|".*?"|'.'|\b(?:public|private|void|int|boolean|char|return|if|else|while|for|continue|break|new|String|solveNQueens|board|res|dfs|construct|isValid|Arrays|fill|ArrayList|List|length|i|j|r|c|row|col|n)\b|\b\d+\b|[\+\-\*\/\%\=\<\>!\|&\[\]])/g).filter(Boolean);
+  const activeStyles = { bg: `bg-indigo-500/20`, border: `border-indigo-500`, text: `text-indigo-400` };
   
-  const bgActive = `bg-${theme}-500/15`;
-  const borderActive = `bg-${theme}-500`;
-  const textActive = `text-${theme}-400`;
+  const leadingSpaces = code.match(/^\s*/)?.[0]?.length || 0;
 
   return (
-    <div className={`flex relative z-10 min-h-[16.5px] transition-colors duration-200 ${active ? bgActive : ''}`}>
-      {active && <div className={`absolute left-0 top-0 bottom-0 w-1 ${borderActive}`} />}
-      <span className={`w-8 select-none text-right pr-4 border-r border-slate-800/50 mr-4 shrink-0 font-mono text-[10px] ${active ? `${textActive} font-bold` : 'text-slate-700'}`}>{num}</span>
-      <pre className={`font-mono text-slate-300 transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}>
-        {parts.map((part, i) => {
-          if (part.startsWith('//')) return <span key={i} className="text-slate-500 italic">{part}</span>;
-          if (part.startsWith('"') || part.startsWith("'")) return <span key={i} className="text-green-300">{part}</span>;
-          if (['public', 'private', 'class', 'return', 'if', 'else', 'while', 'new', 'this', 'for', 'break', 'continue'].includes(part)) return <span key={i} className="text-pink-400 font-bold">{part}</span>;
-          if (['int', 'long', 'double', 'boolean', 'String', 'void', 'char'].includes(part)) return <span key={i} className="text-sky-400 font-bold">{part}</span>;
-          if (['totalNQueens', 'backtrack', 'true', 'false'].includes(part)) return <span key={i} className="text-blue-300 font-bold">{part}</span>;
-          if (['solutions', 'cols', 'posDiag', 'negDiag', 'row', 'col', 'n'].includes(part)) return <span key={i} className="text-purple-400 font-bold">{part}</span>;
-          if (/^\d+(\.\d+)?$/.test(part)) return <span key={i} className="text-yellow-400">{part}</span>;
-          return <span key={i}>{part}</span>;
+    <div className={`flex relative z-10 min-h-[18px] transition-colors duration-200 ${active ? activeStyles.bg : ''}`}>
+      {active && <div className={`absolute left-0 top-0 bottom-0 w-1 ${activeStyles.border}`} />}
+      <span className={`w-8 select-none text-right pr-4 border-r border-slate-700/50 mr-4 shrink-0 font-mono text-[10px] pt-[2px] ${active ? `${activeStyles.text} font-bold` : 'text-slate-600'}`}>
+        {num}
+      </span>
+      <pre 
+        className={`font-mono text-slate-300 transition-opacity duration-300 flex-1 pt-[2px] whitespace-pre-wrap break-words ${active ? 'opacity-100' : 'opacity-60'}`}
+        style={{ paddingLeft: `${leadingSpaces}ch`, textIndent: `-${leadingSpaces}ch` }}
+      >
+        {parts.map((part, idx) => {
+            const isKeyword = ['public', 'private', 'void', 'int', 'boolean', 'char', 'return', 'if', 'else', 'while', 'for', 'continue', 'break', 'new'].includes(part);
+            const isObject = ['String', 'List', 'ArrayList', 'Arrays'].includes(part);
+            const isPointer = ['board', 'res', 'i', 'j', 'r', 'c', 'row', 'col', 'n'].includes(part);
+            const isMapCall = ['solveNQueens', 'dfs', 'construct', 'isValid', 'fill', 'length'].includes(part);
+            const isOperator = ['+', '-', '*', '/', '%', '=', '<', '>', '!', '|', '&', '[', ']'].includes(part.trim());
+            
+            return (
+              <span 
+                key={idx} 
+                className={
+                  part.startsWith('//') ? 'text-slate-500 italic' : 
+                  isKeyword ? 'text-pink-400 font-bold' : 
+                  isObject ? 'text-emerald-400 font-bold' : 
+                  isMapCall ? 'text-amber-300' :
+                  isOperator ? 'text-slate-400 font-bold' :
+                  isPointer ? 'text-sky-300' : 
+                  isNaN(parseInt(part)) ? (part.startsWith('"') || part.startsWith("'") ? 'text-emerald-300' : '') : 'text-emerald-400'
+                }
+              >
+                {part}
+              </span>
+            );
         })}
       </pre>
     </div>
   );
 };
 
+// --- Main Application ---
 
-export default NQueensIIVisualizer;
+export default function NQueensIIVisualizer() {
+  const [activeTab, setActiveTab] = useState('visualizer');
+  const [selectedOpId, setSelectedOpId] = useState('optimalBacktracking');
+  
+  const [nInput, setNInput] = useState('4');
+  
+  const [baseN, setBaseN] = useState<number>(4);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [zoom, setZoom] = useState(0.85); 
+  const [pan, setPan] = useState({ x: 0, y: 0 }); 
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [copied, setCopied] = useState(false);
+
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
+  const selectedOp = OPERATIONS[selectedOpId as keyof typeof OPERATIONS];
+  const themeColor = 'indigo';
+
+  // --- Effects for Data Processing ---
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      let parsed = parseInt(nInput.trim(), 10);
+      if (isNaN(parsed) || parsed < 1) parsed = 4;
+      if (parsed > 5) parsed = 5; // Safety limit to prevent browser memory explosion
+      
+      setBaseN(parsed);
+      setCurrentStep(0);
+      setPan({ x: 0, y: 0 });
+      setZoom(0.85);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [nInput, selectedOpId]);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+        if (!canvasContainerRef.current?.contains(e.target as Node)) return;
+        e.preventDefault();
+        setZoom(prev => Math.min(Math.max(prev - e.deltaY * 0.005, 0.3), 3));
+    };
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, []);
+
+  // Generate trace strictly aligned with the exact Java code lines
+  const trace = useMemo(() => {
+    const steps: any[] = [];
+    if (baseN === 0) return [{ phase: 'Init', description: 'Enter valid N.', line: 1, state: {} }];
+
+    const n = baseN;
+    
+    // Initialize empty board
+    let board: string[][] = Array(n).fill(null).map(() => Array(n).fill('.'));
+    
+    let callStack: string[] = [];
+    let resultList: string[][] = []; // Array of string arrays
+
+    const add = (ph: string, ds: string, ln: number, st: any) => steps.push({ 
+        phase: ph, 
+        description: ds, 
+        line: ln, 
+        state: { 
+            board: board.map(r => [...r]),
+            n,
+            callStack: [...callStack],
+            res: [...resultList],
+            ...st 
+        } 
+    });
+
+    const checkValid = (b: string[][], r: number, c: number) => {
+        // Col check
+        for (let i = 0; i < r; i++) {
+            if (b[i][c] === 'Q') return {valid: false, failType: 'Column Attack', conflict: [i, c]};
+        }
+        // Top-left diagonal
+        for (let i = r - 1, j = c - 1; i >= 0 && j >= 0; i--, j--) {
+            if (b[i][j] === 'Q') return {valid: false, failType: 'Diagonal Attack', conflict: [i, j]};
+        }
+        // Top-right diagonal
+        for (let i = r - 1, j = c + 1; i >= 0 && j < n; i--, j++) {
+            if (b[i][j] === 'Q') return {valid: false, failType: 'Anti-Diagonal Attack', conflict: [i, j]};
+        }
+        return {valid: true};
+    };
+
+    if (selectedOpId === 'optimalBacktracking') {
+        
+        add("Function Call", `public List<List<String>> solveNQueens(int n=${n})`, 1, {});
+        add("Init Board", `char[][] board = new char[${n}][${n}];\nfor (int i = 0; i < n; i++) Arrays.fill(board[i], '.');\nInitializing empty chessboard.`, 3, {});
+        add("Initial DFS Call", `dfs(board, 0, res);\nStarting recursion at row 0.`, 5, {});
+
+        const dfs = (row: number) => {
+            if (steps.length > 2500) return; // Hard limit to prevent browser crash
+            callStack.push(`dfs(row=${row})`);
+            let currentDepth = callStack.length - 1;
+
+            add("DFS Entry", `private void dfs(char[][] board, int row, List<List<String>> res)`, 9, { callDepth: currentDepth, row });
+            
+            add("Check Base Case", `if (row == board.length)\nIs row (${row}) == ${n}? (${row === n ? 'Yes' : 'No'})`, 10, { callDepth: currentDepth, row, isCheckingBase: true });
+
+            if (row === n) {
+                let solvedBoard = board.map(r => r.join(''));
+                resultList.push(solvedBoard);
+                add("Board Complete!", `res.add(construct(board));\nSuccessfully placed ${n} Queens! Adding to results.`, 11, { callDepth: currentDepth, row, isSuccess: true, hlAddResult: resultList.length - 1 });
+                add("Return", `return;\nBacktracking to find alternative solutions.`, 12, { callDepth: currentDepth, row });
+                callStack.pop();
+                return;
+            }
+
+            for (let col = 0; col < n; col++) {
+                add("For Loop (Columns)", `for (int col = ${col}; col < board.length; col++)\nTrying to place a Queen in row ${row}, column ${col}.`, 14, { callDepth: currentDepth, row, col, isEvaluatingFor: true });
+
+                let validation = checkValid(board, row, col);
+                add("Validity Check", `if (isValid(board, ${row}, ${col}))\nChecking if [${row}, ${col}] is under attack... (${validation.valid ? 'Safe' : 'Unsafe'})`, 15, { callDepth: currentDepth, row, col, isCheckingValid: true, validResult: validation.valid, conflict: validation.conflict });
+
+                if (validation.valid) {
+                    board[row][col] = 'Q';
+                    add("Place Queen", `board[${row}][${col}] = 'Q';\nSafe spot! Placing Queen.`, 16, { callDepth: currentDepth, row, col, hlBoardUpdate: true });
+
+                    add("Recursive Call", `dfs(board, ${row + 1}, res);\nMoving securely to the next row (${row + 1}).`, 17, { callDepth: currentDepth, row, col });
+                    dfs(row + 1);
+
+                    board[row][col] = '.';
+                    add("Remove Queen (Backtrack)", `board[${row}][${col}] = '.';\nReturned from recursion. Removing Queen at [${row}, ${col}] to explore the next column.`, 18, { callDepth: currentDepth, row, col, hlBoardRemove: true });
+                } else {
+                    add("Prune (Under Attack)", `// Implicit Prune\nPosition [${row}, ${col}] is under attack by Queen at [${validation.conflict![0]}, ${validation.conflict![1]}]. Skipping.`, 15, { callDepth: currentDepth, row, col, isFailedPrune: true, conflict: validation.conflict, failReason: validation.failType });
+                }
+            }
+
+            callStack.pop();
+        };
+
+        dfs(0);
+
+        add("Return Final Result", `return res;\nSearched all possibilities. Found ${resultList.length} total solutions.`, 6, { isSuccess: true, finalAns: true });
+    }
+
+    return steps;
+  }, [baseN, selectedOpId]);
+
+  // Derived state
+  const curStepData = trace[currentStep] || trace[0] || { phase: '', description: '', line: 0, state: {} };
+  const st = curStepData.state || {};
+  const isLastStep = currentStep === trace.length - 1;
+
+  // --- UI Handlers ---
+  const handleReset = () => { 
+    setCurrentStep(0); 
+    setPan({ x: 0, y: 0 }); 
+    setZoom(0.85); 
+  };
+
+  const handleNext = () => { 
+    if (currentStep < trace.length - 1) setCurrentStep(prev => prev + 1); 
+  };
+  
+  const handlePrev = () => { 
+    if (currentStep > 0) setCurrentStep(prev => prev - 1); 
+  };
+
+  const toggleFullscreen = () => setIsFullscreen(prev => !prev);
+  const zoomIn = () => setZoom(z => Math.min(z + 0.2, 3));
+  const zoomOut = () => setZoom(z => Math.max(z - 0.2, 0.4));
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('input')) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => { 
+    if (isDragging) {
+      setPan({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+    }
+  };
+
+  const handlePointerUp = () => setIsDragging(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(selectedOp.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight') {
+        setCurrentStep(prev => (prev < trace.length - 1 ? prev + 1 : prev));
+      } else if (e.key === 'ArrowLeft') {
+        setCurrentStep(prev => (prev > 0 ? prev - 1 : prev));
+      } else if (e.key === 'Escape') {
+        setIsFullscreen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [trace.length]);
+
+  const renderVisuals = () => {
+      if (st.board === undefined) return <span className="text-slate-400 italic">empty</span>;
+
+      return (
+          <div className="flex flex-col items-center w-full gap-8 pointer-events-none relative pt-6">
+              
+              {/* Chessboard Visualization */}
+              <div className="flex flex-col items-center w-full">
+                  <span className={`text-[10px] font-black uppercase tracking-widest mb-4 px-3 py-1 rounded-lg border shadow-sm bg-indigo-50 text-indigo-600 border-indigo-200 flex items-center gap-2`}><Grid size={12}/> Current Chessboard State</span>
+                  
+                  <div 
+                      className="border-[6px] border-slate-800 rounded-lg shadow-2xl overflow-hidden bg-slate-800 relative transition-all duration-300"
+                      style={{
+                          display: 'grid',
+                          gridTemplateColumns: `repeat(${st.n}, minmax(0, 1fr))`
+                      }}
+                  >
+                      {st.board.map((rowArr: string[], rIdx: number) => (
+                          rowArr.map((val: string, cIdx: number) => {
+                              const isDark = (rIdx + cIdx) % 2 === 1;
+                              const bgClass = isDark ? 'bg-slate-300' : 'bg-slate-100';
+                              
+                              let isTarget = false;
+                              let isConflict = false;
+                              let isEvaluating = false;
+
+                              if (st.row === rIdx && st.col === cIdx) {
+                                  isEvaluating = true;
+                                  if (st.isFailedPrune || (st.isCheckingValid && !st.validResult)) {
+                                      isConflict = true;
+                                  } else {
+                                      isTarget = true;
+                                  }
+                              }
+
+                              if (st.conflict && st.conflict[0] === rIdx && st.conflict[1] === cIdx) {
+                                  isConflict = true; // The attacking Queen
+                              }
+
+                              return (
+                                  <div 
+                                      key={`${rIdx}-${cIdx}`} 
+                                      className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center relative transition-colors duration-300 ${bgClass} ${isConflict ? 'bg-rose-200 ring-inset ring-4 ring-rose-500' : ''} ${isTarget && !isConflict ? 'bg-indigo-100 ring-inset ring-4 ring-indigo-500' : ''}`}
+                                  >
+                                      {val === 'Q' && (
+                                          <Crown className={`w-8 h-8 md:w-10 md:h-10 transition-transform duration-300 ${isConflict ? 'text-rose-600 scale-110' : (st.hlBoardUpdate && st.row === rIdx && st.col === cIdx ? 'text-emerald-500 scale-125 animate-in zoom-in' : 'text-indigo-800')}`} strokeWidth={2.5}/>
+                                      )}
+                                      
+                                      {/* Ghost Queen for invalid evaluation */}
+                                      {isEvaluating && isConflict && val !== 'Q' && (
+                                          <Crown className="w-8 h-8 md:w-10 md:h-10 text-rose-500 opacity-40 scale-110 animate-pulse" strokeWidth={2.5}/>
+                                      )}
+                                      
+                                      {/* Evaluation highlight */}
+                                      {isEvaluating && !isConflict && val !== 'Q' && (
+                                          <div className="absolute inset-0 bg-indigo-500/20 animate-pulse pointer-events-none"></div>
+                                      )}
+                                      
+                                      {/* Coordinates overlay (subtle) */}
+                                      <span className="absolute bottom-1 right-1 text-[8px] font-mono text-slate-400 opacity-50">{rIdx},{cIdx}</span>
+                                  </div>
+                              )
+                          })
+                      ))}
+                      
+                      {/* Optional Overlay Lines for Attack Path (Advanced Visual) */}
+                      {st.conflict && st.row !== undefined && st.col !== undefined && (
+                          <svg className="absolute inset-0 w-full h-full z-20 pointer-events-none">
+                              <line 
+                                  x1={`${(st.conflict[1] + 0.5) * (100 / st.n)}%`} 
+                                  y1={`${(st.conflict[0] + 0.5) * (100 / st.n)}%`} 
+                                  x2={`${(st.col + 0.5) * (100 / st.n)}%`} 
+                                  y2={`${(st.row + 0.5) * (100 / st.n)}%`} 
+                                  stroke="#f43f5e" strokeWidth="4" strokeDasharray="8,4" className="opacity-80"
+                              />
+                          </svg>
+                      )}
+                  </div>
+              </div>
+
+              {/* Completed Solutions Section */}
+              {st.res && st.res.length > 0 && (
+                  <div className="flex flex-col items-center w-full mt-4">
+                      <span className={`text-[10px] font-black uppercase tracking-widest mb-4 px-3 py-1 rounded-lg border shadow-sm bg-emerald-50 text-emerald-600 border-emerald-200 flex items-center gap-2`}><Database size={12}/> Completed Solutions ({st.res.length})</span>
+                      
+                      <div className="flex flex-wrap gap-4 justify-center max-w-full px-4 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-thumb-emerald-200 p-2">
+                          {st.res.map((solution: string[], solIdx: number) => {
+                              let isRecent = st.hlAddResult === solIdx;
+                              return (
+                                  <div key={solIdx} className={`border-4 rounded-md overflow-hidden bg-slate-800 transition-all duration-500 ${isRecent ? 'border-emerald-500 scale-110 shadow-lg shadow-emerald-500/30 ring-4 ring-emerald-200 z-10' : 'border-slate-300 shadow-sm'}`} style={{ display: 'grid', gridTemplateColumns: `repeat(${st.n}, minmax(0, 1fr))` }}>
+                                      {solution.map((rowStr, rIdx) => 
+                                          rowStr.split('').map((val, cIdx) => {
+                                              const isDark = (rIdx + cIdx) % 2 === 1;
+                                              const bgClass = isDark ? 'bg-slate-400' : 'bg-slate-200';
+                                              return (
+                                                  <div key={`${rIdx}-${cIdx}`} className={`w-4 h-4 flex items-center justify-center ${bgClass}`}>
+                                                      {val === 'Q' && <Crown className="w-3 h-3 text-indigo-900" strokeWidth={3}/>}
+                                                  </div>
+                                              )
+                                          })
+                                      )}
+                                  </div>
+                              )
+                          })}
+                      </div>
+                  </div>
+              )}
+
+          </div>
+      );
+  };
+
+  return (
+    <div className={`bg-slate-50 text-slate-800 font-sans p-4 md:p-8 flex flex-col items-center min-h-screen ${isFullscreen ? 'overflow-hidden' : ''}`}>
+      <div className={`max-w-7xl w-full space-y-6 ${isFullscreen ? 'hidden' : ''}`}>
+        
+        {/* Header */}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row justify-between items-center gap-4 relative overflow-hidden">
+          <div className="flex items-center gap-5 z-10">
+            <div className={`p-4 rounded-2xl shadow-lg flex items-center justify-center ${themeColor === 'indigo' ? 'bg-indigo-600' : 'bg-emerald-600'}`}>
+                <Grid className="text-white" size={28} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">N-Queens</h1>
+              <div className="flex items-center gap-2 text-slate-400 text-[10px] mt-2 font-mono uppercase tracking-widest">
+                  <span className={`font-bold px-2 py-0.5 rounded ${themeColor === 'indigo' ? 'text-indigo-600 bg-indigo-50' : 'text-emerald-600 bg-emerald-50'}`}>
+                      Backtracking &amp; Validity
+                  </span>
+                  <span>•</span>
+                  <span>LeetCode 51</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner z-10 overflow-x-auto scrollbar-none">
+            <TabButton active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon={<FileText size={16}/>} label="Overview" />
+            <TabButton active={activeTab === 'visualizer'} onClick={() => setActiveTab('visualizer')} icon={<MonitorPlay size={16}/>} label="Simulator" />
+            <TabButton active={activeTab === 'theory'} onClick={() => setActiveTab('theory')} icon={<Lightbulb size={16}/>} label="Theory" />
+            <TabButton active={activeTab === 'interview'} onClick={() => setActiveTab('interview')} icon={<Trophy size={16}/>} label="Interview" />
+          </div>
+        </div>
+
+        {activeTab === 'overview' && (
+            <div className="bg-white rounded-2xl p-10 border border-slate-200 shadow-sm animate-in fade-in duration-500 min-h-[600px] text-slate-700 space-y-12">
+                <section className="space-y-4">
+                    <div className={`flex items-center gap-3 font-black text-2xl uppercase tracking-tighter ${themeColor === 'indigo' ? 'text-indigo-600' : 'text-emerald-600'}`}><Grid size={28}/> The Chess Constraint Problem</div>
+                    <div className="text-lg leading-relaxed max-w-3xl">
+                      The n-queens puzzle is the problem of placing <code>n</code> queens on an <code>n x n</code> chessboard such that no two queens attack each other.<br/><br/>
+                      Given an integer <code>n</code>, return all distinct solutions to the n-queens puzzle. Each solution contains a distinct board configuration of the n-queens' placement, where <code>'Q'</code> and <code>'.'</code> both indicate a queen and an empty space, respectively.
+                    </div>
+                    <div className="bg-slate-900 border-l-4 border-indigo-500 p-6 rounded-r-2xl font-mono text-sm shadow-xl text-white overflow-x-auto whitespace-nowrap">
+                       <span className="text-indigo-400 block mb-1 uppercase text-[10px] font-black tracking-widest">Input: n = 4</span>
+                       <span className="text-emerald-400 block mt-3 mb-1 uppercase text-[10px] font-black tracking-widest">Output:</span>
+                       <span className="text-slate-300">
+                           [<br/>
+                           &nbsp;&nbsp;[".Q..",  // Solution 1<br/>
+                           &nbsp;&nbsp;&nbsp;"...Q",<br/>
+                           &nbsp;&nbsp;&nbsp;"Q...",<br/>
+                           &nbsp;&nbsp;&nbsp;"..Q."],<br/>
+                           <br/>
+                           &nbsp;&nbsp;["..Q.",  // Solution 2<br/>
+                           &nbsp;&nbsp;&nbsp;"Q...",<br/>
+                           &nbsp;&nbsp;&nbsp;"...Q",<br/>
+                           &nbsp;&nbsp;&nbsp;".Q.."]<br/>
+                           ]
+                       </span>
+                    </div>
+                </section>
+                <div className="grid md:grid-cols-2 gap-8">
+                    <div className="p-8 rounded-3xl bg-slate-50 border border-slate-200 shadow-inner">
+                        <h4 className="font-black uppercase text-xs tracking-widest text-slate-400 mb-4 flex items-center gap-2"><Goal size={16} className="text-amber-500"/> The Constraint</h4>
+                        <p className="text-sm leading-relaxed">Queens attack horizontally, vertically, and diagonally. To place N queens safely on an N x N board, there must be exactly one queen in each row and exactly one in each column. The sheer number of permutations is huge, requiring an aggressive exponential backtracking algorithm.</p>
+                    </div>
+                    <div className="p-8 rounded-3xl bg-slate-50 border border-slate-200 shadow-inner">
+                        <h4 className="font-black uppercase text-xs tracking-widest text-slate-400 mb-4 flex items-center gap-2"><Workflow size={16} className="text-indigo-500"/> The Strategy</h4>
+                        <p className="text-sm leading-relaxed text-slate-600">Iterate through the board row by row. In the current row, loop through every column. Check if placing a Queen at <code>(row, col)</code> is safe from attacks by previously placed Queens. If safe, place it, recurse to the next row, and eventually backtrack by removing it.</p>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {activeTab === 'visualizer' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500">
+            <div className="lg:col-span-5 flex flex-col gap-4">
+                <div className="grid grid-cols-1 gap-3">
+                    {Object.values(OPERATIONS).map((op) => (
+                        <button key={op.id} onClick={() => { setSelectedOpId(op.id); setCurrentStep(0); }} className={`px-4 py-3 rounded-2xl border text-left flex flex-col gap-1 transition-all shadow-sm ${selectedOpId === op.id ? `bg-${themeColor}-600 text-white border-${themeColor}-600 scale-[1.02]` : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
+                            <div className="flex items-center gap-2">{op.icon}<span className="text-[10px] font-black uppercase tracking-tight truncate">{op.title}</span></div>
+                            <div className={`text-[9px] font-mono ${selectedOpId === op.id ? `text-${themeColor}-100` : 'text-slate-400'}`}>{op.complexity}</div>
+                        </button>
+                    ))}
+                </div>
+                <div className="bg-[#0f172a] rounded-3xl h-[480px] overflow-hidden flex flex-col relative shadow-2xl border border-slate-800">
+                  <div className="bg-[#1e293b] px-5 py-3 border-b border-slate-700 text-xs text-slate-400 font-mono flex justify-between items-center">
+                    <span className="font-bold uppercase text-[10px] text-white flex items-center gap-2"><Code2 size={12}/> NQueens.java</span>
+                    <button onClick={handleCopy} className="hover:text-white transition-colors">{copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}</button>
+                  </div>
+                  <div className="p-4 font-mono text-[11px] leading-relaxed overflow-x-hidden overflow-y-auto relative scrollbar-thin scrollbar-thumb-slate-700 pb-10">
+                    {selectedOp.code.split('\n').map((line, idx) => (
+                      <CodeLineRenderer key={idx} num={idx + 1} code={line} active={curStepData.line === idx + 1} theme={themeColor}/>
+                    ))}
+                  </div>
+                </div>
+            </div>
+
+            <div className="lg:col-span-7 flex flex-col gap-4">
+                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col gap-4">
+                    <div className="flex flex-col lg:flex-row gap-4 items-end">
+                        <div className="flex-[2] w-full space-y-1.5">
+                            <label className={`text-[10px] font-black uppercase tracking-widest font-mono text-${themeColor}-600 pl-1`}>Board Size (N)</label>
+                            <input type="number" min="1" max="5" value={nInput} onChange={(e) => setNInput(e.target.value)} className={`w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-mono text-sm focus:ring-2 focus:ring-${themeColor}-500 outline-none transition-all shadow-inner uppercase font-bold`} placeholder="4" />
+                        </div>
+                    </div>
+                    <div className="flex gap-4 shrink-0 justify-end items-center pt-2 border-t border-slate-100">
+                        <span className="text-[10px] font-mono uppercase tracking-widest font-bold text-slate-400 hidden md:inline-block">Shortcuts: &larr; &rarr;</span>
+                        <div className="flex gap-2">
+                            <button onClick={handleReset} title="Reset View" className={`p-3 text-slate-600 hover:text-${themeColor}-600 rounded-xl hover:bg-${themeColor}-50 transition-all`}><RotateCcw size={20}/></button>
+                            <button onClick={toggleFullscreen} title="Full Screen" className={`p-3 text-slate-600 hover:text-${themeColor}-600 rounded-xl hover:bg-${themeColor}-50 transition-all`}><Maximize size={20}/></button>
+                            <button onClick={handlePrev} disabled={currentStep === 0} className="p-3 bg-slate-100 rounded-xl text-slate-700 disabled:opacity-30 shadow-sm transition-colors ml-2"><ChevronLeft size={20}/></button>
+                            <button onClick={handleNext} disabled={isLastStep || st.isSuccess} className={`px-8 py-3 bg-${themeColor}-600 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-${themeColor}-200 hover:bg-${themeColor}-700 transition-all flex items-center gap-2 group disabled:opacity-30`}>STEP <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform"/></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`rounded-3xl p-7 shadow-2xl border transition-all duration-300 min-h-[140px] relative overflow-hidden flex-1 ${st.isSuccess ? 'bg-emerald-900 border-emerald-800' : 'bg-slate-900 border-slate-800'}`}>
+                    <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none transition-transform group-hover:scale-110 duration-500"><Activity size={100} className="text-white"/></div>
+                    <div className="flex items-center justify-between mb-3 relative z-10 text-white opacity-40 uppercase font-black text-[10px] font-mono tracking-widest">
+                        <div className="flex items-center gap-2"><Activity size={14}/> <span>Execution Trace</span></div>
+                        <div className="flex items-center gap-2">
+                           <span className="bg-slate-700/50 text-slate-300 px-2 py-0.5 rounded text-[8px] font-black uppercase font-mono tracking-widest">Line {String(curStepData.line || 0)}</span>
+                        </div>
+                    </div>
+                    {st.isSuccess ? (
+                         <div className="animate-in zoom-in slide-in-from-left-4 duration-500">
+                            <div className="text-2xl font-black tracking-tight uppercase font-mono text-emerald-400 flex items-center gap-3"><PartyPopper size={24}/> SEARCH COMPLETE</div>
+                            <p className="text-md leading-relaxed text-white mt-2 font-mono font-bold tracking-tight">Found {st.res.length} valid board configurations!</p>
+                         </div>
+                    ) : (
+                        <>
+                            <div className={`text-xl font-black tracking-tight mb-2 uppercase font-mono leading-tight ${st.isFailedPrune ? 'text-rose-400' : (st.hlAddResult ? 'text-emerald-400' : 'text-white')}`}>{String(curStepData.phase || "")}</div>
+                            <p className="text-sm leading-relaxed text-slate-300 border-t border-slate-800/50 pt-3 italic font-mono relative z-10 whitespace-pre-line">{String(curStepData.description || "")}</p>
+                        </>
+                    )}
+                </div>
+
+                <div className="bg-white rounded-[2.5rem] border border-slate-200 p-8 h-[500px] relative flex flex-col shadow-inner overflow-hidden">
+                   <div className="absolute top-4 left-4 z-30 pointer-events-none flex flex-col gap-2">
+                       <span className={`text-[10px] font-black uppercase tracking-widest font-mono flex items-center gap-2 bg-white/90 px-3 py-2 rounded-lg shadow-sm border border-slate-200 backdrop-blur text-${themeColor}-500`}><Layers size={14} className={`text-${themeColor}-500`}/> Call Stack</span>
+                       
+                       {/* Call Stack Tracker with Scroll */}
+                       {!st.isSuccess && st.callStack && (
+                           <div className={`bg-white border-2 border-indigo-200 rounded-xl p-3 shadow-md flex flex-col gap-2 transition-all duration-300 w-56 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-200 pointer-events-auto`}>
+                               <div className="flex justify-between items-center border-b border-indigo-100 pb-1 mb-1 shrink-0 sticky top-0 bg-white z-10">
+                                   <span className={`text-[9px] font-black uppercase tracking-widest text-indigo-600`}>Execution Depth</span>
+                               </div>
+                               <div className="flex flex-col gap-1">
+                                    {st.callStack.slice().reverse().map((frameStr: string, idx: number) => {
+                                        let isTop = idx === 0;
+                                        return (
+                                            <span key={idx} className={`font-mono text-[10px] font-black px-2 py-1 rounded flex justify-between shrink-0 ${isTop ? 'bg-indigo-600 text-white shadow-sm' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'}`}>
+                                                {frameStr}
+                                            </span>
+                                        )
+                                    })}
+                                    {st.callStack.length === 0 && <span className="text-slate-300 italic text-[10px]">Empty</span>}
+                               </div>
+                           </div>
+                       )}
+                   </div>
+
+                   <div className="absolute top-4 right-4 z-30 flex flex-col gap-2 pointer-events-auto">
+                        <div className="flex flex-col bg-white/90 p-2 rounded-2xl shadow-lg border border-slate-200 backdrop-blur gap-2">
+                            <button onClick={zoomIn} className={`p-2 text-slate-600 hover:text-${themeColor}-600 rounded-lg transition-colors`}><ZoomIn size={18}/></button>
+                            <button onClick={zoomOut} className={`p-2 text-slate-600 hover:text-${themeColor}-600 rounded-lg transition-colors`}><ZoomOut size={18}/></button>
+                        </div>
+                   </div>
+
+                   <div ref={!isFullscreen ? canvasContainerRef : null} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing z-10 bg-[linear-gradient(to_right,#cbd5e115_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e115_1px,transparent_1px)] bg-[size:25px_25px]" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp} tabIndex={0}>
+                       <div className="absolute top-0 left-1/2 w-full h-full transition-transform duration-300 flex flex-col justify-start items-center pt-10" style={{ transform: `translate(calc(-50% + ${pan.x}px), ${pan.y}px) scale(${zoom})`, transformOrigin: 'top center' }}>
+                           {renderVisuals()}
+                       </div>
+                   </div>
+                </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'theory' && (
+            <div className="bg-white rounded-3xl p-10 md:p-12 border border-slate-200 shadow-sm animate-in fade-in duration-500 min-h-[600px] text-slate-800 space-y-12">
+                
+                <div className="text-center space-y-4 max-w-3xl mx-auto mb-8">
+                    <div className="inline-flex items-center justify-center p-4 bg-indigo-100 text-indigo-600 rounded-2xl mb-2">
+                        <BookOpen size={40} />
+                    </div>
+                    <h3 className="font-black text-slate-800 text-3xl tracking-tight">Algorithm Theory &amp; Complexity</h3>
+                    <p className="text-slate-500 text-lg leading-relaxed">Understanding the pure exponential nature of chess constraint validation.</p>
+                </div>
+                
+                <div className="space-y-8 relative z-10 max-w-4xl mx-auto">
+                    {/* Section 1 */}
+                    <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3"><LayersIcon size={24} className="text-indigo-500"/> 1. The Decision Space Bound</h4>
+                        <p className="mb-4 text-slate-600 leading-relaxed">If we blindly placed N queens anywhere on an N x N board, the combinations would be approx N^(2N), which is astronomically huge even for N=8.</p>
+                        <p className="text-slate-600 leading-relaxed">By enforcing the rule that <strong>each queen must be placed in a separate row</strong>, we reduce the problem to placing one queen per row. For the first row, we have N column choices. For the second row, we have at most N-1 choices, and so on. This bounds our mathematical search space to O(N!).</p>
+                    </div>
+
+                    {/* Section 2 - TIME COMPLEXITY */}
+                    <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3"><Activity size={24} className="text-emerald-500"/> 2. Time Complexity: O(N!)</h4>
+                        <p className="mb-4 text-slate-600">The time complexity is factorial.</p>
+                        <ul className="list-disc pl-6 space-y-3 text-slate-600">
+                            <li><strong>Tree Nodes:</strong> The state space tree has at most N! leaves.</li>
+                            <li><strong>Pruning:</strong> In reality, because we prune diagonally as well, the number of branches explored is far less than N!. However, in asymptotic Big-O notation, the upper bound is strictly stated as O(N!).</li>
+                            <li><strong>Validation:</strong> In the basic implementation provided, <code>isValid</code> scans the board taking O(N) time, making total time O(N * N!). But this can be optimized to O(1) (see Interview tab).</li>
+                        </ul>
+                        <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-800 font-bold text-center">
+                            Total Time Complexity = O(N!)
+                        </div>
+                    </div>
+
+                    {/* Section 3 - SPACE COMPLEXITY */}
+                    <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3"><Database size={24} className="text-sky-500"/> 3. Space Complexity Analysis: O(N^2)</h4>
+                        <p className="mb-4 text-slate-600">Space complexity is defined by the board representation and the recursion depth.</p>
+                        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                            <div>
+                                <strong className="text-slate-800 block mb-1">Board Memory: O(N^2)</strong>
+                                <span className="text-sm text-slate-600">We maintain an N x N character matrix in memory to track the placements.</span>
+                            </div>
+                            <div className="border-t border-slate-100 pt-4">
+                                <strong className="text-slate-800 block mb-1">Call Stack: O(N)</strong>
+                                <span className="text-sm text-slate-600">The recursive DFS stack goes exactly N levels deep (one frame per row). Overall auxiliary space is dominated by the board, hence O(N^2).</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {activeTab === 'interview' && (
+            <div className="bg-white rounded-3xl p-10 md:p-12 border border-slate-200 shadow-sm animate-in fade-in duration-500 min-h-[600px] text-slate-700 space-y-12">
+                 <div className={`bg-slate-900 text-white rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden group border border-slate-800`}>
+                    <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:scale-110 transition-transform duration-700 pointer-events-none"><Trophy size={160} /></div>
+                    <h3 className="text-3xl font-black mb-4 uppercase tracking-widest text-white tracking-tight leading-tight flex items-center gap-4"><CheckSquare className="text-emerald-400"/> Mock Interview Q&amp;A</h3>
+                    <p className={`text-base text-slate-400 leading-relaxed italic max-w-3xl font-mono`}>"N-Queens is famous for a specific follow-up question regarding how to validate Queen placements in O(1) time instead of iterating through the board."</p>
+                </div>
+                
+                <div className="space-y-6 max-w-4xl mx-auto">
+                    {/* Q1 */}
+                    <div className="bg-white border-2 border-slate-100 hover:border-indigo-200 transition-colors rounded-2xl p-8 shadow-sm">
+                        <h4 className="text-xl font-bold text-slate-900 mb-4 flex items-start gap-3 leading-tight">
+                            <span className="text-indigo-500 mt-0.5"><Lightbulb size={24}/></span>
+                            <span>Q1: "Your <code>isValid</code> function uses loops to check diagonals, taking O(N) time. Can you optimize this check to O(1)?"</span>
+                        </h4>
+                        <div className="pl-9 text-slate-600 space-y-3">
+                            <p><strong>Answer:</strong> "Yes, we can use three boolean arrays to track attacks instead of scanning the board.</p>
+                            <p>1. <code>boolean[] cols = new boolean[n]</code> tracks attacked columns.<br/>
+                               2. <code>boolean[] diag1 = new boolean[2*n]</code> tracks the top-left to bottom-right diagonals. A cell <code>(r, c)</code> is on the same diagonal if <code>r - c</code> is constant.<br/>
+                               3. <code>boolean[] diag2 = new boolean[2*n]</code> tracks the top-right to bottom-left diagonals. A cell is on the same diagonal if <code>r + c</code> is constant.</p>
+                            <p>By checking and updating these arrays in O(1) time during our DFS, we completely eliminate the O(N) loop overhead."</p>
+                        </div>
+                    </div>
+
+                    {/* Q2 */}
+                    <div className="bg-white border-2 border-slate-100 hover:border-emerald-200 transition-colors rounded-2xl p-8 shadow-sm">
+                        <h4 className="text-xl font-bold text-slate-900 mb-4 flex items-start gap-3 leading-tight">
+                            <span className="text-emerald-500 mt-0.5"><Code2 size={24}/></span>
+                            <span>Q2: "What if the question only asked for the NUMBER of solutions (N-Queens II), not the actual boards?"</span>
+                        </h4>
+                        <div className="pl-9 text-slate-600 space-y-3">
+                            <p><strong>Answer:</strong> "If we only need the count, we don't need to maintain a <code>char[][] board</code> at all. We just maintain the three <code>boolean[]</code> tracking arrays (or integer bitmasks for even faster performance).</p>
+                            <p>We traverse the rows, use the boolean arrays/bitmasks to find a valid column, update the arrays, increment a global counter when we hit row N, and backtrack. This drops the Space Complexity from O(N^2) to just O(N)."</p>
+                        </div>
+                    </div>
+
+                    {/* Q3 */}
+                    <div className="bg-white border-2 border-slate-100 hover:border-sky-200 transition-colors rounded-2xl p-8 shadow-sm">
+                        <h4 className="text-xl font-bold text-slate-900 mb-4 flex items-start gap-3 leading-tight">
+                            <span className="text-sky-500 mt-0.5"><Activity size={24}/></span>
+                            <span>Q3: "Why don't we check the current row in <code>isValid</code>?"</span>
+                        </h4>
+                        <div className="pl-9 text-slate-600 space-y-3">
+                            <p><strong>Answer:</strong> "Because our DFS is specifically designed to only place exactly one Queen per row.</p>
+                            <p>The recursive engine is structured as <code>dfs(row)</code>, and inside we loop through the columns, place a Queen, and immediately jump to <code>dfs(row + 1)</code>. It is structurally impossible for two Queens to be placed in the same row, so checking the row for conflicts is redundant and wastes cycles."</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        )}
+
+      </div>
+
+      {/* --- Theater Mode Portal --- */}
+      {isFullscreen && (
+          <div className="fixed inset-0 z-50 bg-[#020617] flex flex-row overflow-hidden animate-in fade-in zoom-in duration-300">
+              <div className="w-[450px] bg-[#0f172a] border-r border-slate-800 flex flex-col shadow-2xl relative z-50">
+                  <div className="bg-[#1e293b] p-6 flex justify-between items-center border-b border-slate-800 shadow-md">
+                      <div className="flex items-center gap-4">
+                          <div className={`p-2 rounded-lg text-white shadow-lg bg-indigo-600 shadow-indigo-900/50`}><Code2 size={20}/></div>
+                          <span className="text-white font-black text-sm uppercase tracking-[0.2em]">Logic Analysis</span>
+                      </div>
+                  </div>
+                  <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-slate-700 pb-10">
+                    <div className="bg-black/20 rounded-2xl border border-white/5 p-4 mb-4 overflow-x-hidden">
+                        {selectedOp.code.split('\n').map((line, idx) => (
+                            <CodeLineRenderer key={idx} num={idx + 1} code={line} active={curStepData.line === idx + 1} theme={themeColor}/>
+                        ))}
+                    </div>
+                    <div className={`p-6 rounded-3xl border transition-all duration-300 min-h-[140px] relative overflow-hidden flex-1 ${st.isSuccess ? 'bg-emerald-900/40 border-emerald-800' : 'bg-slate-800/40 border-slate-700'}`}>
+                        <div className="flex items-center justify-between mb-4 relative z-10 text-white opacity-40 uppercase font-black text-[10px] font-mono tracking-widest">
+                            <div className="flex items-center gap-2"><Activity size={14}/> <span>Trace Operations</span></div>
+                            <div className="flex gap-2 items-center">
+                                <span className="bg-slate-700/50 text-slate-300 px-2 py-0.5 rounded text-[8px] font-black uppercase font-mono tracking-widest">Line {String(curStepData.line || 0)}</span>
+                            </div>
+                        </div>
+                        <div className={`text-xl font-black tracking-tight mb-2 uppercase font-mono leading-tight ${st.hlAddResult !== undefined ? 'text-emerald-400' : (st.isFailedPrune ? 'text-rose-400' : 'text-white')}`}>{String(curStepData.phase || "")}</div>
+                        <p className="text-sm leading-relaxed text-slate-300 border-t border-slate-700/50 pt-3 italic font-mono relative z-10 whitespace-pre-line">{String(curStepData.description || "")}</p>
+                    </div>
+                  </div>
+              </div>
+              <div className="flex-1 relative bg-white overflow-hidden bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:50px_50px]">
+                  
+                  <div className="absolute top-8 left-8 z-50 flex flex-col xl:flex-row gap-4 pointer-events-auto">
+                      <div className="flex bg-white/90 p-1.5 rounded-2xl shadow-2xl border border-slate-200 backdrop-blur-md">
+                          {Object.values(OPERATIONS).map((op) => (
+                              <button key={op.id} onClick={() => { setSelectedOpId(op.id); setCurrentStep(0); }} className={`px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition-all ${selectedOpId === op.id ? `bg-${themeColor}-600 text-white shadow-md` : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'}`}>
+                                  {op.icon} <span>{op.title}</span>
+                              </button>
+                          ))}
+                      </div>
+
+                      <div className="flex gap-4 items-end bg-white/90 p-2.5 rounded-2xl shadow-2xl border border-slate-200 backdrop-blur-md">
+                          <div className="w-80 space-y-1">
+                              <label className={`text-[9px] font-black uppercase tracking-widest font-mono pl-1 text-${themeColor}-600`}>Board Size (N)</label>
+                              <input type="number" min="1" max="5" value={nInput} onChange={(e) => setNInput(e.target.value)} className={`w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 font-mono text-xs focus:ring-2 outline-none transition-all shadow-inner focus:ring-${themeColor}-500 font-bold uppercase`} />
+                          </div>
+                      </div>
+                  </div>
+
+                  <div className="absolute top-8 right-8 z-50 flex flex-col gap-3 pointer-events-auto">
+                        <div className="flex flex-col bg-white/90 p-2 rounded-2xl shadow-2xl border border-slate-200 backdrop-blur-md gap-2">
+                            <button onClick={zoomIn} title="Zoom In" className={`p-3 text-slate-600 hover:text-${themeColor}-600 rounded-xl hover:bg-${themeColor}-50 transition-all`}><ZoomIn size={24}/></button>
+                            <button onClick={zoomOut} title="Zoom Out" className={`p-3 text-slate-600 hover:text-${themeColor}-600 rounded-xl hover:bg-${themeColor}-50 transition-all`}><ZoomOut size={24}/></button>
+                            <button onClick={handleReset} title="Reset View" className={`p-3 text-slate-600 hover:text-${themeColor}-600 rounded-xl hover:bg-${themeColor}-50 transition-all`}><RotateCcw size={24}/></button>
+                            <button onClick={toggleFullscreen} title="Close Full Screen" className={`p-3 text-slate-600 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-all`}><Minimize size={24}/></button>
+                        </div>
+                  </div>
+                  
+                  {!st.isSuccess && (
+                      <div className="absolute bottom-10 right-10 z-50 flex flex-col items-end gap-3 animate-in slide-in-from-bottom-10">
+                          <div className="flex items-center gap-2 text-slate-400 bg-slate-900/60 px-4 py-2 rounded-full backdrop-blur-md border border-slate-700/50 shadow-lg mr-2">
+                              <span className="text-[10px] font-mono uppercase tracking-widest font-bold">Shortcuts: &larr; Prev | &rarr; Next | ESC Close</span>
+                          </div>
+                          <div className="flex gap-6">
+                              <button onClick={handlePrev} disabled={currentStep === 0} className="px-10 py-6 bg-slate-800 text-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:bg-slate-700 disabled:opacity-30 active:scale-95 transition-all font-black text-xl uppercase tracking-widest flex items-center gap-4 border border-slate-700"><ChevronLeft size={32}/> PREV</button>
+                              <button onClick={handleNext} disabled={isLastStep || st.isSuccess} className={`px-12 py-6 bg-indigo-600 text-white rounded-[2rem] hover:bg-indigo-700 hover:scale-105 active:scale-95 transition-all font-black text-xl uppercase tracking-widest flex items-center gap-4 border border-indigo-500 shadow-[0_20px_50px_rgba(79,70,229,0.3)]`}>NEXT <ChevronRight size={32}/></button>
+                          </div>
+                      </div>
+                  )}
+
+                  {!st.isSuccess && st.callStack && (
+                      <div className="absolute bottom-10 left-10 z-50 flex flex-col gap-2 animate-in slide-in-from-bottom-10">
+                          <div className={`bg-slate-900 border-2 border-slate-700 rounded-[2rem] p-6 shadow-2xl flex flex-col justify-end gap-2 transition-all duration-300 w-64 max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 pointer-events-auto`}>
+                               <div className="flex justify-between items-center border-b border-slate-700 pb-2 mb-1 shrink-0 sticky top-0 bg-slate-900 z-10">
+                                   <span className={`text-[10px] font-black uppercase tracking-widest text-slate-400`}>Call Stack Depth</span>
+                               </div>
+                               <div className="flex flex-col gap-2">
+                                    {st.callStack.slice().reverse().map((frameStr: string, idx: number) => {
+                                        let isTop = idx === 0;
+                                        return (
+                                            <div key={idx} className={`font-mono text-sm font-black px-4 py-2 rounded-xl flex justify-between shrink-0 ${isTop ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-800 text-indigo-400'}`}>
+                                                <span>{frameStr}</span>
+                                            </div>
+                                        )
+                                    })}
+                                    {st.callStack.length === 0 && <span className="text-slate-500 italic text-sm font-mono px-2">Empty</span>}
+                               </div>
+                           </div>
+                      </div>
+                  )}
+
+                  <div ref={isFullscreen ? canvasContainerRef : null} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing z-10" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp} tabIndex={0}>
+                      <div className="absolute top-0 left-1/2 w-full h-full transition-transform duration-500 flex flex-col justify-start items-center pt-20" style={{ transform: `translate(calc(-50% + ${pan.x}px), ${pan.y}px) scale(${zoom * 1.3})`, transformOrigin: 'top center' }}>
+                           {renderVisuals()}
+                       </div>
+                  </div>
+                  {st.isSuccess && (
+                        <div className="absolute inset-0 z-50 flex items-center justify-center p-8 backdrop-blur-md pointer-events-none">
+                            <div className={`bg-[#0f172a] border-4 rounded-[4rem] p-16 animate-in zoom-in duration-500 pointer-events-auto max-w-2xl w-full text-center relative overflow-hidden border-emerald-500 shadow-[0_0_150px_rgba(16,185,129,0.3)]`}>
+                                <div className={`absolute top-0 left-0 w-full h-2 bg-emerald-500`}></div>
+                                
+                                <div className="w-24 h-24 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-10 animate-bounce shadow-lg ring-4 ring-emerald-500/10"><Trophy size={48}/></div>
+                                <h2 className="text-3xl font-black text-white uppercase tracking-[0.2em] mb-4 tracking-widest leading-tight text-center">COMPLETED</h2>
+                                <p className="text-emerald-400 font-mono text-xs uppercase mb-8 tracking-widest opacity-60">N-Queens Finished</p>
+                                
+                                <div className="bg-slate-800/80 rounded-[2rem] p-6 border border-slate-700 shadow-2xl mb-10 flex flex-col items-center justify-center">
+                                    <div className="text-emerald-500 text-[10px] font-black uppercase tracking-widest mb-2">Total Valid Boards</div>
+                                    <div className="font-mono text-white text-5xl font-black leading-relaxed">{st.res.length} Boards</div>
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <button onClick={handleReset} className={`flex-1 py-6 text-white font-black uppercase tracking-widest rounded-3xl transition-all shadow-xl flex items-center justify-center gap-4 text-lg bg-emerald-600 hover:bg-emerald-700 shadow-emerald-900/20`}>
+                                        <RotateCcw size={24}/> RESTART VIZ
+                                    </button>
+                                    <button onClick={toggleFullscreen} className="py-6 px-10 bg-slate-800 hover:bg-slate-700 text-white font-black uppercase tracking-widest rounded-3xl transition-all border border-slate-700 shadow-xl shadow-black/20">
+                                        CLOSE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                   )}
+              </div>
+          </div>
+      )}
+    </div>
+  );
+}

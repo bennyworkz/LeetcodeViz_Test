@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3, Link2, Calculator } from 'lucide-react';
+import { Code2, Eye, BookOpen, Zap, ArrowRight, GraduationCap, ChevronRight, Grid3x3, Link2, Calculator, TreePine } from 'lucide-react';
 import { modules } from '../problemRegistry';
 import { aptitudeModules } from '../aptitudeRegistry';
 
@@ -91,6 +91,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                     ? 'border-green-200 hover:border-green-400 hover:shadow-[0_20px_60px_rgba(34,197,94,0.25)]'
                     : module.id === 'quantitative-aptitude'
                     ? 'border-purple-200 hover:border-purple-400 hover:shadow-[0_20px_60px_rgba(147,51,234,0.25)]'
+                    : module.id === 'Tree'
+                    ? 'border-emerald-200 hover:border-emerald-400 hover:shadow-[0_20px_60px_rgba(16,185,129,0.25)]'
                     : 'border-blue-200 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.25)]'
             }`}
         >
@@ -104,6 +106,8 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                     ? 'bg-gradient-to-br from-green-50/50 to-transparent'
                     : module.id === 'quantitative-aptitude'
                     ? 'bg-gradient-to-br from-purple-50/50 to-transparent'
+                    : module.id === 'Tree'
+                    ? 'bg-gradient-to-br from-emerald-50/50 to-transparent'
                     : 'bg-gradient-to-br from-blue-50/50 to-transparent'
             }`}></div>
 
@@ -129,6 +133,10 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                         <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
                             <Calculator className="text-white" size={32} />
                         </div>
+                    ) : module.id === 'Tree' ? (
+                        <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <TreePine className="text-white" size={32} />
+                        </div>
                     ) : (
                         <img 
                             src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" 
@@ -144,6 +152,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                     : module.id === 'java-fundamentals' ? 'text-red-900'
                     : module.id === 'linked-list-data-structures' ? 'text-green-900'
                     : module.id === 'quantitative-aptitude' ? 'text-purple-900'
+                    : module.id === 'Tree' ? 'text-emerald-900'
                     : 'text-blue-900'
                 }`}>
                     {module.title}
@@ -162,12 +171,13 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                             : module.id === 'java-fundamentals' ? 'text-red-600'
                             : module.id === 'linked-list-data-structures' ? 'text-green-600'
                             : module.id === 'quantitative-aptitude' ? 'text-purple-600'
+                            : module.id === 'Tree' ? 'text-emerald-600'
                             : 'text-blue-600'
                         }`}>
                             {totalProblems}
                         </div>
                         <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                            {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' ? 'Lessons' : 'Problems'}
+                            {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' || module.id === 'Tree' ? 'Lessons' : 'Problems'}
                         </div>
                     </div>
                     {topicCount > 0 && (
@@ -177,6 +187,7 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                                 : module.id === 'java-fundamentals' ? 'text-red-600'
                                 : module.id === 'linked-list-data-structures' ? 'text-green-600'
                                 : module.id === 'quantitative-aptitude' ? 'text-purple-600'
+                                : module.id === 'Tree' ? 'text-emerald-600'
                                 : 'text-blue-600'
                             }`}>
                                 {topicCount}
@@ -196,9 +207,11 @@ const ModuleCard: React.FC<{ module: any, featured?: boolean, isAptitude?: boole
                         ? 'bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200'
                         : module.id === 'quantitative-aptitude'
                         ? 'bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200'
+                        : module.id === 'Tree'
+                        ? 'bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-200'
                         : 'bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200'
                 }`}>
-                    {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' || module.id === 'quantitative-aptitude' ? 'Start Learning' : 'Start Practicing'}
+                    {module.id === 'java-fundamentals' || module.id === 'linked-list-data-structures' || module.id === 'quantitative-aptitude' || module.id === 'Tree' ? 'Start Learning' : 'Start Practicing'}
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
@@ -211,11 +224,13 @@ const Welcome = () => {
   const javaModule = modules.find(m => m.id === 'java-fundamentals');
   const linkedListModule = modules.find(m => m.id === 'linked-list-data-structures');
   const blind75Module = modules.find(m => m.id === 'blind-75');
+  const treesModule = modules.find(m => m.id === 'Tree');
   const otherModules = modules.filter(m => 
     m.id !== 'amazon-favorites' && 
     m.id !== 'java-fundamentals' && 
     m.id !== 'linked-list-data-structures' && 
-    m.id !== 'blind-75'
+    m.id !== 'blind-75' &&
+    m.id !== 'Tree'
   );
   
   // Create a mock aptitude module for display
@@ -348,6 +363,7 @@ const Welcome = () => {
                 {amazonModule && <ModuleCard module={amazonModule} />}
                 {linkedListModule && <ModuleCard module={linkedListModule} />}
                 {blind75Module && <ModuleCard module={blind75Module} />}
+                {treesModule && <ModuleCard module={treesModule} />}
                 <ModuleCard module={aptitudeModule} isAptitude={true} />
             </div>
             
