@@ -327,6 +327,27 @@ const ShipWithinDaysVisualizer = lazy(() => import('./problems/ShipWithinDaysVis
 const KthMissingPositiveVisualizer = lazy(() => import('./problems/KthMissingPositiveVisualizer'));
 const SplitArrayVisualizer = lazy(() => import('./problems/SplitArrayVisualizer'));
 const MinimizeMaxGasDistVisualizer = lazy(() => import('./problems/MinimizeMaxGasDistVisualizer'));
+const RemoveOutermostParenthesesVisualizer = lazy(() => import('./problems/RemoveOutermostParenthesesVisualizer'));
+const LargestOddNumberVisualizer = lazy(() => import('./problems/LargestOddNumberVisualizer'));
+const RotateStringVisualizer = lazy(() => import('./problems/RotateStringVisualizer'));
+const FrequencySortVisualizer = lazy(() => import('./problems/FrequencySortVisualizer'));
+const MaxDepthParenthesesVisualizer = lazy(() => import('./problems/MaxDepthParenthesesVisualizer'));
+const HouseRobberIIVisualizer = lazy(() => import('./problems/HouseRobberIIVisualizer'));
+const TriangleVisualizer = lazy(() => import('./problems/TriangleVisualizer'));
+const CountSquaresVisualizer = lazy(() => import('./problems/CountSquaresVisualizer'));
+const PartitionSubsetVisualizer = lazy(() => import('./problems/PartitionSubsetVisualizer'));
+const MinDifferenceVisualizer = lazy(() => import('./problems/MinDifferenceVisualizer'));
+const TargetSumVisualizer = lazy(() => import('./problems/TargetSumVisualizer'));
+const CoinChangeVisualizerII = lazy(() => import('./problems/CoinChangeVisualizerII'));
+const MinInsertionsVisualizer = lazy(() => import('./problems/MinInsertionsVisualizer'));
+const StockIIIVisualizer = lazy(() => import('./problems/StockIIIVisualizer'));
+const StockIVVisualizer = lazy(() => import('./problems/StockIVVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
+// const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
 // const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
 // const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
 // const BalancedTreeVisualizer = lazy(() => import('./problems/BalancedTreeVisualizer'));
@@ -449,27 +470,70 @@ export const modules: Module[] = [
         ]
       },
       {
+        id: 'amazon-stringa',
+        title: 'Strings',
+        description: 'Binary search on sorted arrays.',
+        problems: [
+          { id: '1021-remove-outermost-parentheses', number: 1021, title: 'Remove Outermost Parentheses', difficulty: 'Easy', component: RemoveOutermostParenthesesVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1903-largest-odd-number-n-strings', number: 1903, title: 'Largest Odd Number in String', difficulty: 'Easy', component: LargestOddNumberVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '796-rotate-string', number: 796, title: 'Rotate String', difficulty: 'Easy', component: RotateStringVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '451-sort-characters-by-frequency', number: 451, title: 'Sort Characters By Frequency', difficulty: 'Medium', component: FrequencySortVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1614-maximum-nesting-depth-of-the-parentheses', number: 1614, title: 'Maximum Nesting Depth of the Parentheses', difficulty: 'Easy', component: MaxDepthParenthesesVisualizer, tags: ['Math', 'Binary Search']},
+        ]
+      },
+      {
         id: 'amazon-dynamic-programming',
         title: 'Dynamic Programming',
         description: 'DP: paths, subsequences, pattern matching.',
         problems: [
+          { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer, tags: ['Math', 'Dynamic Programming', 'Combinatorics']},
+          { id: '63-unique-paths-ii', number: 63, title: 'Unique Paths II', difficulty: 'Medium', component: UniquePathsIIVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          { id: '64-minimum-path-sum', number: 64, title: 'Minimum Path Sum', difficulty: 'Medium', component: MinimumPathSumVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          { id: '120-triangle', number: 120, title: 'Triangle', difficulty: 'Medium', component: TriangleVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+
+          { id: '85-maximal-rectangle', number: 85, title: 'Maximal Rectangle', difficulty: 'Hard', component: MaximalRectangleVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          { id: '1277-count-squares', number: 1277, title: 'Count Square Submatrices with All Ones', difficulty: 'Medium', component: CountSquaresVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+
+          { id: '416-partition-equal-subset-sum', number: 416, title: 'Partition Equal Subset Sum', difficulty: 'Medium', component: PartitionSubsetVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          { id: '2035-partition-array-into-two-arrays-to-minimize-sum-difference', number: 2035, title: 'Partition Array Into Two Arrays to Minimize Sum Difference', difficulty: 'Hard', component: MinDifferenceVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          { id: '494-target-sum', number: 494, title: 'Target Sum', difficulty: 'Medium', component: TargetSumVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          { id: '322-coin-change', number: 322, title: 'Coin Change', difficulty: 'Medium', component: CoinChangeVisualizer, tags: ['String', 'Dynamic Programming'] },
+          { id: '518-coin-change-2', number: 518, title: 'Coin Change II', difficulty: 'Medium', component: CoinChangeVisualizerII, tags: ['String', 'Dynamic Programming'] },
+
+         
+          
           { id: '121-besttimetosellandbutstock', number: 121, title: 'Best Time to Buy and Sell Stock', difficulty: 'Easy', component: BestTimeToBuySellVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
-          { id: '152-maximum-product-subarray', number: 152, title: 'Maximum Product Subarray', difficulty: 'Medium', component: MaxProductSubarrayVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
+          { id: '122-best-time-to-buy-and-sell-stock-ii--', number: 122, title: 'Best Time to Buy and Sell Stock II', difficulty: 'Medium', component: BestTimeToBuySellIIVisualizer, tags: ['Array', 'Dynamic Programming', 'Greedy']},
+          { id: '714-best-time-to-sell-', number: 714, title: 'Best Time to Buy and Sell Stock with Transaction Fee', difficulty: 'Medium', component: StockTransactionFeeVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '123-best-time-111', number: 123, title: 'Best Time to Buy and Sell Stock III', difficulty: 'Hard', component: StockIIIVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '188-best-time-IV', number: 188, title: 'Best Time to Buy and Sell Stock IV', difficulty: 'Hard', component: StockIVVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '309-best-time-cooldown', number: 309, title: 'Best Time to Buy and Sell Stock with Cooldown', difficulty: 'Medium', component: StockIIIVisualizer, tags: ['Math', 'Binary Search']},
+
+          { id: '1143-longest-common-subsequence-amazon', number: 1143, title: 'Longest Common Subsequence', difficulty: 'Medium', component: LongestCommonSubsequenceVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '1312-minimum-insertion-steps-to-make-a-string-palindrome', number: 1143, title: 'Minimum Insertion Steps to Make a String Palindrome', difficulty: 'Hard', component: MinInsertionsVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '72-Edit-distance', number: 72, title: 'Edit Distance', difficulty: 'Medium', component: EditDistanceVisualizer, tags: ['String', 'Dynamic Programming'] },
+          
+          
           { id: '10-regular-expression-matching', number: 10, title: 'Regular Expression Matching', difficulty: 'Hard', component: RegexVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
           { id: '53-maximum-subarray-amazon', number: 53, title: 'Maximum Subarray', difficulty: 'Medium', component: MaximumSubarrayVisualizer, tags: ['Array', 'Divide and Conquer', 'Dynamic Programming'] },
-          { id: '62-unique-paths', number: 62, title: 'Unique Paths', difficulty: 'Medium', component: UniquePathsVisualizer, tags: ['Math', 'Dynamic Programming', 'Combinatorics']},
-          { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer, tags: ['Math', 'Dynamic Programming', 'Memoization'] },
-          { id: '72-Edit-distance', number: 72, title: 'Edit Distance', difficulty: 'Medium', component: EditDistanceVisualizer, tags: ['String', 'Dynamic Programming'] },
+         
+         
+         
           { id: '91-decode-ways', number: 91, title: 'Decode Ways', difficulty: 'Medium', component: DecodeWaysVisualizer, tags: ['String', 'Dynamic Programming'] },
-          { id: '64-minimum-path-sum', number: 64, title: 'Minimum Path Sum', difficulty: 'Medium', component: MinimumPathSumVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
-          { id: '85-maximal-rectangle', number: 85, title: 'Maximal Rectangle', difficulty: 'Hard', component: MaximalRectangleVisualizer, tags: ['Array', 'Dynamic Programming', 'Stack', 'Matrix', 'Monotonic Stack'] },
-          { id: '63-unique-paths-ii', number: 63, title: 'Unique Paths II', difficulty: 'Medium', component: UniquePathsIIVisualizer, tags: ['Array', 'Dynamic Programming', 'Matrix'] },
+          
+          
+          
           { id: '97-interleaving-string', number: 97, title: 'Interleaving String', difficulty: 'Medium', component: InterleavingStringVisualizer, tags: ['String', 'Dynamic Programming'] },
-          { id: '89-gray-code', number: 89, title: 'Gray Code', difficulty: 'Medium', component: GrayCodeVisualizer, tags: ['Math', 'Backtracking', 'Bit Manipulation'] },
+          
           { id: '87-scramble-string', number: 87, title: 'Scramble String', difficulty: 'Hard', component: ScrambleStringVisualizer, tags: ['String', 'Dynamic Programming'] },
           // Striver Sheet Dynamic 
-          { id: '322-coin-change', number: 322, title: 'Coin Change', difficulty: 'Medium', component: CoinChangeVisualizer, tags: ['String', 'Dynamic Programming'] },
+         
+          { id: '152-maximum-product-subarray', number: 152, title: 'Maximum Product Subarray', difficulty: 'Medium', component: MaxProductSubarrayVisualizer, tags: ['String', 'Dynamic Programming', 'Recursion']},
+          { id: '70-climbing-stairs-amazon', number: 70, title: 'Climbing Stairs', difficulty: 'Easy', component: ClimbingStairsVisualizer, tags: ['Math', 'Dynamic Programming', 'Memoization'] },
           { id: '118-pascals-triangle', number: 118, title: 'Pascal\'s Triangle', difficulty: 'Easy', component: PascalsTriangleVisualizer, tags: ['String', 'Dynamic Programming'] },
+          { id: '198-house-robber-', number: 198, title: 'House Robber', difficulty: 'Medium', component: HouseRobberVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '213-house-robber-ii', number: 213, title: 'House Robber II', difficulty: 'Medium', component: HouseRobberIIVisualizer, tags: ['Math', 'Binary Search']},
+          { id: '89-gray-code', number: 89, title: 'Gray Code', difficulty: 'Medium', component: GrayCodeVisualizer, tags: ['Math', 'Backtracking', 'Bit Manipulation'] },
         ]
       },
       {
